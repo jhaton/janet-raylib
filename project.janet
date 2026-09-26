@@ -20,12 +20,15 @@
     :linux {"_GLFW_X11" true}
     {}))
 
+# Arrays, not tuples: spork writes these into the installed .meta.janet and reads
+# them back with eval-string, where a printed tuple ("-lm" ...) is evaluated as a
+# call. That breaks declare-executable builds that link this module statically.
 (def- os-lflags
   (case (os/which)
-    :linux ["-lm" "-lpthread" "-ldl"]
-    :macos ["-framework" "OpenGL" "-framework" "Cocoa" "-framework" "IOKit"
-            "-framework" "CoreAudio" "-framework" "CoreVideo"]
-    []))
+    :linux @["-lm" "-lpthread" "-ldl"]
+    :macos @["-framework" "OpenGL" "-framework" "Cocoa" "-framework" "IOKit"
+             "-framework" "CoreAudio" "-framework" "CoreVideo"]
+    @[]))
 
 (declare-native
   :name "raylib/native"
