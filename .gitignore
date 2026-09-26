@@ -1,0 +1,5 @@
+/build/
+/_build/
+# janet-pm writes a bundle shim for project.janet on first use.
+/bundle/
+/compile_flags.txt

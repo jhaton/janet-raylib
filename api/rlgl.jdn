@@ -1,0 +1,279 @@
+{
+ :defines
+  [{:name "RLGL_H" :description "" :value "" :type "GUARD"}
+   {:name "RLGL_VERSION" :description "" :value "5.0" :type "STRING"}
+   {:name "RLAPI" :description "We are building the library as a Win32 shared library (.dll)" :value "__declspec(dllexport)" :type "UNKNOWN"}
+   {:name "TRACELOG(level, ...)" :description "" :value "(void)0" :type "MACRO"}
+   {:name "TRACELOGD(...)" :description "" :value "(void)0" :type "MACRO"}
+   {:name "RL_MALLOC(sz)" :description "" :value "malloc(sz)" :type "MACRO"}
+   {:name "RL_CALLOC(n,sz)" :description "" :value "calloc(n,sz)" :type "MACRO"}
+   {:name "RL_REALLOC(n,sz)" :description "" :value "realloc(n,sz)" :type "MACRO"}
+   {:name "RL_FREE(p)" :description "" :value "free(p)" :type "MACRO"}
+   {:name "GRAPHICS_API_OPENGL_33" :description "" :value "" :type "GUARD"}
+   {:name "GRAPHICS_API_OPENGL_ES2" :description "" :value "" :type "GUARD"}
+   {:name "RLGL_RENDER_TEXTURES_HINT" :description "" :value "" :type "GUARD"}
+   {:name "RL_DEFAULT_BATCH_BUFFER_ELEMENTS" :description "" :value 8192 :type "INT"}
+   {:name "RL_DEFAULT_BATCH_BUFFERS" :description "Default number of batch buffers (multi-buffering)" :value 1 :type "INT"}
+   {:name "RL_DEFAULT_BATCH_DRAWCALLS" :description "Default number of batch draw calls (by state changes: mode, texture)" :value 256 :type "INT"}
+   {:name "RL_DEFAULT_BATCH_MAX_TEXTURE_UNITS" :description "Maximum number of textures units that can be activated on batch drawing (SetShaderValueTexture())" :value 4 :type "INT"}
+   {:name "RL_MAX_MATRIX_STACK_SIZE" :description "Maximum size of Matrix stack" :value 32 :type "INT"}
+   {:name "RL_MAX_SHADER_LOCATIONS" :description "Maximum number of shader locations supported" :value 32 :type "INT"}
+   {:name "RL_CULL_DISTANCE_NEAR" :description "Default near cull distance" :value 0.01 :type "DOUBLE"}
+   {:name "RL_CULL_DISTANCE_FAR" :description "Default far cull distance" :value 1000 :type "DOUBLE"}
+   {:name "RL_TEXTURE_WRAP_S" :description "GL_TEXTURE_WRAP_S" :value 10242 :type "INT"}
+   {:name "RL_TEXTURE_WRAP_T" :description "GL_TEXTURE_WRAP_T" :value 10243 :type "INT"}
+   {:name "RL_TEXTURE_MAG_FILTER" :description "GL_TEXTURE_MAG_FILTER" :value 10240 :type "INT"}
+   {:name "RL_TEXTURE_MIN_FILTER" :description "GL_TEXTURE_MIN_FILTER" :value 10241 :type "INT"}
+   {:name "RL_TEXTURE_FILTER_NEAREST" :description "GL_NEAREST" :value 9728 :type "INT"}
+   {:name "RL_TEXTURE_FILTER_LINEAR" :description "GL_LINEAR" :value 9729 :type "INT"}
+   {:name "RL_TEXTURE_FILTER_MIP_NEAREST" :description "GL_NEAREST_MIPMAP_NEAREST" :value 9984 :type "INT"}
+   {:name "RL_TEXTURE_FILTER_NEAREST_MIP_LINEAR" :description "GL_NEAREST_MIPMAP_LINEAR" :value 9986 :type "INT"}
+   {:name "RL_TEXTURE_FILTER_LINEAR_MIP_NEAREST" :description "GL_LINEAR_MIPMAP_NEAREST" :value 9985 :type "INT"}
+   {:name "RL_TEXTURE_FILTER_MIP_LINEAR" :description "GL_LINEAR_MIPMAP_LINEAR" :value 9987 :type "INT"}
+   {:name "RL_TEXTURE_FILTER_ANISOTROPIC" :description "Anisotropic filter (custom identifier)" :value 12288 :type "INT"}
+   {:name "RL_TEXTURE_MIPMAP_BIAS_RATIO" :description "Texture mipmap bias, percentage ratio (custom identifier)" :value 16384 :type "INT"}
+   {:name "RL_TEXTURE_WRAP_REPEAT" :description "GL_REPEAT" :value 10497 :type "INT"}
+   {:name "RL_TEXTURE_WRAP_CLAMP" :description "GL_CLAMP_TO_EDGE" :value 33071 :type "INT"}
+   {:name "RL_TEXTURE_WRAP_MIRROR_REPEAT" :description "GL_MIRRORED_REPEAT" :value 33648 :type "INT"}
+   {:name "RL_TEXTURE_WRAP_MIRROR_CLAMP" :description "GL_MIRROR_CLAMP_EXT" :value 34626 :type "INT"}
+   {:name "RL_MODELVIEW" :description "GL_MODELVIEW" :value 5888 :type "INT"}
+   {:name "RL_PROJECTION" :description "GL_PROJECTION" :value 5889 :type "INT"}
+   {:name "RL_TEXTURE" :description "GL_TEXTURE" :value 5890 :type "INT"}
+   {:name "RL_LINES" :description "GL_LINES" :value 1 :type "INT"}
+   {:name "RL_TRIANGLES" :description "GL_TRIANGLES" :value 4 :type "INT"}
+   {:name "RL_QUADS" :description "GL_QUADS" :value 7 :type "INT"}
+   {:name "RL_UNSIGNED_BYTE" :description "GL_UNSIGNED_BYTE" :value 5121 :type "INT"}
+   {:name "RL_FLOAT" :description "GL_FLOAT" :value 5126 :type "INT"}
+   {:name "RL_STREAM_DRAW" :description "GL_STREAM_DRAW" :value 35040 :type "INT"}
+   {:name "RL_STREAM_READ" :description "GL_STREAM_READ" :value 35041 :type "INT"}
+   {:name "RL_STREAM_COPY" :description "GL_STREAM_COPY" :value 35042 :type "INT"}
+   {:name "RL_STATIC_DRAW" :description "GL_STATIC_DRAW" :value 35044 :type "INT"}
+   {:name "RL_STATIC_READ" :description "GL_STATIC_READ" :value 35045 :type "INT"}
+   {:name "RL_STATIC_COPY" :description "GL_STATIC_COPY" :value 35046 :type "INT"}
+   {:name "RL_DYNAMIC_DRAW" :description "GL_DYNAMIC_DRAW" :value 35048 :type "INT"}
+   {:name "RL_DYNAMIC_READ" :description "GL_DYNAMIC_READ" :value 35049 :type "INT"}
+   {:name "RL_DYNAMIC_COPY" :description "GL_DYNAMIC_COPY" :value 35050 :type "INT"}
+   {:name "RL_FRAGMENT_SHADER" :description "GL_FRAGMENT_SHADER" :value 35632 :type "INT"}
+   {:name "RL_VERTEX_SHADER" :description "GL_VERTEX_SHADER" :value 35633 :type "INT"}
+   {:name "RL_COMPUTE_SHADER" :description "GL_COMPUTE_SHADER" :value 37305 :type "INT"}
+   {:name "RL_ZERO" :description "GL_ZERO" :value 0 :type "INT"}
+   {:name "RL_ONE" :description "GL_ONE" :value 1 :type "INT"}
+   {:name "RL_SRC_COLOR" :description "GL_SRC_COLOR" :value 768 :type "INT"}
+   {:name "RL_ONE_MINUS_SRC_COLOR" :description "GL_ONE_MINUS_SRC_COLOR" :value 769 :type "INT"}
+   {:name "RL_SRC_ALPHA" :description "GL_SRC_ALPHA" :value 770 :type "INT"}
+   {:name "RL_ONE_MINUS_SRC_ALPHA" :description "GL_ONE_MINUS_SRC_ALPHA" :value 771 :type "INT"}
+   {:name "RL_DST_ALPHA" :description "GL_DST_ALPHA" :value 772 :type "INT"}
+   {:name "RL_ONE_MINUS_DST_ALPHA" :description "GL_ONE_MINUS_DST_ALPHA" :value 773 :type "INT"}
+   {:name "RL_DST_COLOR" :description "GL_DST_COLOR" :value 774 :type "INT"}
+   {:name "RL_ONE_MINUS_DST_COLOR" :description "GL_ONE_MINUS_DST_COLOR" :value 775 :type "INT"}
+   {:name "RL_SRC_ALPHA_SATURATE" :description "GL_SRC_ALPHA_SATURATE" :value 776 :type "INT"}
+   {:name "RL_CONSTANT_COLOR" :description "GL_CONSTANT_COLOR" :value 32769 :type "INT"}
+   {:name "RL_ONE_MINUS_CONSTANT_COLOR" :description "GL_ONE_MINUS_CONSTANT_COLOR" :value 32770 :type "INT"}
+   {:name "RL_CONSTANT_ALPHA" :description "GL_CONSTANT_ALPHA" :value 32771 :type "INT"}
+   {:name "RL_ONE_MINUS_CONSTANT_ALPHA" :description "GL_ONE_MINUS_CONSTANT_ALPHA" :value 32772 :type "INT"}
+   {:name "RL_FUNC_ADD" :description "GL_FUNC_ADD" :value 32774 :type "INT"}
+   {:name "RL_MIN" :description "GL_MIN" :value 32775 :type "INT"}
+   {:name "RL_MAX" :description "GL_MAX" :value 32776 :type "INT"}
+   {:name "RL_FUNC_SUBTRACT" :description "GL_FUNC_SUBTRACT" :value 32778 :type "INT"}
+   {:name "RL_FUNC_REVERSE_SUBTRACT" :description "GL_FUNC_REVERSE_SUBTRACT" :value 32779 :type "INT"}
+   {:name "RL_BLEND_EQUATION" :description "GL_BLEND_EQUATION" :value 32777 :type "INT"}
+   {:name "RL_BLEND_EQUATION_RGB" :description "GL_BLEND_EQUATION_RGB   // (Same as BLEND_EQUATION)" :value 32777 :type "INT"}
+   {:name "RL_BLEND_EQUATION_ALPHA" :description "GL_BLEND_EQUATION_ALPHA" :value 34877 :type "INT"}
+   {:name "RL_BLEND_DST_RGB" :description "GL_BLEND_DST_RGB" :value 32968 :type "INT"}
+   {:name "RL_BLEND_SRC_RGB" :description "GL_BLEND_SRC_RGB" :value 32969 :type "INT"}
+   {:name "RL_BLEND_DST_ALPHA" :description "GL_BLEND_DST_ALPHA" :value 32970 :type "INT"}
+   {:name "RL_BLEND_SRC_ALPHA" :description "GL_BLEND_SRC_ALPHA" :value 32971 :type "INT"}
+   {:name "RL_BLEND_COLOR" :description "GL_BLEND_COLOR" :value 32773 :type "INT"}
+   {:name "RL_READ_FRAMEBUFFER" :description "GL_READ_FRAMEBUFFER" :value 36008 :type "INT"}
+   {:name "RL_DRAW_FRAMEBUFFER" :description "GL_DRAW_FRAMEBUFFER" :value 36009 :type "INT"}
+   {:name "RL_DEFAULT_SHADER_ATTRIB_LOCATION_POSITION" :description "" :value 0 :type "INT"}
+   {:name "RL_DEFAULT_SHADER_ATTRIB_LOCATION_TEXCOORD" :description "" :value 1 :type "INT"}
+   {:name "RL_DEFAULT_SHADER_ATTRIB_LOCATION_NORMAL" :description "" :value 2 :type "INT"}
+   {:name "RL_DEFAULT_SHADER_ATTRIB_LOCATION_COLOR" :description "" :value 3 :type "INT"}
+   {:name "RL_DEFAULT_SHADER_ATTRIB_LOCATION_TANGENT" :description "" :value 4 :type "INT"}
+   {:name "RL_DEFAULT_SHADER_ATTRIB_LOCATION_TEXCOORD2" :description "" :value 5 :type "INT"}
+   {:name "RL_DEFAULT_SHADER_ATTRIB_LOCATION_INDICES" :description "" :value 6 :type "INT"}
+   {:name "RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEIDS" :description "" :value 7 :type "INT"}
+   {:name "RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEWEIGHTS" :description "" :value 8 :type "INT"}
+   {:name "RL_MATRIX_TYPE" :description "" :value "" :type "GUARD"}
+   {:name "RL_SHADER_LOC_MAP_DIFFUSE" :description "" :value "RL_SHADER_LOC_MAP_ALBEDO" :type "UNKNOWN"}
+   {:name "RL_SHADER_LOC_MAP_SPECULAR" :description "" :value "RL_SHADER_LOC_MAP_METALNESS" :type "UNKNOWN"}]
+ :structs
+  [{:fields ({:name "m0" :description "Matrix first row (4 components)" :type "float"} {:name "m4" :description "Matrix first row (4 components)" :type "float"} {:name "m8" :description "Matrix first row (4 components)" :type "float"} {:name "m12" :description "Matrix first row (4 components)" :type "float"} {:name "m1" :description "Matrix second row (4 components)" :type "float"} {:name "m5" :description "Matrix second row (4 components)" :type "float"} {:name "m9" :description "Matrix second row (4 components)" :type "float"} {:name "m13" :description "Matrix second row (4 components)" :type "float"} {:name "m2" :description "Matrix third row (4 components)" :type "float"} {:name "m6" :description "Matrix third row (4 components)" :type "float"} {:name "m10" :description "Matrix third row (4 components)" :type "float"} {:name "m14" :description "Matrix third row (4 components)" :type "float"} {:name "m3" :description "Matrix fourth row (4 components)" :type "float"} {:name "m7" :description "Matrix fourth row (4 components)" :type "float"} {:name "m11" :description "Matrix fourth row (4 components)" :type "float"} {:name "m15" :description "Matrix fourth row (4 components)" :type "float"}) :name "Matrix" :description "Matrix, 4x4 components, column major, OpenGL style, right handed"}
+   {:fields ({:name "elementCount" :description "Number of elements in the buffer (QUADS)" :type "int"} {:name "vertices" :description "Vertex position (XYZ - 3 components per vertex) (shader-location = 0)" :type "float *"} {:name "texcoords" :description "Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)" :type "float *"} {:name "normals" :description "Vertex normal (XYZ - 3 components per vertex) (shader-location = 2)" :type "float *"} {:name "colors" :description "Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)" :type "unsigned char *"} {:name "indices" :description "Vertex indices (in case vertex data comes indexed) (6 indices per quad)" :type "#if defined(GRAPHICS_API_OPENGL_11) || defined(GRAPHICS_API_OPENunsigned int *"} {:name "indices" :description "Vertex indices (in case vertex data comes indexed) (6 indices per quad)" :type "unsigned int *"} {:name "indices" :description "Vertex indices (in case vertex data comes indexed) (6 indices per quad)" :type "#endif"} {:name "indices" :description "Vertex indices (in case vertex data comes indexed) (6 indices per quad)" :type "#if defined(GRAPHICS_API_OPENGL_ES2)"} {:name "indices" :description "Vertex indices (in case vertex data comes indexed) (6 indices per quad)" :type "unsigned short *"} {:name "vaoId" :description "OpenGL Vertex Array Object id" :type "#endif"} {:name "vaoId" :description "OpenGL Vertex Array Object id" :type "unsigned int"} {:name "vboId" :description "OpenGL Vertex Buffer Objects id (5 types of vertex data)" :type "unsigned int[5]"}) :name "rlVertexBuffer" :description "Dynamic vertex buffers (position + texcoords + colors + indices arrays)"}
+   {:fields ({:name "mode" :description "Drawing mode: LINES, TRIANGLES, QUADS" :type "int"} {:name "vertexCount" :description "Number of vertex of the draw" :type "int"} {:name "vertexAlignment" :description "Number of vertex required for index alignment (LINES, TRIANGLES)" :type "int"} {:name "textureId" :description "Texture id to be used on the draw -> Use to create new draw call if changes" :type "unsigned int"}) :name "rlDrawCall" :description "of those state-change happens (this is done in core module)"}
+   {:fields ({:name "bufferCount" :description "Number of vertex buffers (multi-buffering support)" :type "int"} {:name "currentBuffer" :description "Current buffer tracking in case of multi-buffering" :type "int"} {:name "vertexBuffer" :description "Dynamic buffer(s) for vertex data" :type "rlVertexBuffer *"} {:name "draws" :description "Draw calls array, depends on textureId" :type "rlDrawCall *"} {:name "drawCounter" :description "Draw calls counter" :type "int"} {:name "currentDepth" :description "Current depth value for next draw" :type "float"}) :name "rlRenderBatch" :description "rlRenderBatch type"}]
+ :aliases
+  []
+ :enums
+  [{:name "rlGlVersion" :description "OpenGL version" :values ({:name "RL_OPENGL_11" :description "OpenGL 1.1" :value 1} {:name "RL_OPENGL_21" :description "OpenGL 2.1 (GLSL 120)" :value 2} {:name "RL_OPENGL_33" :description "OpenGL 3.3 (GLSL 330)" :value 3} {:name "RL_OPENGL_43" :description "OpenGL 4.3 (using GLSL 330)" :value 4} {:name "RL_OPENGL_ES_20" :description "OpenGL ES 2.0 (GLSL 100)" :value 5} {:name "RL_OPENGL_ES_30" :description "OpenGL ES 3.0 (GLSL 300 es)" :value 6})}
+   {:name "rlTraceLogLevel" :description "Trace log level" :values ({:name "RL_LOG_ALL" :description "Display all logs" :value 0} {:name "RL_LOG_TRACE" :description "Trace logging, intended for internal use only" :value 1} {:name "RL_LOG_DEBUG" :description "Debug logging, used for internal debugging, it should be disabled on release builds" :value 2} {:name "RL_LOG_INFO" :description "Info logging, used for program execution info" :value 3} {:name "RL_LOG_WARNING" :description "Warning logging, used on recoverable failures" :value 4} {:name "RL_LOG_ERROR" :description "Error logging, used on unrecoverable failures" :value 5} {:name "RL_LOG_FATAL" :description "Fatal logging, used to abort program: exit(EXIT_FAILURE)" :value 6} {:name "RL_LOG_NONE" :description "Disable logging" :value 7})}
+   {:name "rlPixelFormat" :description "Texture pixel formats" :values ({:name "RL_PIXELFORMAT_UNCOMPRESSED_GRAYSCALE" :description "8 bit per pixel (no alpha)" :value 1} {:name "RL_PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA" :description "8*2 bpp (2 channels)" :value 2} {:name "RL_PIXELFORMAT_UNCOMPRESSED_R5G6B5" :description "16 bpp" :value 3} {:name "RL_PIXELFORMAT_UNCOMPRESSED_R8G8B8" :description "24 bpp" :value 4} {:name "RL_PIXELFORMAT_UNCOMPRESSED_R5G5B5A1" :description "16 bpp (1 bit alpha)" :value 5} {:name "RL_PIXELFORMAT_UNCOMPRESSED_R4G4B4A4" :description "16 bpp (4 bit alpha)" :value 6} {:name "RL_PIXELFORMAT_UNCOMPRESSED_R8G8B8A8" :description "32 bpp" :value 7} {:name "RL_PIXELFORMAT_UNCOMPRESSED_R32" :description "32 bpp (1 channel - float)" :value 8} {:name "RL_PIXELFORMAT_UNCOMPRESSED_R32G32B32" :description "32*3 bpp (3 channels - float)" :value 9} {:name "RL_PIXELFORMAT_UNCOMPRESSED_R32G32B32A32" :description "32*4 bpp (4 channels - float)" :value 10} {:name "RL_PIXELFORMAT_UNCOMPRESSED_R16" :description "16 bpp (1 channel - half float)" :value 11} {:name "RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16" :description "16*3 bpp (3 channels - half float)" :value 12} {:name "RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16A16" :description "16*4 bpp (4 channels - half float)" :value 13} {:name "RL_PIXELFORMAT_COMPRESSED_DXT1_RGB" :description "4 bpp (no alpha)" :value 14} {:name "RL_PIXELFORMAT_COMPRESSED_DXT1_RGBA" :description "4 bpp (1 bit alpha)" :value 15} {:name "RL_PIXELFORMAT_COMPRESSED_DXT3_RGBA" :description "8 bpp" :value 16} {:name "RL_PIXELFORMAT_COMPRESSED_DXT5_RGBA" :description "8 bpp" :value 17} {:name "RL_PIXELFORMAT_COMPRESSED_ETC1_RGB" :description "4 bpp" :value 18} {:name "RL_PIXELFORMAT_COMPRESSED_ETC2_RGB" :description "4 bpp" :value 19} {:name "RL_PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA" :description "8 bpp" :value 20} {:name "RL_PIXELFORMAT_COMPRESSED_PVRT_RGB" :description "4 bpp" :value 21} {:name "RL_PIXELFORMAT_COMPRESSED_PVRT_RGBA" :description "4 bpp" :value 22} {:name "RL_PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA" :description "8 bpp" :value 23} {:name "RL_PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA" :description "2 bpp" :value 24})}
+   {:name "rlTextureFilter" :description "Texture parameters: filter mode" :values ({:name "RL_TEXTURE_FILTER_POINT" :description "No filter, just pixel approximation" :value 0} {:name "RL_TEXTURE_FILTER_BILINEAR" :description "Linear filtering" :value 1} {:name "RL_TEXTURE_FILTER_TRILINEAR" :description "Trilinear filtering (linear with mipmaps)" :value 2} {:name "RL_TEXTURE_FILTER_ANISOTROPIC_4X" :description "Anisotropic filtering 4x" :value 3} {:name "RL_TEXTURE_FILTER_ANISOTROPIC_8X" :description "Anisotropic filtering 8x" :value 4} {:name "RL_TEXTURE_FILTER_ANISOTROPIC_16X" :description "Anisotropic filtering 16x" :value 5})}
+   {:name "rlBlendMode" :description "Color blending modes (pre-defined)" :values ({:name "RL_BLEND_ALPHA" :description "Blend textures considering alpha (default)" :value 0} {:name "RL_BLEND_ADDITIVE" :description "Blend textures adding colors" :value 1} {:name "RL_BLEND_MULTIPLIED" :description "Blend textures multiplying colors" :value 2} {:name "RL_BLEND_ADD_COLORS" :description "Blend textures adding colors (alternative)" :value 3} {:name "RL_BLEND_SUBTRACT_COLORS" :description "Blend textures subtracting colors (alternative)" :value 4} {:name "RL_BLEND_ALPHA_PREMULTIPLY" :description "Blend premultiplied textures considering alpha" :value 5} {:name "RL_BLEND_CUSTOM" :description "Blend textures using custom src/dst factors (use rlSetBlendFactors())" :value 6} {:name "RL_BLEND_CUSTOM_SEPARATE" :description "Blend textures using custom src/dst factors (use rlSetBlendFactorsSeparate())" :value 7})}
+   {:name "rlShaderLocationIndex" :description "Shader location point type" :values ({:name "RL_SHADER_LOC_VERTEX_POSITION" :description "Shader location: vertex attribute: position" :value 0} {:name "RL_SHADER_LOC_VERTEX_TEXCOORD01" :description "Shader location: vertex attribute: texcoord01" :value 1} {:name "RL_SHADER_LOC_VERTEX_TEXCOORD02" :description "Shader location: vertex attribute: texcoord02" :value 2} {:name "RL_SHADER_LOC_VERTEX_NORMAL" :description "Shader location: vertex attribute: normal" :value 3} {:name "RL_SHADER_LOC_VERTEX_TANGENT" :description "Shader location: vertex attribute: tangent" :value 4} {:name "RL_SHADER_LOC_VERTEX_COLOR" :description "Shader location: vertex attribute: color" :value 5} {:name "RL_SHADER_LOC_MATRIX_MVP" :description "Shader location: matrix uniform: model-view-projection" :value 6} {:name "RL_SHADER_LOC_MATRIX_VIEW" :description "Shader location: matrix uniform: view (camera transform)" :value 7} {:name "RL_SHADER_LOC_MATRIX_PROJECTION" :description "Shader location: matrix uniform: projection" :value 8} {:name "RL_SHADER_LOC_MATRIX_MODEL" :description "Shader location: matrix uniform: model (transform)" :value 9} {:name "RL_SHADER_LOC_MATRIX_NORMAL" :description "Shader location: matrix uniform: normal" :value 10} {:name "RL_SHADER_LOC_VECTOR_VIEW" :description "Shader location: vector uniform: view" :value 11} {:name "RL_SHADER_LOC_COLOR_DIFFUSE" :description "Shader location: vector uniform: diffuse color" :value 12} {:name "RL_SHADER_LOC_COLOR_SPECULAR" :description "Shader location: vector uniform: specular color" :value 13} {:name "RL_SHADER_LOC_COLOR_AMBIENT" :description "Shader location: vector uniform: ambient color" :value 14} {:name "RL_SHADER_LOC_MAP_ALBEDO" :description "Shader location: sampler2d texture: albedo (same as: RL_SHADER_LOC_MAP_DIFFUSE)" :value 15} {:name "RL_SHADER_LOC_MAP_METALNESS" :description "Shader location: sampler2d texture: metalness (same as: RL_SHADER_LOC_MAP_SPECULAR)" :value 16} {:name "RL_SHADER_LOC_MAP_NORMAL" :description "Shader location: sampler2d texture: normal" :value 17} {:name "RL_SHADER_LOC_MAP_ROUGHNESS" :description "Shader location: sampler2d texture: roughness" :value 18} {:name "RL_SHADER_LOC_MAP_OCCLUSION" :description "Shader location: sampler2d texture: occlusion" :value 19} {:name "RL_SHADER_LOC_MAP_EMISSION" :description "Shader location: sampler2d texture: emission" :value 20} {:name "RL_SHADER_LOC_MAP_HEIGHT" :description "Shader location: sampler2d texture: height" :value 21} {:name "RL_SHADER_LOC_MAP_CUBEMAP" :description "Shader location: samplerCube texture: cubemap" :value 22} {:name "RL_SHADER_LOC_MAP_IRRADIANCE" :description "Shader location: samplerCube texture: irradiance" :value 23} {:name "RL_SHADER_LOC_MAP_PREFILTER" :description "Shader location: samplerCube texture: prefilter" :value 24} {:name "RL_SHADER_LOC_MAP_BRDF" :description "Shader location: sampler2d texture: brdf" :value 25})}
+   {:name "rlShaderUniformDataType" :description "Shader uniform data type" :values ({:name "RL_SHADER_UNIFORM_FLOAT" :description "Shader uniform type: float" :value 0} {:name "RL_SHADER_UNIFORM_VEC2" :description "Shader uniform type: vec2 (2 float)" :value 1} {:name "RL_SHADER_UNIFORM_VEC3" :description "Shader uniform type: vec3 (3 float)" :value 2} {:name "RL_SHADER_UNIFORM_VEC4" :description "Shader uniform type: vec4 (4 float)" :value 3} {:name "RL_SHADER_UNIFORM_INT" :description "Shader uniform type: int" :value 4} {:name "RL_SHADER_UNIFORM_IVEC2" :description "Shader uniform type: ivec2 (2 int)" :value 5} {:name "RL_SHADER_UNIFORM_IVEC3" :description "Shader uniform type: ivec3 (3 int)" :value 6} {:name "RL_SHADER_UNIFORM_IVEC4" :description "Shader uniform type: ivec4 (4 int)" :value 7} {:name "RL_SHADER_UNIFORM_UINT" :description "Shader uniform type: unsigned int" :value 8} {:name "RL_SHADER_UNIFORM_UIVEC2" :description "Shader uniform type: uivec2 (2 unsigned int)" :value 9} {:name "RL_SHADER_UNIFORM_UIVEC3" :description "Shader uniform type: uivec3 (3 unsigned int)" :value 10} {:name "RL_SHADER_UNIFORM_UIVEC4" :description "Shader uniform type: uivec4 (4 unsigned int)" :value 11} {:name "RL_SHADER_UNIFORM_SAMPLER2D" :description "Shader uniform type: sampler2d" :value 12})}
+   {:name "rlShaderAttributeDataType" :description "Shader attribute data types" :values ({:name "RL_SHADER_ATTRIB_FLOAT" :description "Shader attribute type: float" :value 0} {:name "RL_SHADER_ATTRIB_VEC2" :description "Shader attribute type: vec2 (2 float)" :value 1} {:name "RL_SHADER_ATTRIB_VEC3" :description "Shader attribute type: vec3 (3 float)" :value 2} {:name "RL_SHADER_ATTRIB_VEC4" :description "Shader attribute type: vec4 (4 float)" :value 3})}
+   {:name "rlFramebufferAttachType" :description "Framebuffer attachment type" :values ({:name "RL_ATTACHMENT_COLOR_CHANNEL0" :description "Framebuffer attachment type: color 0" :value 0} {:name "RL_ATTACHMENT_COLOR_CHANNEL1" :description "Framebuffer attachment type: color 1" :value 1} {:name "RL_ATTACHMENT_COLOR_CHANNEL2" :description "Framebuffer attachment type: color 2" :value 2} {:name "RL_ATTACHMENT_COLOR_CHANNEL3" :description "Framebuffer attachment type: color 3" :value 3} {:name "RL_ATTACHMENT_COLOR_CHANNEL4" :description "Framebuffer attachment type: color 4" :value 4} {:name "RL_ATTACHMENT_COLOR_CHANNEL5" :description "Framebuffer attachment type: color 5" :value 5} {:name "RL_ATTACHMENT_COLOR_CHANNEL6" :description "Framebuffer attachment type: color 6" :value 6} {:name "RL_ATTACHMENT_COLOR_CHANNEL7" :description "Framebuffer attachment type: color 7" :value 7} {:name "RL_ATTACHMENT_DEPTH" :description "Framebuffer attachment type: depth" :value 100} {:name "RL_ATTACHMENT_STENCIL" :description "Framebuffer attachment type: stencil" :value 200})}
+   {:name "rlFramebufferAttachTextureType" :description "Framebuffer texture attachment type" :values ({:name "RL_ATTACHMENT_CUBEMAP_POSITIVE_X" :description "Framebuffer texture attachment type: cubemap, +X side" :value 0} {:name "RL_ATTACHMENT_CUBEMAP_NEGATIVE_X" :description "Framebuffer texture attachment type: cubemap, -X side" :value 1} {:name "RL_ATTACHMENT_CUBEMAP_POSITIVE_Y" :description "Framebuffer texture attachment type: cubemap, +Y side" :value 2} {:name "RL_ATTACHMENT_CUBEMAP_NEGATIVE_Y" :description "Framebuffer texture attachment type: cubemap, -Y side" :value 3} {:name "RL_ATTACHMENT_CUBEMAP_POSITIVE_Z" :description "Framebuffer texture attachment type: cubemap, +Z side" :value 4} {:name "RL_ATTACHMENT_CUBEMAP_NEGATIVE_Z" :description "Framebuffer texture attachment type: cubemap, -Z side" :value 5} {:name "RL_ATTACHMENT_TEXTURE2D" :description "Framebuffer texture attachment type: texture2d" :value 100} {:name "RL_ATTACHMENT_RENDERBUFFER" :description "Framebuffer texture attachment type: renderbuffer" :value 200})}
+   {:name "rlCullMode" :description "Face culling mode" :values ({:name "RL_CULL_FACE_FRONT" :description "" :value 0} {:name "RL_CULL_FACE_BACK" :description "" :value 1})}]
+ :callbacks
+  []
+ :functions
+  [{:params ({:name "mode" :type "int"}) :name "rlMatrixMode" :description "Choose the current matrix to be transformed" :returnType "void"}
+   {:name "rlPushMatrix" :description "Push the current matrix to stack" :returnType "void"}
+   {:name "rlPopMatrix" :description "Pop latest inserted matrix from stack" :returnType "void"}
+   {:name "rlLoadIdentity" :description "Reset current matrix to identity matrix" :returnType "void"}
+   {:params ({:name "x" :type "float"} {:name "y" :type "float"} {:name "z" :type "float"}) :name "rlTranslatef" :description "Multiply the current matrix by a translation matrix" :returnType "void"}
+   {:params ({:name "angle" :type "float"} {:name "x" :type "float"} {:name "y" :type "float"} {:name "z" :type "float"}) :name "rlRotatef" :description "Multiply the current matrix by a rotation matrix" :returnType "void"}
+   {:params ({:name "x" :type "float"} {:name "y" :type "float"} {:name "z" :type "float"}) :name "rlScalef" :description "Multiply the current matrix by a scaling matrix" :returnType "void"}
+   {:params ({:name "matf" :type "const float *"}) :name "rlMultMatrixf" :description "Multiply the current matrix by another matrix" :returnType "void"}
+   {:params ({:name "left" :type "double"} {:name "right" :type "double"} {:name "bottom" :type "double"} {:name "top" :type "double"} {:name "znear" :type "double"} {:name "zfar" :type "double"}) :name "rlFrustum" :description "" :returnType "void"}
+   {:params ({:name "left" :type "double"} {:name "right" :type "double"} {:name "bottom" :type "double"} {:name "top" :type "double"} {:name "znear" :type "double"} {:name "zfar" :type "double"}) :name "rlOrtho" :description "" :returnType "void"}
+   {:params ({:name "x" :type "int"} {:name "y" :type "int"} {:name "width" :type "int"} {:name "height" :type "int"}) :name "rlViewport" :description "Set the viewport area" :returnType "void"}
+   {:params ({:name "nearPlane" :type "double"} {:name "farPlane" :type "double"}) :name "rlSetClipPlanes" :description "Set clip planes distances" :returnType "void"}
+   {:name "rlGetCullDistanceNear" :description "Get cull plane distance near" :returnType "double"}
+   {:name "rlGetCullDistanceFar" :description "Get cull plane distance far" :returnType "double"}
+   {:params ({:name "mode" :type "int"}) :name "rlBegin" :description "Initialize drawing mode (how to organize vertex)" :returnType "void"}
+   {:name "rlEnd" :description "Finish vertex providing" :returnType "void"}
+   {:params ({:name "x" :type "int"} {:name "y" :type "int"}) :name "rlVertex2i" :description "Define one vertex (position) - 2 int" :returnType "void"}
+   {:params ({:name "x" :type "float"} {:name "y" :type "float"}) :name "rlVertex2f" :description "Define one vertex (position) - 2 float" :returnType "void"}
+   {:params ({:name "x" :type "float"} {:name "y" :type "float"} {:name "z" :type "float"}) :name "rlVertex3f" :description "Define one vertex (position) - 3 float" :returnType "void"}
+   {:params ({:name "x" :type "float"} {:name "y" :type "float"}) :name "rlTexCoord2f" :description "Define one vertex (texture coordinate) - 2 float" :returnType "void"}
+   {:params ({:name "x" :type "float"} {:name "y" :type "float"} {:name "z" :type "float"}) :name "rlNormal3f" :description "Define one vertex (normal) - 3 float" :returnType "void"}
+   {:params ({:name "r" :type "unsigned char"} {:name "g" :type "unsigned char"} {:name "b" :type "unsigned char"} {:name "a" :type "unsigned char"}) :name "rlColor4ub" :description "Define one vertex (color) - 4 byte" :returnType "void"}
+   {:params ({:name "x" :type "float"} {:name "y" :type "float"} {:name "z" :type "float"}) :name "rlColor3f" :description "Define one vertex (color) - 3 float" :returnType "void"}
+   {:params ({:name "x" :type "float"} {:name "y" :type "float"} {:name "z" :type "float"} {:name "w" :type "float"}) :name "rlColor4f" :description "Define one vertex (color) - 4 float" :returnType "void"}
+   {:params ({:name "vaoId" :type "unsigned int"}) :name "rlEnableVertexArray" :description "Enable vertex array (VAO, if supported)" :returnType "bool"}
+   {:name "rlDisableVertexArray" :description "Disable vertex array (VAO, if supported)" :returnType "void"}
+   {:params ({:name "id" :type "unsigned int"}) :name "rlEnableVertexBuffer" :description "Enable vertex buffer (VBO)" :returnType "void"}
+   {:name "rlDisableVertexBuffer" :description "Disable vertex buffer (VBO)" :returnType "void"}
+   {:params ({:name "id" :type "unsigned int"}) :name "rlEnableVertexBufferElement" :description "Enable vertex buffer element (VBO element)" :returnType "void"}
+   {:name "rlDisableVertexBufferElement" :description "Disable vertex buffer element (VBO element)" :returnType "void"}
+   {:params ({:name "index" :type "unsigned int"}) :name "rlEnableVertexAttribute" :description "Enable vertex attribute index" :returnType "void"}
+   {:params ({:name "index" :type "unsigned int"}) :name "rlDisableVertexAttribute" :description "Disable vertex attribute index" :returnType "void"}
+   {:params ({:name "vertexAttribType" :type "int"} {:name "buffer" :type "void *"}) :name "rlEnableStatePointer" :description "Enable attribute state pointer" :returnType "void"}
+   {:params ({:name "vertexAttribType" :type "int"}) :name "rlDisableStatePointer" :description "Disable attribute state pointer" :returnType "void"}
+   {:params ({:name "slot" :type "int"}) :name "rlActiveTextureSlot" :description "Select and active a texture slot" :returnType "void"}
+   {:params ({:name "id" :type "unsigned int"}) :name "rlEnableTexture" :description "Enable texture" :returnType "void"}
+   {:name "rlDisableTexture" :description "Disable texture" :returnType "void"}
+   {:params ({:name "id" :type "unsigned int"}) :name "rlEnableTextureCubemap" :description "Enable texture cubemap" :returnType "void"}
+   {:name "rlDisableTextureCubemap" :description "Disable texture cubemap" :returnType "void"}
+   {:params ({:name "id" :type "unsigned int"} {:name "param" :type "int"} {:name "value" :type "int"}) :name "rlTextureParameters" :description "Set texture parameters (filter, wrap)" :returnType "void"}
+   {:params ({:name "id" :type "unsigned int"} {:name "param" :type "int"} {:name "value" :type "int"}) :name "rlCubemapParameters" :description "Set cubemap parameters (filter, wrap)" :returnType "void"}
+   {:params ({:name "id" :type "unsigned int"}) :name "rlEnableShader" :description "Enable shader program" :returnType "void"}
+   {:name "rlDisableShader" :description "Disable shader program" :returnType "void"}
+   {:params ({:name "id" :type "unsigned int"}) :name "rlEnableFramebuffer" :description "Enable render texture (fbo)" :returnType "void"}
+   {:name "rlDisableFramebuffer" :description "Disable render texture (fbo), return to default framebuffer" :returnType "void"}
+   {:name "rlGetActiveFramebuffer" :description "Get the currently active render texture (fbo), 0 for default framebuffer" :returnType "unsigned int"}
+   {:params ({:name "count" :type "int"}) :name "rlActiveDrawBuffers" :description "Activate multiple draw color buffers" :returnType "void"}
+   {:params ({:name "srcX" :type "int"} {:name "srcY" :type "int"} {:name "srcWidth" :type "int"} {:name "srcHeight" :type "int"} {:name "dstX" :type "int"} {:name "dstY" :type "int"} {:name "dstWidth" :type "int"} {:name "dstHeight" :type "int"} {:name "bufferMask" :type "int"}) :name "rlBlitFramebuffer" :description "Blit active framebuffer to main framebuffer" :returnType "void"}
+   {:params ({:name "target" :type "unsigned int"} {:name "framebuffer" :type "unsigned int"}) :name "rlBindFramebuffer" :description "Bind framebuffer (FBO)" :returnType "void"}
+   {:name "rlEnableColorBlend" :description "Enable color blending" :returnType "void"}
+   {:name "rlDisableColorBlend" :description "Disable color blending" :returnType "void"}
+   {:name "rlEnableDepthTest" :description "Enable depth test" :returnType "void"}
+   {:name "rlDisableDepthTest" :description "Disable depth test" :returnType "void"}
+   {:name "rlEnableDepthMask" :description "Enable depth write" :returnType "void"}
+   {:name "rlDisableDepthMask" :description "Disable depth write" :returnType "void"}
+   {:name "rlEnableBackfaceCulling" :description "Enable backface culling" :returnType "void"}
+   {:name "rlDisableBackfaceCulling" :description "Disable backface culling" :returnType "void"}
+   {:params ({:name "r" :type "bool"} {:name "g" :type "bool"} {:name "b" :type "bool"} {:name "a" :type "bool"}) :name "rlColorMask" :description "Color mask control" :returnType "void"}
+   {:params ({:name "mode" :type "int"}) :name "rlSetCullFace" :description "Set face culling mode" :returnType "void"}
+   {:name "rlEnableScissorTest" :description "Enable scissor test" :returnType "void"}
+   {:name "rlDisableScissorTest" :description "Disable scissor test" :returnType "void"}
+   {:params ({:name "x" :type "int"} {:name "y" :type "int"} {:name "width" :type "int"} {:name "height" :type "int"}) :name "rlScissor" :description "Scissor test" :returnType "void"}
+   {:name "rlEnableWireMode" :description "Enable wire mode" :returnType "void"}
+   {:name "rlEnablePointMode" :description "Enable point mode" :returnType "void"}
+   {:name "rlDisableWireMode" :description "Disable wire (and point) mode" :returnType "void"}
+   {:params ({:name "width" :type "float"}) :name "rlSetLineWidth" :description "Set the line drawing width" :returnType "void"}
+   {:name "rlGetLineWidth" :description "Get the line drawing width" :returnType "float"}
+   {:name "rlEnableSmoothLines" :description "Enable line aliasing" :returnType "void"}
+   {:name "rlDisableSmoothLines" :description "Disable line aliasing" :returnType "void"}
+   {:name "rlEnableStereoRender" :description "Enable stereo rendering" :returnType "void"}
+   {:name "rlDisableStereoRender" :description "Disable stereo rendering" :returnType "void"}
+   {:name "rlIsStereoRenderEnabled" :description "Check if stereo render is enabled" :returnType "bool"}
+   {:params ({:name "r" :type "unsigned char"} {:name "g" :type "unsigned char"} {:name "b" :type "unsigned char"} {:name "a" :type "unsigned char"}) :name "rlClearColor" :description "Clear color buffer with color" :returnType "void"}
+   {:name "rlClearScreenBuffers" :description "Clear used screen buffers (color and depth)" :returnType "void"}
+   {:name "rlCheckErrors" :description "Check and log OpenGL error codes" :returnType "void"}
+   {:params ({:name "mode" :type "int"}) :name "rlSetBlendMode" :description "Set blending mode" :returnType "void"}
+   {:params ({:name "glSrcFactor" :type "int"} {:name "glDstFactor" :type "int"} {:name "glEquation" :type "int"}) :name "rlSetBlendFactors" :description "Set blending mode factor and equation (using OpenGL factors)" :returnType "void"}
+   {:params ({:name "glSrcRGB" :type "int"} {:name "glDstRGB" :type "int"} {:name "glSrcAlpha" :type "int"} {:name "glDstAlpha" :type "int"} {:name "glEqRGB" :type "int"} {:name "glEqAlpha" :type "int"}) :name "rlSetBlendFactorsSeparate" :description "Set blending mode factors and equations separately (using OpenGL factors)" :returnType "void"}
+   {:params ({:name "width" :type "int"} {:name "height" :type "int"}) :name "rlglInit" :description "Initialize rlgl (buffers, shaders, textures, states)" :returnType "void"}
+   {:name "rlglClose" :description "De-initialize rlgl (buffers, shaders, textures)" :returnType "void"}
+   {:params ({:name "loader" :type "void *"}) :name "rlLoadExtensions" :description "Load OpenGL extensions (loader function required)" :returnType "void"}
+   {:name "rlGetVersion" :description "Get current OpenGL version" :returnType "int"}
+   {:params ({:name "width" :type "int"}) :name "rlSetFramebufferWidth" :description "Set current framebuffer width" :returnType "void"}
+   {:name "rlGetFramebufferWidth" :description "Get default framebuffer width" :returnType "int"}
+   {:params ({:name "height" :type "int"}) :name "rlSetFramebufferHeight" :description "Set current framebuffer height" :returnType "void"}
+   {:name "rlGetFramebufferHeight" :description "Get default framebuffer height" :returnType "int"}
+   {:name "rlGetTextureIdDefault" :description "Get default texture id" :returnType "unsigned int"}
+   {:name "rlGetShaderIdDefault" :description "Get default shader id" :returnType "unsigned int"}
+   {:name "rlGetShaderLocsDefault" :description "Get default shader locations" :returnType "int *"}
+   {:params ({:name "numBuffers" :type "int"} {:name "bufferElements" :type "int"}) :name "rlLoadRenderBatch" :description "Load a render batch system" :returnType "rlRenderBatch"}
+   {:params ({:name "batch" :type "rlRenderBatch"}) :name "rlUnloadRenderBatch" :description "Unload render batch system" :returnType "void"}
+   {:params ({:name "batch" :type "rlRenderBatch *"}) :name "rlDrawRenderBatch" :description "Draw render batch data (Update->Draw->Reset)" :returnType "void"}
+   {:params ({:name "batch" :type "rlRenderBatch *"}) :name "rlSetRenderBatchActive" :description "Set the active render batch for rlgl (NULL for default internal)" :returnType "void"}
+   {:name "rlDrawRenderBatchActive" :description "Update and draw internal render batch" :returnType "void"}
+   {:params ({:name "vCount" :type "int"}) :name "rlCheckRenderBatchLimit" :description "Check internal buffer overflow for a given number of vertex" :returnType "bool"}
+   {:params ({:name "id" :type "unsigned int"}) :name "rlSetTexture" :description "Set current texture for render batch and check buffers limits" :returnType "void"}
+   {:name "rlLoadVertexArray" :description "Load vertex array (vao) if supported" :returnType "unsigned int"}
+   {:params ({:name "buffer" :type "const void *"} {:name "size" :type "int"} {:name "dynamic" :type "bool"}) :name "rlLoadVertexBuffer" :description "Load a vertex buffer object" :returnType "unsigned int"}
+   {:params ({:name "buffer" :type "const void *"} {:name "size" :type "int"} {:name "dynamic" :type "bool"}) :name "rlLoadVertexBufferElement" :description "Load vertex buffer elements object" :returnType "unsigned int"}
+   {:params ({:name "bufferId" :type "unsigned int"} {:name "data" :type "const void *"} {:name "dataSize" :type "int"} {:name "offset" :type "int"}) :name "rlUpdateVertexBuffer" :description "Update vertex buffer object data on GPU buffer" :returnType "void"}
+   {:params ({:name "id" :type "unsigned int"} {:name "data" :type "const void *"} {:name "dataSize" :type "int"} {:name "offset" :type "int"}) :name "rlUpdateVertexBufferElements" :description "Update vertex buffer elements data on GPU buffer" :returnType "void"}
+   {:params ({:name "vaoId" :type "unsigned int"}) :name "rlUnloadVertexArray" :description "Unload vertex array (vao)" :returnType "void"}
+   {:params ({:name "vboId" :type "unsigned int"}) :name "rlUnloadVertexBuffer" :description "Unload vertex buffer object" :returnType "void"}
+   {:params ({:name "index" :type "unsigned int"} {:name "compSize" :type "int"} {:name "type" :type "int"} {:name "normalized" :type "bool"} {:name "stride" :type "int"} {:name "offset" :type "int"}) :name "rlSetVertexAttribute" :description "Set vertex attribute data configuration" :returnType "void"}
+   {:params ({:name "index" :type "unsigned int"} {:name "divisor" :type "int"}) :name "rlSetVertexAttributeDivisor" :description "Set vertex attribute data divisor" :returnType "void"}
+   {:params ({:name "locIndex" :type "int"} {:name "value" :type "const void *"} {:name "attribType" :type "int"} {:name "count" :type "int"}) :name "rlSetVertexAttributeDefault" :description "Set vertex attribute default value, when attribute to provided" :returnType "void"}
+   {:params ({:name "offset" :type "int"} {:name "count" :type "int"}) :name "rlDrawVertexArray" :description "Draw vertex array (currently active vao)" :returnType "void"}
+   {:params ({:name "offset" :type "int"} {:name "count" :type "int"} {:name "buffer" :type "const void *"}) :name "rlDrawVertexArrayElements" :description "Draw vertex array elements" :returnType "void"}
+   {:params ({:name "offset" :type "int"} {:name "count" :type "int"} {:name "instances" :type "int"}) :name "rlDrawVertexArrayInstanced" :description "Draw vertex array (currently active vao) with instancing" :returnType "void"}
+   {:params ({:name "offset" :type "int"} {:name "count" :type "int"} {:name "buffer" :type "const void *"} {:name "instances" :type "int"}) :name "rlDrawVertexArrayElementsInstanced" :description "Draw vertex array elements with instancing" :returnType "void"}
+   {:params ({:name "data" :type "const void *"} {:name "width" :type "int"} {:name "height" :type "int"} {:name "format" :type "int"} {:name "mipmapCount" :type "int"}) :name "rlLoadTexture" :description "Load texture data" :returnType "unsigned int"}
+   {:params ({:name "width" :type "int"} {:name "height" :type "int"} {:name "useRenderBuffer" :type "bool"}) :name "rlLoadTextureDepth" :description "Load depth texture/renderbuffer (to be attached to fbo)" :returnType "unsigned int"}
+   {:params ({:name "data" :type "const void *"} {:name "size" :type "int"} {:name "format" :type "int"} {:name "mipmapCount" :type "int"}) :name "rlLoadTextureCubemap" :description "Load texture cubemap data" :returnType "unsigned int"}
+   {:params ({:name "id" :type "unsigned int"} {:name "offsetX" :type "int"} {:name "offsetY" :type "int"} {:name "width" :type "int"} {:name "height" :type "int"} {:name "format" :type "int"} {:name "data" :type "const void *"}) :name "rlUpdateTexture" :description "Update texture with new data on GPU" :returnType "void"}
+   {:params ({:name "format" :type "int"} {:name "glInternalFormat" :type "unsigned int *"} {:name "glFormat" :type "unsigned int *"} {:name "glType" :type "unsigned int *"}) :name "rlGetGlTextureFormats" :description "Get OpenGL internal formats" :returnType "void"}
+   {:params ({:name "format" :type "unsigned int"}) :name "rlGetPixelFormatName" :description "Get name string for pixel format" :returnType "const char *"}
+   {:params ({:name "id" :type "unsigned int"}) :name "rlUnloadTexture" :description "Unload texture from GPU memory" :returnType "void"}
+   {:params ({:name "id" :type "unsigned int"} {:name "width" :type "int"} {:name "height" :type "int"} {:name "format" :type "int"} {:name "mipmaps" :type "int *"}) :name "rlGenTextureMipmaps" :description "Generate mipmap data for selected texture" :returnType "void"}
+   {:params ({:name "id" :type "unsigned int"} {:name "width" :type "int"} {:name "height" :type "int"} {:name "format" :type "int"}) :name "rlReadTexturePixels" :description "Read texture pixel data" :returnType "void *"}
+   {:params ({:name "width" :type "int"} {:name "height" :type "int"}) :name "rlReadScreenPixels" :description "Read screen pixel data (color buffer)" :returnType "unsigned char *"}
+   {:name "rlLoadFramebuffer" :description "Load an empty framebuffer" :returnType "unsigned int"}
+   {:params ({:name "fboId" :type "unsigned int"} {:name "texId" :type "unsigned int"} {:name "attachType" :type "int"} {:name "texType" :type "int"} {:name "mipLevel" :type "int"}) :name "rlFramebufferAttach" :description "Attach texture/renderbuffer to a framebuffer" :returnType "void"}
+   {:params ({:name "id" :type "unsigned int"}) :name "rlFramebufferComplete" :description "Verify framebuffer is complete" :returnType "bool"}
+   {:params ({:name "id" :type "unsigned int"}) :name "rlUnloadFramebuffer" :description "Delete framebuffer from GPU" :returnType "void"}
+   {:params ({:name "vsCode" :type "const char *"} {:name "fsCode" :type "const char *"}) :name "rlLoadShaderCode" :description "Load shader from code strings" :returnType "unsigned int"}
+   {:params ({:name "shaderCode" :type "const char *"} {:name "type" :type "int"}) :name "rlCompileShader" :description "Compile custom shader and return shader id (type: RL_VERTEX_SHADER, RL_FRAGMENT_SHADER, RL_COMPUTE_SHADER)" :returnType "unsigned int"}
+   {:params ({:name "vShaderId" :type "unsigned int"} {:name "fShaderId" :type "unsigned int"}) :name "rlLoadShaderProgram" :description "Load custom shader program" :returnType "unsigned int"}
+   {:params ({:name "id" :type "unsigned int"}) :name "rlUnloadShaderProgram" :description "Unload shader program" :returnType "void"}
+   {:params ({:name "shaderId" :type "unsigned int"} {:name "uniformName" :type "const char *"}) :name "rlGetLocationUniform" :description "Get shader location uniform" :returnType "int"}
+   {:params ({:name "shaderId" :type "unsigned int"} {:name "attribName" :type "const char *"}) :name "rlGetLocationAttrib" :description "Get shader location attribute" :returnType "int"}
+   {:params ({:name "locIndex" :type "int"} {:name "value" :type "const void *"} {:name "uniformType" :type "int"} {:name "count" :type "int"}) :name "rlSetUniform" :description "Set shader value uniform" :returnType "void"}
+   {:params ({:name "locIndex" :type "int"} {:name "mat" :type "Matrix"}) :name "rlSetUniformMatrix" :description "Set shader value matrix" :returnType "void"}
+   {:params ({:name "locIndex" :type "int"} {:name "mat" :type "const Matrix *"} {:name "count" :type "int"}) :name "rlSetUniformMatrices" :description "Set shader value matrices" :returnType "void"}
+   {:params ({:name "locIndex" :type "int"} {:name "textureId" :type "unsigned int"}) :name "rlSetUniformSampler" :description "Set shader value sampler" :returnType "void"}
+   {:params ({:name "id" :type "unsigned int"} {:name "locs" :type "int *"}) :name "rlSetShader" :description "Set shader currently active (id and locations)" :returnType "void"}
+   {:params ({:name "shaderId" :type "unsigned int"}) :name "rlLoadComputeShaderProgram" :description "Load compute shader program" :returnType "unsigned int"}
+   {:params ({:name "groupX" :type "unsigned int"} {:name "groupY" :type "unsigned int"} {:name "groupZ" :type "unsigned int"}) :name "rlComputeShaderDispatch" :description "Dispatch compute shader (equivalent to *draw* for graphics pipeline)" :returnType "void"}
+   {:params ({:name "size" :type "unsigned int"} {:name "data" :type "const void *"} {:name "usageHint" :type "int"}) :name "rlLoadShaderBuffer" :description "Load shader storage buffer object (SSBO)" :returnType "unsigned int"}
+   {:params ({:name "ssboId" :type "unsigned int"}) :name "rlUnloadShaderBuffer" :description "Unload shader storage buffer object (SSBO)" :returnType "void"}
+   {:params ({:name "id" :type "unsigned int"} {:name "data" :type "const void *"} {:name "dataSize" :type "unsigned int"} {:name "offset" :type "unsigned int"}) :name "rlUpdateShaderBuffer" :description "Update SSBO buffer data" :returnType "void"}
+   {:params ({:name "id" :type "unsigned int"} {:name "index" :type "unsigned int"}) :name "rlBindShaderBuffer" :description "Bind SSBO buffer" :returnType "void"}
+   {:params ({:name "id" :type "unsigned int"} {:name "dest" :type "void *"} {:name "count" :type "unsigned int"} {:name "offset" :type "unsigned int"}) :name "rlReadShaderBuffer" :description "Read SSBO buffer data (GPU->CPU)" :returnType "void"}
+   {:params ({:name "destId" :type "unsigned int"} {:name "srcId" :type "unsigned int"} {:name "destOffset" :type "unsigned int"} {:name "srcOffset" :type "unsigned int"} {:name "count" :type "unsigned int"}) :name "rlCopyShaderBuffer" :description "Copy SSBO data between buffers" :returnType "void"}
+   {:params ({:name "id" :type "unsigned int"}) :name "rlGetShaderBufferSize" :description "Get SSBO buffer size" :returnType "unsigned int"}
+   {:params ({:name "id" :type "unsigned int"} {:name "index" :type "unsigned int"} {:name "format" :type "int"} {:name "readonly" :type "bool"}) :name "rlBindImageTexture" :description "Bind image texture" :returnType "void"}
+   {:name "rlGetMatrixModelview" :description "Get internal modelview matrix" :returnType "Matrix"}
+   {:name "rlGetMatrixProjection" :description "Get internal projection matrix" :returnType "Matrix"}
+   {:name "rlGetMatrixTransform" :description "Get internal accumulated transform matrix" :returnType "Matrix"}
+   {:params ({:name "eye" :type "int"}) :name "rlGetMatrixProjectionStereo" :description "Get internal projection matrix for stereo render (selected eye)" :returnType "Matrix"}
+   {:params ({:name "eye" :type "int"}) :name "rlGetMatrixViewOffsetStereo" :description "Get internal view offset matrix for stereo render (selected eye)" :returnType "Matrix"}
+   {:params ({:name "proj" :type "Matrix"}) :name "rlSetMatrixProjection" :description "Set a custom projection matrix (replaces internal projection matrix)" :returnType "void"}
+   {:params ({:name "view" :type "Matrix"}) :name "rlSetMatrixModelview" :description "Set a custom modelview matrix (replaces internal modelview matrix)" :returnType "void"}
+   {:params ({:name "right" :type "Matrix"} {:name "left" :type "Matrix"}) :name "rlSetMatrixProjectionStereo" :description "Set eyes projection matrices for stereo rendering" :returnType "void"}
+   {:params ({:name "right" :type "Matrix"} {:name "left" :type "Matrix"}) :name "rlSetMatrixViewOffsetStereo" :description "Set eyes view offsets matrices for stereo rendering" :returnType "void"}
+   {:name "rlLoadDrawCube" :description "Load and draw a cube" :returnType "void"}
+   {:name "rlLoadDrawQuad" :description "Load and draw a quad" :returnType "void"}]
+}

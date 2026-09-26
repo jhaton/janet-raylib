@@ -1,0 +1,268 @@
+# Binding policy for gen/gen.janet.
+#
+# The generator derives everything it can from api/*.jdn. This file holds only
+# what C headers cannot express: which structs are resources, how pointer fields
+# and pointer parameters are sized, who frees returned memory, which int
+# parameters are enums, and which functions are excluded (with the reason).
+#
+# Parameter kinds:
+#   :array       Janet tuple/array -> temporary C array.  :count PARAM fills a
+#                count parameter from the length; :length N requires N elements.
+#   :bytes       Janet string/buffer -> const bytes.  :size PARAM fills a size
+#                parameter; :min C-EXPR requires at least that many bytes.
+#   :buffer      mutable Janet buffer, written in place.  :min C-EXPR as above.
+#   :out         C writes the value; it is returned instead of passed.
+#   :inout       Passed in and returned updated.
+#   :out-bytes   C writes :size bytes into a fresh buffer, which is returned.
+#   :uniform     Shader/attribute value converted per :type PARAM and :count.
+#   :string      char * treated as an input string.  :nullable passes nil as NULL.
+#   :raw-pointer nil, a Janet pointer, or a buffer's address.
+#   :unload-array  An array returned by a Load* function; :count PARAM is filled.
+# Any parameter may be :nullable. :consumed marks a resource adopted by the result.
+#
+# Return kinds:
+#   :array / :bytes / :string  copy C memory into Janet, then call :free (if any).
+#   :handle-array              an array of resources, freed by its Unload* function.
+#   :borrowed                  a resource raylib owns; it cannot be unloaded.
+#   :pointer                   a raw Janet pointer.
+# :owner PARAM keeps the returned resource tied to a parameter's lifetime.
+
+{:tuple-types ["Vector2" "Vector3" "Vector4" "Matrix" "Color" "Rectangle" "float3" "float16"]
+
+ # Structs with only integer fields that are nevertheless GPU resources.
+ :handle-types ["Texture" "rlRenderBatch"]
+
+ # Internal rlgl structs that only appear behind hidden pointer fields.
+ :opaque-types ["rlVertexBuffer" "rlDrawCall"]
+
+ :flag-enums ["ConfigFlags" "Gesture"]
+
+ # raylib color macro -> keyword, Jaylib spelling.
+ :colors {"LIGHTGRAY" :light-gray "GRAY" :gray "DARKGRAY" :dark-gray
+          "YELLOW" :yellow "GOLD" :gold "ORANGE" :orange "PINK" :pink
+          "RED" :red "MAROON" :maroon "GREEN" :green "LIME" :lime
+          "DARKGREEN" :dark-green "SKYBLUE" :sky-blue "BLUE" :blue
+          "DARKBLUE" :dark-blue "PURPLE" :purple "VIOLET" :violet
+          "DARKPURPLE" :dark-purple "BEIGE" :beige "BROWN" :brown
+          "DARKBROWN" :dark-brown "WHITE" :white "BLACK" :black
+          "BLANK" :blank "MAGENTA" :magenta "RAYWHITE" :ray-white}
+
+ # Functions in src/manual.c with no raylib counterpart.
+ :extras {"unload-materials" "unloads every material in an array from load-materials, then frees the array"
+          "handle-live?" "whether a handle or array can still be used (not unloaded, owner not unloaded)"
+          "set-trace-log-capture" "queues raylib log messages from any thread instead of printing them"
+          "take-trace-logs" "drains queued log messages as [level message] tuples"
+          "unload-model-resources" "unloads a model and the distinct textures its materials reference, except those in keep"}
+
+ # Pointer fields: :count FIELD | [FIELD FACTOR] | C-CONSTANT, :inner for T**,
+ # :bytes C-EXPR (with :reads FIELDS), or :hidden. Fields that size memory are
+ # read-only automatically.
+ :fields
+ {"Image" {"data" {:bytes "GetPixelDataSize(s->width, s->height, s->format)"
+                   :reads ["width" "height" "format"]}
+           "mipmaps" {:readonly true}}
+  "Texture" {"id" {:readonly true} "width" {:readonly true} "height" {:readonly true}
+             "mipmaps" {:readonly true} "format" {:readonly true}}
+  "RenderTexture" {"id" {:readonly true}}
+  "Font" {"recs" {:count "glyphCount"} "glyphs" {:count "glyphCount"}}
+  "Mesh" {"vertices" {:count ["vertexCount" 3]}
+          "texcoords" {:count ["vertexCount" 2]}
+          "texcoords2" {:count ["vertexCount" 2]}
+          "normals" {:count ["vertexCount" 3]}
+          "tangents" {:count ["vertexCount" 4]}
+          "colors" {:count ["vertexCount" 4]}
+          "indices" {:count ["triangleCount" 3]}
+          "animVertices" {:count ["vertexCount" 3]}
+          "animNormals" {:count ["vertexCount" 3]}
+          "boneIds" {:count ["vertexCount" 4]}
+          "boneWeights" {:count ["vertexCount" 4]}
+          "boneMatrices" {:count "boneCount"}
+          "vboId" {:count "MAX_MESH_VERTEX_BUFFERS"}
+          "vaoId" {:readonly true}}
+  "Shader" {"locs" {:count "RL_MAX_SHADER_LOCATIONS"} "id" {:readonly true}}
+  "Material" {"maps" {:count "MAX_MATERIAL_MAPS"}}
+  "Model" {"meshes" {:count "meshCount"}
+           "materials" {:count "materialCount"}
+           "meshMaterial" {:count "meshCount"}
+           "bones" {:count "boneCount"}
+           "bindPose" {:count "boneCount"}}
+  "ModelAnimation" {"bones" {:count "boneCount"}
+                    "framePoses" {:count "frameCount" :inner "boneCount"}}
+  "Wave" {"data" {:bytes "(int)(s->frameCount * s->channels * (s->sampleSize / 8))"
+                  :reads ["frameCount" "channels" "sampleSize"]}
+          "sampleRate" {:readonly true}}
+  "AudioStream" {"buffer" {:hidden true} "processor" {:hidden true}
+                 "sampleRate" {:readonly true} "sampleSize" {:readonly true}
+                 "channels" {:readonly true}}
+  "Sound" {"frameCount" {:readonly true}}
+  "Music" {"ctxData" {:hidden true} "ctxType" {:readonly true} "frameCount" {:readonly true}}
+  "FilePathList" {"paths" {:count "count"} "capacity" {:readonly true}}
+  "AutomationEventList" {"events" {:count "count"} "capacity" {:readonly true}}
+  "rlRenderBatch" {"vertexBuffer" {:hidden true} "draws" {:hidden true}
+                   "bufferCount" {:readonly true} "currentBuffer" {:readonly true}
+                   "drawCounter" {:readonly true} "currentDepth" {:readonly true}}}
+
+ :enum-fields {"Camera3D" {"projection" "CameraProjection"}
+               "NPatchInfo" {"layout" "NPatchLayout"}
+               "Image" {"format" "PixelFormat"}
+               "Texture" {"format" "PixelFormat"}}
+
+ # int parameters that take enum members, by parameter name ...
+ :enum-params {"key" "KeyboardKey" "flags" "ConfigFlags" "flag" "ConfigFlags"
+               "logLevel" "TraceLogLevel" "axis" "GamepadAxis" "cursor" "MouseCursor"
+               "gesture" "Gesture" "newFormat" "PixelFormat" "layout" "CubemapLayout"
+               "filter" "TextureFilter" "wrap" "TextureWrap" "mapType" "MaterialMapIndex"
+               "uniformType" "ShaderUniformDataType"}
+
+ # ... and by function where the same name means different enums.
+ :enum-params-by-fn
+ {"IsGamepadButtonPressed" {"button" "GamepadButton"}
+  "IsGamepadButtonDown" {"button" "GamepadButton"}
+  "IsGamepadButtonReleased" {"button" "GamepadButton"}
+  "IsGamepadButtonUp" {"button" "GamepadButton"}
+  "IsMouseButtonPressed" {"button" "MouseButton"}
+  "IsMouseButtonDown" {"button" "MouseButton"}
+  "IsMouseButtonReleased" {"button" "MouseButton"}
+  "IsMouseButtonUp" {"button" "MouseButton"}
+  "SetGesturesEnabled" {"flags" "Gesture"}
+  "BeginBlendMode" {"mode" "BlendMode"}
+  "UpdateCamera" {"mode" "CameraMode"}
+  "LoadImageRaw" {"format" "PixelFormat"}
+  "GetPixelColor" {"format" "PixelFormat"}
+  "SetPixelColor" {"format" "PixelFormat"}
+  "GetPixelDataSize" {"format" "PixelFormat"}
+  "LoadFontData" {"type" "FontType"}
+  "rlLoadTexture" {"format" "rlPixelFormat"}
+  "rlLoadTextureCubemap" {"format" "rlPixelFormat"}
+  "rlUpdateTexture" {"format" "rlPixelFormat"}
+  "rlGetGlTextureFormats" {"format" "rlPixelFormat"}
+  "rlGetPixelFormatName" {"format" "rlPixelFormat"}
+  "rlReadTexturePixels" {"format" "rlPixelFormat"}
+  "rlGenTextureMipmaps" {"format" "rlPixelFormat"}
+  "rlSetBlendMode" {"mode" "rlBlendMode"}
+  "rlSetCullFace" {"mode" "rlCullMode"}
+  "rlSetUniform" {"uniformType" "rlShaderUniformDataType"}
+  "rlSetVertexAttributeDefault" {"attribType" "rlShaderAttributeDataType"}
+  "rlFramebufferAttach" {"attachType" "rlFramebufferAttachType"
+                         "texType" "rlFramebufferAttachTextureType"}}
+
+ :functions
+ {# C callbacks cannot call into Janet: raylib invokes audio callbacks on its audio
+  # thread, and a Janet VM belongs to one thread.
+  "SetAudioStreamCallback" {:skip "callback runs on raylib's audio thread; a Janet VM is single-threaded"}
+  "AttachAudioStreamProcessor" {:skip "callback runs on raylib's audio thread; a Janet VM is single-threaded"}
+  "DetachAudioStreamProcessor" {:skip "callback runs on raylib's audio thread; a Janet VM is single-threaded"}
+  "AttachAudioMixedProcessor" {:skip "callback runs on raylib's audio thread; a Janet VM is single-threaded"}
+  "DetachAudioMixedProcessor" {:skip "callback runs on raylib's audio thread; a Janet VM is single-threaded"}
+  "SetTraceLogCallback" {:skip "raylib also logs from its audio thread, where Janet cannot run; use set-trace-log-capture and take-trace-logs"}
+  "SetLoadFileDataCallback" {:skip "C file-IO hook; use Janet file functions instead"}
+  "SetSaveFileDataCallback" {:skip "C file-IO hook; use Janet file functions instead"}
+  "SetLoadFileTextCallback" {:skip "C file-IO hook; use Janet file functions instead"}
+  "SetSaveFileTextCallback" {:skip "C file-IO hook; use Janet file functions instead"}
+
+  "TraceLog" {:varargs :string}
+  "TextFormat" {:skip "C printf-style varargs; use Janet string/format"}
+  "TextCopy" {:skip "writes into a caller-owned C char buffer; Janet strings are immutable"}
+  "TextAppend" {:skip "writes into a caller-owned C char buffer; Janet strings are immutable"}
+  "MemAlloc" {:skip "raw C allocation has no safe Janet representation"}
+  "MemRealloc" {:skip "raw C allocation has no safe Janet representation"}
+  "MemFree" {:skip "raw C allocation has no safe Janet representation"}
+
+  # Memory returned by these Load* functions is copied and freed by the binding.
+  "UnloadRandomSequence" {:skip "freed by the binding when load-random-sequence returns"}
+  "UnloadFileData" {:skip "freed by the binding when load-file-data returns"}
+  "UnloadFileText" {:skip "freed by the binding when load-file-text returns"}
+  "UnloadImageColors" {:skip "freed by the binding when load-image-colors returns"}
+  "UnloadImagePalette" {:skip "freed by the binding when load-image-palette returns"}
+  "UnloadUTF8" {:skip "freed by the binding when load-utf8 returns"}
+  "UnloadCodepoints" {:skip "freed by the binding when load-codepoints returns"}
+  "UnloadWaveSamples" {:skip "freed by the binding when load-wave-samples returns"}
+
+  "GetWindowHandle" {:returns {:kind :pointer}}
+  "LoadRandomSequence" {:returns {:kind :array :count "count" :free "UnloadRandomSequence"}}
+  "LoadFileData" {:returns {:kind :bytes :size "dataSize" :free "UnloadFileData"}}
+  "SaveFileData" {:params {"data" {:kind :bytes :size "dataSize"}}}
+  "LoadFileText" {:returns {:kind :string :free "UnloadFileText"}}
+  "SaveFileText" {:params {"text" {:kind :string}}}
+  "CompressData" {:returns {:kind :bytes :size "compDataSize" :free "MemFree"}}
+  "DecompressData" {:returns {:kind :bytes :size "dataSize" :free "MemFree"}}
+  "EncodeDataBase64" {:returns {:kind :string :size "outputSize" :free "MemFree"}}
+  "DecodeDataBase64" {:params {"data" {:kind :string}}
+                      :returns {:kind :bytes :size "outputSize" :free "MemFree"}}
+  "ComputeCRC32" {:params {"data" {:kind :bytes :size "dataSize"}}}
+  "ComputeMD5" {:params {"data" {:kind :bytes :size "dataSize"}}
+                :returns {:kind :array :count "4"}}
+  "ComputeSHA1" {:params {"data" {:kind :bytes :size "dataSize"}}
+                 :returns {:kind :array :count "5"}}
+  "SetWindowIcons" {:params {"images" {:kind :array :count "count"}}}
+
+  "UpdateCamera" {:params {"camera" {:kind :inout}}}
+  "UpdateCameraPro" {:params {"camera" {:kind :inout}}}
+
+  "LoadShader" {:params {"vsFileName" {:kind :string :nullable true}
+                         "fsFileName" {:kind :string :nullable true}}}
+  "LoadShaderFromMemory" {:params {"vsCode" {:kind :string :nullable true}
+                                   "fsCode" {:kind :string :nullable true}}}
+  "SetShaderValue" {:params {"value" {:kind :uniform :type "uniformType" :count "1" :family :raylib}}}
+  "SetShaderValueV" {:params {"value" {:kind :uniform :type "uniformType" :count "count" :family :raylib}}}
+
+  "ExportImageToMemory" {:returns {:kind :bytes :size "fileSize" :free "MemFree"}}
+  "ImageKernelConvolution" {:params {"kernel" {:kind :array :count "kernelSize"}}}
+  "LoadImageColors" {:returns {:kind :array :count "image.width * image.height" :free "UnloadImageColors"}}
+  "LoadImagePalette" {:returns {:kind :array :count "colorCount" :free "UnloadImagePalette"}}
+  "ImageDrawTriangleFan" {:params {"points" {:kind :array :count "pointCount"}}}
+  "ImageDrawTriangleStrip" {:params {"points" {:kind :array :count "pointCount"}}}
+  "UpdateTexture" {:params {"pixels" {:kind :bytes :min "GetPixelDataSize(texture.width, texture.height, texture.format)"}}}
+  "UpdateTextureRec" {:params {"pixels" {:kind :bytes :min "GetPixelDataSize((int)rec.width, (int)rec.height, texture.format)"}}}
+  "GetPixelColor" {:params {"srcPtr" {:kind :bytes :min "GetPixelDataSize(1, 1, format)"}}}
+  "SetPixelColor" {:params {"dstPtr" {:kind :buffer :min "GetPixelDataSize(1, 1, format)"}}}
+
+  "GetFontDefault" {:returns {:kind :borrowed}}
+  "UpdateSound" {:params {"data" {:kind :bytes :min "sampleCount * sound.stream.channels * (sound.stream.sampleSize / 8)"}}}
+  "UpdateAudioStream" {:params {"data" {:kind :bytes :min "frameCount * stream.channels * (stream.sampleSize / 8)"}}}
+  "GetShapesTexture" {:returns {:kind :borrowed}}
+  "LoadFontEx" {:params {"codepoints" {:kind :array :count "codepointCount" :nullable true}}}
+  "LoadFontFromMemory" {:params {"codepoints" {:kind :array :count "codepointCount" :nullable true}}}
+  "LoadFontData" {:params {"codepoints" {:kind :array :count "codepointCount" :nullable true}}
+                  :returns {:kind :handle-array :count "(codepointCount > 0) ? codepointCount : 95"}}
+  "UnloadFontData" {:params {"glyphs" {:kind :unload-array :count "glyphCount"}}}
+  "GenImageFontAtlas" {:manual "takes a glyph array and returns [image recs]; see src/manual.c"}
+  "LoadUTF8" {:params {"codepoints" {:kind :array :count "length"}}
+              :returns {:kind :string :free "UnloadUTF8"}}
+  "LoadCodepoints" {:returns {:kind :array :count "count" :free "UnloadCodepoints"}}
+  "TextReplace" {:returns {:kind :string :free "MemFree"}}
+  "TextInsert" {:returns {:kind :string :free "MemFree"}}
+  "TextSplit" {:returns {:kind :array :count "count"}}
+
+  "DrawMeshInstanced" {:params {"transforms" {:kind :array :count "instances"}}}
+  "LoadMaterials" {:returns {:kind :handle-array :count "materialCount"}}
+  "LoadModelAnimations" {:returns {:kind :handle-array :count "animCount"}}
+  "UnloadModelAnimations" {:params {"animations" {:kind :unload-array :count "animCount"}}}
+  "LoadModelFromMesh" {:params {"mesh" {:consumed true}}}
+
+  "LoadWaveSamples" {:returns {:kind :array :count "(int)(wave.frameCount * wave.channels)" :free "UnloadWaveSamples"}}
+  "LoadSoundAlias" {:returns {:owner "source"}}
+
+  "Vector3OrthoNormalize" {:params {"v1" {:kind :inout} "v2" {:kind :inout}}}
+
+  "rlMultMatrixf" {:params {"matf" {:kind :array :length 16}}}
+  "rlDisableStatePointer" {:skip "declared only for OpenGL 1.1 builds; the desktop build uses OpenGL 3.3"}
+  "rlEnableStatePointer" {:skip "rlgl keeps the client-array pointer after the call returns"}
+  "rlSetShader" {:skip "rlgl keeps the locs pointer after the call returns; use begin-shader-mode"}
+  "rlLoadExtensions" {:skip "raylib loads OpenGL extensions itself during init-window"}
+  "rlLoadVertexBuffer" {:params {"buffer" {:kind :bytes :size "size" :nullable true}}}
+  "rlLoadVertexBufferElement" {:params {"buffer" {:kind :bytes :size "size" :nullable true}}}
+  "rlSetVertexAttributeDefault" {:params {"value" {:kind :uniform :type "attribType" :count "count" :family :attrib}}}
+  "rlDrawVertexArrayElements" {:params {"buffer" {:kind :raw-pointer}}}
+  "rlDrawVertexArrayElementsInstanced" {:params {"buffer" {:kind :raw-pointer}}}
+  "rlLoadTexture" {:params {"data" {:kind :bytes :nullable true :min "GetPixelDataSize(width, height, format)"}}}
+  "rlLoadTextureCubemap" {:params {"data" {:kind :bytes :nullable true :min "6 * GetPixelDataSize(size, size, format)"}}}
+  "rlUpdateTexture" {:params {"data" {:kind :bytes :min "GetPixelDataSize(width, height, format)"}}}
+  "rlSetUniform" {:params {"value" {:kind :uniform :type "uniformType" :count "count" :family :rlgl}}}
+  "rlLoadShaderBuffer" {:params {"data" {:kind :bytes :nullable true :min "size"}}}
+  "rlLoadShaderCode" {:params {"vsCode" {:kind :string :nullable true}
+                               "fsCode" {:kind :string :nullable true}}}
+  "rlReadShaderBuffer" {:params {"dest" {:kind :out-bytes :size "count"}}}
+  "rlGetShaderLocsDefault" {:returns {:kind :array :count "RL_MAX_SHADER_LOCATIONS"}}
+  "rlReadTexturePixels" {:returns {:kind :bytes :size "GetPixelDataSize(width, height, format)" :free "MemFree"}}
+  "rlReadScreenPixels" {:returns {:kind :bytes :size "width * height * 4" :free "MemFree"}}}}

@@ -1,0 +1,173 @@
+{
+ :defines
+  [{:name "RAYMATH_H" :description "" :value "" :type "GUARD"}
+   {:name "RMAPI" :description "We are building raylib as a Win32 shared library (.dll)" :value "__declspec(dllexport) extern inline" :type "UNKNOWN"}
+   {:name "PI" :description "" :value 3.1415926535897931 :type "FLOAT"}
+   {:name "EPSILON" :description "" :value 9.9999999999999995e-07 :type "FLOAT"}
+   {:name "DEG2RAD" :description "" :value "(PI/180.0f)" :type "FLOAT_MATH"}
+   {:name "RAD2DEG" :description "" :value "(180.0f/PI)" :type "FLOAT_MATH"}
+   {:name "MatrixToFloat(mat)" :description "" :value "(MatrixToFloatV(mat).v)" :type "MACRO"}
+   {:name "Vector3ToFloat(vec)" :description "" :value "(Vector3ToFloatV(vec).v)" :type "MACRO"}
+   {:name "RL_VECTOR2_TYPE" :description "" :value "" :type "GUARD"}
+   {:name "RL_VECTOR3_TYPE" :description "" :value "" :type "GUARD"}
+   {:name "RL_VECTOR4_TYPE" :description "" :value "" :type "GUARD"}
+   {:name "RL_QUATERNION_TYPE" :description "" :value "" :type "GUARD"}
+   {:name "RL_MATRIX_TYPE" :description "" :value "" :type "GUARD"}]
+ :structs
+  [{:fields ({:name "x" :description "" :type "float"} {:name "y" :description "" :type "float"}) :name "Vector2" :description "Vector2 type"}
+   {:fields ({:name "x" :description "" :type "float"} {:name "y" :description "" :type "float"} {:name "z" :description "" :type "float"}) :name "Vector3" :description "Vector3 type"}
+   {:fields ({:name "x" :description "" :type "float"} {:name "y" :description "" :type "float"} {:name "z" :description "" :type "float"} {:name "w" :description "" :type "float"}) :name "Vector4" :description "Vector4 type"}
+   {:fields ({:name "m0" :description "Matrix first row (4 components)" :type "float"} {:name "m4" :description "Matrix first row (4 components)" :type "float"} {:name "m8" :description "Matrix first row (4 components)" :type "float"} {:name "m12" :description "Matrix first row (4 components)" :type "float"} {:name "m1" :description "Matrix second row (4 components)" :type "float"} {:name "m5" :description "Matrix second row (4 components)" :type "float"} {:name "m9" :description "Matrix second row (4 components)" :type "float"} {:name "m13" :description "Matrix second row (4 components)" :type "float"} {:name "m2" :description "Matrix third row (4 components)" :type "float"} {:name "m6" :description "Matrix third row (4 components)" :type "float"} {:name "m10" :description "Matrix third row (4 components)" :type "float"} {:name "m14" :description "Matrix third row (4 components)" :type "float"} {:name "m3" :description "Matrix fourth row (4 components)" :type "float"} {:name "m7" :description "Matrix fourth row (4 components)" :type "float"} {:name "m11" :description "Matrix fourth row (4 components)" :type "float"} {:name "m15" :description "Matrix fourth row (4 components)" :type "float"}) :name "Matrix" :description "Matrix type (OpenGL style 4x4 - right handed, column major)"}
+   {:fields ({:name "v" :description "" :type "float[3]"}) :name "float3" :description "NOTE: Helper types to be used instead of array return types for *ToFloat functions"}
+   {:fields ({:name "v" :description "" :type "float[16]"}) :name "float16" :description ""}]
+ :aliases
+  [{:name "Quaternion" :description "Quaternion type" :type "Vector4"}]
+ :enums
+  []
+ :callbacks
+  []
+ :functions
+  [{:params ({:name "value" :type "float"} {:name "min" :type "float"} {:name "max" :type "float"}) :name "Clamp" :description "" :returnType "float"}
+   {:params ({:name "start" :type "float"} {:name "end" :type "float"} {:name "amount" :type "float"}) :name "Lerp" :description "" :returnType "float"}
+   {:params ({:name "value" :type "float"} {:name "start" :type "float"} {:name "end" :type "float"}) :name "Normalize" :description "" :returnType "float"}
+   {:params ({:name "value" :type "float"} {:name "inputStart" :type "float"} {:name "inputEnd" :type "float"} {:name "outputStart" :type "float"} {:name "outputEnd" :type "float"}) :name "Remap" :description "" :returnType "float"}
+   {:params ({:name "value" :type "float"} {:name "min" :type "float"} {:name "max" :type "float"}) :name "Wrap" :description "" :returnType "float"}
+   {:params ({:name "x" :type "float"} {:name "y" :type "float"}) :name "FloatEquals" :description "" :returnType "int"}
+   {:name "Vector2Zero" :description "" :returnType "Vector2"}
+   {:name "Vector2One" :description "" :returnType "Vector2"}
+   {:params ({:name "v1" :type "Vector2"} {:name "v2" :type "Vector2"}) :name "Vector2Add" :description "" :returnType "Vector2"}
+   {:params ({:name "v" :type "Vector2"} {:name "add" :type "float"}) :name "Vector2AddValue" :description "" :returnType "Vector2"}
+   {:params ({:name "v1" :type "Vector2"} {:name "v2" :type "Vector2"}) :name "Vector2Subtract" :description "" :returnType "Vector2"}
+   {:params ({:name "v" :type "Vector2"} {:name "sub" :type "float"}) :name "Vector2SubtractValue" :description "" :returnType "Vector2"}
+   {:params ({:name "v" :type "Vector2"}) :name "Vector2Length" :description "" :returnType "float"}
+   {:params ({:name "v" :type "Vector2"}) :name "Vector2LengthSqr" :description "" :returnType "float"}
+   {:params ({:name "v1" :type "Vector2"} {:name "v2" :type "Vector2"}) :name "Vector2DotProduct" :description "" :returnType "float"}
+   {:params ({:name "v1" :type "Vector2"} {:name "v2" :type "Vector2"}) :name "Vector2Distance" :description "" :returnType "float"}
+   {:params ({:name "v1" :type "Vector2"} {:name "v2" :type "Vector2"}) :name "Vector2DistanceSqr" :description "" :returnType "float"}
+   {:params ({:name "v1" :type "Vector2"} {:name "v2" :type "Vector2"}) :name "Vector2Angle" :description "" :returnType "float"}
+   {:params ({:name "start" :type "Vector2"} {:name "end" :type "Vector2"}) :name "Vector2LineAngle" :description "" :returnType "float"}
+   {:params ({:name "v" :type "Vector2"} {:name "scale" :type "float"}) :name "Vector2Scale" :description "" :returnType "Vector2"}
+   {:params ({:name "v1" :type "Vector2"} {:name "v2" :type "Vector2"}) :name "Vector2Multiply" :description "" :returnType "Vector2"}
+   {:params ({:name "v" :type "Vector2"}) :name "Vector2Negate" :description "" :returnType "Vector2"}
+   {:params ({:name "v1" :type "Vector2"} {:name "v2" :type "Vector2"}) :name "Vector2Divide" :description "" :returnType "Vector2"}
+   {:params ({:name "v" :type "Vector2"}) :name "Vector2Normalize" :description "" :returnType "Vector2"}
+   {:params ({:name "v" :type "Vector2"} {:name "mat" :type "Matrix"}) :name "Vector2Transform" :description "" :returnType "Vector2"}
+   {:params ({:name "v1" :type "Vector2"} {:name "v2" :type "Vector2"} {:name "amount" :type "float"}) :name "Vector2Lerp" :description "" :returnType "Vector2"}
+   {:params ({:name "v" :type "Vector2"} {:name "normal" :type "Vector2"}) :name "Vector2Reflect" :description "" :returnType "Vector2"}
+   {:params ({:name "v1" :type "Vector2"} {:name "v2" :type "Vector2"}) :name "Vector2Min" :description "" :returnType "Vector2"}
+   {:params ({:name "v1" :type "Vector2"} {:name "v2" :type "Vector2"}) :name "Vector2Max" :description "" :returnType "Vector2"}
+   {:params ({:name "v" :type "Vector2"} {:name "angle" :type "float"}) :name "Vector2Rotate" :description "" :returnType "Vector2"}
+   {:params ({:name "v" :type "Vector2"} {:name "target" :type "Vector2"} {:name "maxDistance" :type "float"}) :name "Vector2MoveTowards" :description "" :returnType "Vector2"}
+   {:params ({:name "v" :type "Vector2"}) :name "Vector2Invert" :description "" :returnType "Vector2"}
+   {:params ({:name "v" :type "Vector2"} {:name "min" :type "Vector2"} {:name "max" :type "Vector2"}) :name "Vector2Clamp" :description "" :returnType "Vector2"}
+   {:params ({:name "v" :type "Vector2"} {:name "min" :type "float"} {:name "max" :type "float"}) :name "Vector2ClampValue" :description "" :returnType "Vector2"}
+   {:params ({:name "p" :type "Vector2"} {:name "q" :type "Vector2"}) :name "Vector2Equals" :description "" :returnType "int"}
+   {:params ({:name "v" :type "Vector2"} {:name "n" :type "Vector2"} {:name "r" :type "float"}) :name "Vector2Refract" :description "" :returnType "Vector2"}
+   {:name "Vector3Zero" :description "" :returnType "Vector3"}
+   {:name "Vector3One" :description "" :returnType "Vector3"}
+   {:params ({:name "v1" :type "Vector3"} {:name "v2" :type "Vector3"}) :name "Vector3Add" :description "" :returnType "Vector3"}
+   {:params ({:name "v" :type "Vector3"} {:name "add" :type "float"}) :name "Vector3AddValue" :description "" :returnType "Vector3"}
+   {:params ({:name "v1" :type "Vector3"} {:name "v2" :type "Vector3"}) :name "Vector3Subtract" :description "" :returnType "Vector3"}
+   {:params ({:name "v" :type "Vector3"} {:name "sub" :type "float"}) :name "Vector3SubtractValue" :description "" :returnType "Vector3"}
+   {:params ({:name "v" :type "Vector3"} {:name "scalar" :type "float"}) :name "Vector3Scale" :description "" :returnType "Vector3"}
+   {:params ({:name "v1" :type "Vector3"} {:name "v2" :type "Vector3"}) :name "Vector3Multiply" :description "" :returnType "Vector3"}
+   {:params ({:name "v1" :type "Vector3"} {:name "v2" :type "Vector3"}) :name "Vector3CrossProduct" :description "" :returnType "Vector3"}
+   {:params ({:name "v" :type "Vector3"}) :name "Vector3Perpendicular" :description "" :returnType "Vector3"}
+   {:params ({:name "v" :type "const Vector3"}) :name "Vector3Length" :description "" :returnType "float"}
+   {:params ({:name "v" :type "const Vector3"}) :name "Vector3LengthSqr" :description "" :returnType "float"}
+   {:params ({:name "v1" :type "Vector3"} {:name "v2" :type "Vector3"}) :name "Vector3DotProduct" :description "" :returnType "float"}
+   {:params ({:name "v1" :type "Vector3"} {:name "v2" :type "Vector3"}) :name "Vector3Distance" :description "" :returnType "float"}
+   {:params ({:name "v1" :type "Vector3"} {:name "v2" :type "Vector3"}) :name "Vector3DistanceSqr" :description "" :returnType "float"}
+   {:params ({:name "v1" :type "Vector3"} {:name "v2" :type "Vector3"}) :name "Vector3Angle" :description "" :returnType "float"}
+   {:params ({:name "v" :type "Vector3"}) :name "Vector3Negate" :description "" :returnType "Vector3"}
+   {:params ({:name "v1" :type "Vector3"} {:name "v2" :type "Vector3"}) :name "Vector3Divide" :description "" :returnType "Vector3"}
+   {:params ({:name "v" :type "Vector3"}) :name "Vector3Normalize" :description "" :returnType "Vector3"}
+   {:params ({:name "v1" :type "Vector3"} {:name "v2" :type "Vector3"}) :name "Vector3Project" :description "" :returnType "Vector3"}
+   {:params ({:name "v1" :type "Vector3"} {:name "v2" :type "Vector3"}) :name "Vector3Reject" :description "" :returnType "Vector3"}
+   {:params ({:name "v1" :type "Vector3 *"} {:name "v2" :type "Vector3 *"}) :name "Vector3OrthoNormalize" :description "" :returnType "void"}
+   {:params ({:name "v" :type "Vector3"} {:name "mat" :type "Matrix"}) :name "Vector3Transform" :description "" :returnType "Vector3"}
+   {:params ({:name "v" :type "Vector3"} {:name "q" :type "Quaternion"}) :name "Vector3RotateByQuaternion" :description "" :returnType "Vector3"}
+   {:params ({:name "v" :type "Vector3"} {:name "axis" :type "Vector3"} {:name "angle" :type "float"}) :name "Vector3RotateByAxisAngle" :description "" :returnType "Vector3"}
+   {:params ({:name "v" :type "Vector3"} {:name "target" :type "Vector3"} {:name "maxDistance" :type "float"}) :name "Vector3MoveTowards" :description "" :returnType "Vector3"}
+   {:params ({:name "v1" :type "Vector3"} {:name "v2" :type "Vector3"} {:name "amount" :type "float"}) :name "Vector3Lerp" :description "" :returnType "Vector3"}
+   {:params ({:name "v1" :type "Vector3"} {:name "tangent1" :type "Vector3"} {:name "v2" :type "Vector3"} {:name "tangent2" :type "Vector3"} {:name "amount" :type "float"}) :name "Vector3CubicHermite" :description "" :returnType "Vector3"}
+   {:params ({:name "v" :type "Vector3"} {:name "normal" :type "Vector3"}) :name "Vector3Reflect" :description "" :returnType "Vector3"}
+   {:params ({:name "v1" :type "Vector3"} {:name "v2" :type "Vector3"}) :name "Vector3Min" :description "" :returnType "Vector3"}
+   {:params ({:name "v1" :type "Vector3"} {:name "v2" :type "Vector3"}) :name "Vector3Max" :description "" :returnType "Vector3"}
+   {:params ({:name "p" :type "Vector3"} {:name "a" :type "Vector3"} {:name "b" :type "Vector3"} {:name "c" :type "Vector3"}) :name "Vector3Barycenter" :description "" :returnType "Vector3"}
+   {:params ({:name "source" :type "Vector3"} {:name "projection" :type "Matrix"} {:name "view" :type "Matrix"}) :name "Vector3Unproject" :description "" :returnType "Vector3"}
+   {:params ({:name "v" :type "Vector3"}) :name "Vector3ToFloatV" :description "" :returnType "float3"}
+   {:params ({:name "v" :type "Vector3"}) :name "Vector3Invert" :description "" :returnType "Vector3"}
+   {:params ({:name "v" :type "Vector3"} {:name "min" :type "Vector3"} {:name "max" :type "Vector3"}) :name "Vector3Clamp" :description "" :returnType "Vector3"}
+   {:params ({:name "v" :type "Vector3"} {:name "min" :type "float"} {:name "max" :type "float"}) :name "Vector3ClampValue" :description "" :returnType "Vector3"}
+   {:params ({:name "p" :type "Vector3"} {:name "q" :type "Vector3"}) :name "Vector3Equals" :description "" :returnType "int"}
+   {:params ({:name "v" :type "Vector3"} {:name "n" :type "Vector3"} {:name "r" :type "float"}) :name "Vector3Refract" :description "" :returnType "Vector3"}
+   {:name "Vector4Zero" :description "" :returnType "Vector4"}
+   {:name "Vector4One" :description "" :returnType "Vector4"}
+   {:params ({:name "v1" :type "Vector4"} {:name "v2" :type "Vector4"}) :name "Vector4Add" :description "" :returnType "Vector4"}
+   {:params ({:name "v" :type "Vector4"} {:name "add" :type "float"}) :name "Vector4AddValue" :description "" :returnType "Vector4"}
+   {:params ({:name "v1" :type "Vector4"} {:name "v2" :type "Vector4"}) :name "Vector4Subtract" :description "" :returnType "Vector4"}
+   {:params ({:name "v" :type "Vector4"} {:name "add" :type "float"}) :name "Vector4SubtractValue" :description "" :returnType "Vector4"}
+   {:params ({:name "v" :type "Vector4"}) :name "Vector4Length" :description "" :returnType "float"}
+   {:params ({:name "v" :type "Vector4"}) :name "Vector4LengthSqr" :description "" :returnType "float"}
+   {:params ({:name "v1" :type "Vector4"} {:name "v2" :type "Vector4"}) :name "Vector4DotProduct" :description "" :returnType "float"}
+   {:params ({:name "v1" :type "Vector4"} {:name "v2" :type "Vector4"}) :name "Vector4Distance" :description "" :returnType "float"}
+   {:params ({:name "v1" :type "Vector4"} {:name "v2" :type "Vector4"}) :name "Vector4DistanceSqr" :description "" :returnType "float"}
+   {:params ({:name "v" :type "Vector4"} {:name "scale" :type "float"}) :name "Vector4Scale" :description "" :returnType "Vector4"}
+   {:params ({:name "v1" :type "Vector4"} {:name "v2" :type "Vector4"}) :name "Vector4Multiply" :description "" :returnType "Vector4"}
+   {:params ({:name "v" :type "Vector4"}) :name "Vector4Negate" :description "" :returnType "Vector4"}
+   {:params ({:name "v1" :type "Vector4"} {:name "v2" :type "Vector4"}) :name "Vector4Divide" :description "" :returnType "Vector4"}
+   {:params ({:name "v" :type "Vector4"}) :name "Vector4Normalize" :description "" :returnType "Vector4"}
+   {:params ({:name "v1" :type "Vector4"} {:name "v2" :type "Vector4"}) :name "Vector4Min" :description "" :returnType "Vector4"}
+   {:params ({:name "v1" :type "Vector4"} {:name "v2" :type "Vector4"}) :name "Vector4Max" :description "" :returnType "Vector4"}
+   {:params ({:name "v1" :type "Vector4"} {:name "v2" :type "Vector4"} {:name "amount" :type "float"}) :name "Vector4Lerp" :description "" :returnType "Vector4"}
+   {:params ({:name "v" :type "Vector4"} {:name "target" :type "Vector4"} {:name "maxDistance" :type "float"}) :name "Vector4MoveTowards" :description "" :returnType "Vector4"}
+   {:params ({:name "v" :type "Vector4"}) :name "Vector4Invert" :description "" :returnType "Vector4"}
+   {:params ({:name "p" :type "Vector4"} {:name "q" :type "Vector4"}) :name "Vector4Equals" :description "" :returnType "int"}
+   {:params ({:name "mat" :type "Matrix"}) :name "MatrixDeterminant" :description "" :returnType "float"}
+   {:params ({:name "mat" :type "Matrix"}) :name "MatrixTrace" :description "" :returnType "float"}
+   {:params ({:name "mat" :type "Matrix"}) :name "MatrixTranspose" :description "" :returnType "Matrix"}
+   {:params ({:name "mat" :type "Matrix"}) :name "MatrixInvert" :description "" :returnType "Matrix"}
+   {:name "MatrixIdentity" :description "" :returnType "Matrix"}
+   {:params ({:name "left" :type "Matrix"} {:name "right" :type "Matrix"}) :name "MatrixAdd" :description "" :returnType "Matrix"}
+   {:params ({:name "left" :type "Matrix"} {:name "right" :type "Matrix"}) :name "MatrixSubtract" :description "" :returnType "Matrix"}
+   {:params ({:name "left" :type "Matrix"} {:name "right" :type "Matrix"}) :name "MatrixMultiply" :description "" :returnType "Matrix"}
+   {:params ({:name "x" :type "float"} {:name "y" :type "float"} {:name "z" :type "float"}) :name "MatrixTranslate" :description "" :returnType "Matrix"}
+   {:params ({:name "axis" :type "Vector3"} {:name "angle" :type "float"}) :name "MatrixRotate" :description "" :returnType "Matrix"}
+   {:params ({:name "angle" :type "float"}) :name "MatrixRotateX" :description "" :returnType "Matrix"}
+   {:params ({:name "angle" :type "float"}) :name "MatrixRotateY" :description "" :returnType "Matrix"}
+   {:params ({:name "angle" :type "float"}) :name "MatrixRotateZ" :description "" :returnType "Matrix"}
+   {:params ({:name "angle" :type "Vector3"}) :name "MatrixRotateXYZ" :description "" :returnType "Matrix"}
+   {:params ({:name "angle" :type "Vector3"}) :name "MatrixRotateZYX" :description "" :returnType "Matrix"}
+   {:params ({:name "x" :type "float"} {:name "y" :type "float"} {:name "z" :type "float"}) :name "MatrixScale" :description "" :returnType "Matrix"}
+   {:params ({:name "left" :type "double"} {:name "right" :type "double"} {:name "bottom" :type "double"} {:name "top" :type "double"} {:name "nearPlane" :type "double"} {:name "farPlane" :type "double"}) :name "MatrixFrustum" :description "" :returnType "Matrix"}
+   {:params ({:name "fovY" :type "double"} {:name "aspect" :type "double"} {:name "nearPlane" :type "double"} {:name "farPlane" :type "double"}) :name "MatrixPerspective" :description "" :returnType "Matrix"}
+   {:params ({:name "left" :type "double"} {:name "right" :type "double"} {:name "bottom" :type "double"} {:name "top" :type "double"} {:name "nearPlane" :type "double"} {:name "farPlane" :type "double"}) :name "MatrixOrtho" :description "" :returnType "Matrix"}
+   {:params ({:name "eye" :type "Vector3"} {:name "target" :type "Vector3"} {:name "up" :type "Vector3"}) :name "MatrixLookAt" :description "" :returnType "Matrix"}
+   {:params ({:name "mat" :type "Matrix"}) :name "MatrixToFloatV" :description "" :returnType "float16"}
+   {:params ({:name "q1" :type "Quaternion"} {:name "q2" :type "Quaternion"}) :name "QuaternionAdd" :description "" :returnType "Quaternion"}
+   {:params ({:name "q" :type "Quaternion"} {:name "add" :type "float"}) :name "QuaternionAddValue" :description "" :returnType "Quaternion"}
+   {:params ({:name "q1" :type "Quaternion"} {:name "q2" :type "Quaternion"}) :name "QuaternionSubtract" :description "" :returnType "Quaternion"}
+   {:params ({:name "q" :type "Quaternion"} {:name "sub" :type "float"}) :name "QuaternionSubtractValue" :description "" :returnType "Quaternion"}
+   {:name "QuaternionIdentity" :description "" :returnType "Quaternion"}
+   {:params ({:name "q" :type "Quaternion"}) :name "QuaternionLength" :description "" :returnType "float"}
+   {:params ({:name "q" :type "Quaternion"}) :name "QuaternionNormalize" :description "" :returnType "Quaternion"}
+   {:params ({:name "q" :type "Quaternion"}) :name "QuaternionInvert" :description "" :returnType "Quaternion"}
+   {:params ({:name "q1" :type "Quaternion"} {:name "q2" :type "Quaternion"}) :name "QuaternionMultiply" :description "" :returnType "Quaternion"}
+   {:params ({:name "q" :type "Quaternion"} {:name "mul" :type "float"}) :name "QuaternionScale" :description "" :returnType "Quaternion"}
+   {:params ({:name "q1" :type "Quaternion"} {:name "q2" :type "Quaternion"}) :name "QuaternionDivide" :description "" :returnType "Quaternion"}
+   {:params ({:name "q1" :type "Quaternion"} {:name "q2" :type "Quaternion"} {:name "amount" :type "float"}) :name "QuaternionLerp" :description "" :returnType "Quaternion"}
+   {:params ({:name "q1" :type "Quaternion"} {:name "q2" :type "Quaternion"} {:name "amount" :type "float"}) :name "QuaternionNlerp" :description "" :returnType "Quaternion"}
+   {:params ({:name "q1" :type "Quaternion"} {:name "q2" :type "Quaternion"} {:name "amount" :type "float"}) :name "QuaternionSlerp" :description "" :returnType "Quaternion"}
+   {:params ({:name "q1" :type "Quaternion"} {:name "outTangent1" :type "Quaternion"} {:name "q2" :type "Quaternion"} {:name "inTangent2" :type "Quaternion"} {:name "t" :type "float"}) :name "QuaternionCubicHermiteSpline" :description "" :returnType "Quaternion"}
+   {:params ({:name "from" :type "Vector3"} {:name "to" :type "Vector3"}) :name "QuaternionFromVector3ToVector3" :description "" :returnType "Quaternion"}
+   {:params ({:name "mat" :type "Matrix"}) :name "QuaternionFromMatrix" :description "" :returnType "Quaternion"}
+   {:params ({:name "q" :type "Quaternion"}) :name "QuaternionToMatrix" :description "" :returnType "Matrix"}
+   {:params ({:name "axis" :type "Vector3"} {:name "angle" :type "float"}) :name "QuaternionFromAxisAngle" :description "" :returnType "Quaternion"}
+   {:params ({:name "q" :type "Quaternion"} {:name "outAxis" :type "Vector3 *"} {:name "outAngle" :type "float *"}) :name "QuaternionToAxisAngle" :description "" :returnType "void"}
+   {:params ({:name "pitch" :type "float"} {:name "yaw" :type "float"} {:name "roll" :type "float"}) :name "QuaternionFromEuler" :description "" :returnType "Quaternion"}
+   {:params ({:name "q" :type "Quaternion"}) :name "QuaternionToEuler" :description "" :returnType "Vector3"}
+   {:params ({:name "q" :type "Quaternion"} {:name "mat" :type "Matrix"}) :name "QuaternionTransform" :description "" :returnType "Quaternion"}
+   {:params ({:name "p" :type "Quaternion"} {:name "q" :type "Quaternion"}) :name "QuaternionEquals" :description "" :returnType "int"}
+   {:params ({:name "mat" :type "Matrix"} {:name "translation" :type "Vector3 *"} {:name "rotation" :type "Quaternion *"} {:name "scale" :type "Vector3 *"}) :name "MatrixDecompose" :description "" :returnType "void"}]
+}
