@@ -313,7 +313,7 @@ static Janet jrl_cfun_GetMonitorPosition(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
     int monitor = jrl_get_int(argv, 0);
     Vector2 jrl_ret = GetMonitorPosition(monitor);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
@@ -367,7 +367,7 @@ static Janet jrl_cfun_GetWindowPosition(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 0);
     (void) argv;
     Vector2 jrl_ret = GetWindowPosition();
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
@@ -376,7 +376,7 @@ static Janet jrl_cfun_GetWindowScaleDPI(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 0);
     (void) argv;
     Vector2 jrl_ret = GetWindowScaleDPI();
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
@@ -484,8 +484,7 @@ static Janet jrl_cfun_IsCursorOnScreen(int32_t argc, Janet *argv) {
 /* void ClearBackground(Color color) */
 static Janet jrl_cfun_ClearBackground(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Color color;
-    jrl_get_value(argv, 0, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 0);
     ClearBackground(color);
     return janet_wrap_nil();
 }
@@ -750,8 +749,7 @@ static Janet jrl_cfun_UnloadShader(int32_t argc, Janet *argv) {
 /* Ray GetScreenToWorldRay(Vector2 position, Camera camera) */
 static Janet jrl_cfun_GetScreenToWorldRay(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 position;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &position);
+    Vector2 position = jrl_get_Vector2(argv, 0);
     Camera3D camera;
     jrl_get_value(argv, 1, &jrl_type_Camera3D, &camera);
     Ray jrl_ret = GetScreenToWorldRay(position, camera);
@@ -762,8 +760,7 @@ static Janet jrl_cfun_GetScreenToWorldRay(int32_t argc, Janet *argv) {
 /* Ray GetScreenToWorldRayEx(Vector2 position, Camera camera, int width, int height) */
 static Janet jrl_cfun_GetScreenToWorldRayEx(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
-    Vector2 position;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &position);
+    Vector2 position = jrl_get_Vector2(argv, 0);
     Camera3D camera;
     jrl_get_value(argv, 1, &jrl_type_Camera3D, &camera);
     int width = jrl_get_int(argv, 2);
@@ -776,50 +773,46 @@ static Janet jrl_cfun_GetScreenToWorldRayEx(int32_t argc, Janet *argv) {
 /* Vector2 GetWorldToScreen(Vector3 position, Camera camera) */
 static Janet jrl_cfun_GetWorldToScreen(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 position;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &position);
+    Vector3 position = jrl_get_Vector3(argv, 0);
     Camera3D camera;
     jrl_get_value(argv, 1, &jrl_type_Camera3D, &camera);
     Vector2 jrl_ret = GetWorldToScreen(position, camera);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 GetWorldToScreenEx(Vector3 position, Camera camera, int width, int height) */
 static Janet jrl_cfun_GetWorldToScreenEx(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
-    Vector3 position;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &position);
+    Vector3 position = jrl_get_Vector3(argv, 0);
     Camera3D camera;
     jrl_get_value(argv, 1, &jrl_type_Camera3D, &camera);
     int width = jrl_get_int(argv, 2);
     int height = jrl_get_int(argv, 3);
     Vector2 jrl_ret = GetWorldToScreenEx(position, camera, width, height);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 GetWorldToScreen2D(Vector2 position, Camera2D camera) */
 static Janet jrl_cfun_GetWorldToScreen2D(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 position;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &position);
+    Vector2 position = jrl_get_Vector2(argv, 0);
     Camera2D camera;
     jrl_get_value(argv, 1, &jrl_type_Camera2D, &camera);
     Vector2 jrl_ret = GetWorldToScreen2D(position, camera);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 GetScreenToWorld2D(Vector2 position, Camera2D camera) */
 static Janet jrl_cfun_GetScreenToWorld2D(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 position;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &position);
+    Vector2 position = jrl_get_Vector2(argv, 0);
     Camera2D camera;
     jrl_get_value(argv, 1, &jrl_type_Camera2D, &camera);
     Vector2 jrl_ret = GetScreenToWorld2D(position, camera);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
@@ -1634,7 +1627,7 @@ static Janet jrl_cfun_GetMousePosition(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 0);
     (void) argv;
     Vector2 jrl_ret = GetMousePosition();
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
@@ -1643,7 +1636,7 @@ static Janet jrl_cfun_GetMouseDelta(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 0);
     (void) argv;
     Vector2 jrl_ret = GetMouseDelta();
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
@@ -1688,7 +1681,7 @@ static Janet jrl_cfun_GetMouseWheelMoveV(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 0);
     (void) argv;
     Vector2 jrl_ret = GetMouseWheelMoveV();
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
@@ -1723,7 +1716,7 @@ static Janet jrl_cfun_GetTouchPosition(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
     int index = jrl_get_int(argv, 0);
     Vector2 jrl_ret = GetTouchPosition(index);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
@@ -1785,7 +1778,7 @@ static Janet jrl_cfun_GetGestureDragVector(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 0);
     (void) argv;
     Vector2 jrl_ret = GetGestureDragVector();
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
@@ -1803,7 +1796,7 @@ static Janet jrl_cfun_GetGesturePinchVector(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 0);
     (void) argv;
     Vector2 jrl_ret = GetGesturePinchVector();
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
@@ -1831,10 +1824,8 @@ static Janet jrl_cfun_UpdateCameraPro(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
     Camera3D camera;
     jrl_get_value(argv, 0, &jrl_type_Camera3D, &camera);
-    Vector3 movement;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &movement);
-    Vector3 rotation;
-    jrl_get_value(argv, 2, &jrl_type_Vector3, &rotation);
+    Vector3 movement = jrl_get_Vector3(argv, 1);
+    Vector3 rotation = jrl_get_Vector3(argv, 2);
     float zoom = jrl_get_float(argv, 3);
     UpdateCameraPro(&camera, movement, rotation, zoom);
     return jrl_to_janet(&jrl_type_Camera3D, &camera, janet_wrap_nil());
@@ -1844,8 +1835,7 @@ static Janet jrl_cfun_UpdateCameraPro(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_SetShapesTexture(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
     Texture2D texture = *(Texture2D *) jrl_get_handle(argv, 0, &jrl_type_Texture);
-    Rectangle source;
-    jrl_get_value(argv, 1, &jrl_type_Rectangle, &source);
+    Rectangle source = jrl_get_Rectangle(argv, 1);
     SetShapesTexture(texture, source);
     return janet_wrap_nil();
 }
@@ -1864,7 +1854,7 @@ static Janet jrl_cfun_GetShapesTextureRectangle(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 0);
     (void) argv;
     Rectangle jrl_ret = GetShapesTextureRectangle();
-    Janet jrl_value = jrl_to_janet(&jrl_type_Rectangle, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Rectangle(jrl_ret);
     return jrl_value;
 }
 
@@ -1873,8 +1863,7 @@ static Janet jrl_cfun_DrawPixel(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
     int posX = jrl_get_int(argv, 0);
     int posY = jrl_get_int(argv, 1);
-    Color color;
-    jrl_get_value(argv, 2, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 2);
     DrawPixel(posX, posY, color);
     return janet_wrap_nil();
 }
@@ -1882,10 +1871,8 @@ static Janet jrl_cfun_DrawPixel(int32_t argc, Janet *argv) {
 /* void DrawPixelV(Vector2 position, Color color) */
 static Janet jrl_cfun_DrawPixelV(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 position;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &position);
-    Color color;
-    jrl_get_value(argv, 1, &jrl_type_Color, &color);
+    Vector2 position = jrl_get_Vector2(argv, 0);
+    Color color = jrl_get_Color(argv, 1);
     DrawPixelV(position, color);
     return janet_wrap_nil();
 }
@@ -1897,8 +1884,7 @@ static Janet jrl_cfun_DrawLine(int32_t argc, Janet *argv) {
     int startPosY = jrl_get_int(argv, 1);
     int endPosX = jrl_get_int(argv, 2);
     int endPosY = jrl_get_int(argv, 3);
-    Color color;
-    jrl_get_value(argv, 4, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 4);
     DrawLine(startPosX, startPosY, endPosX, endPosY, color);
     return janet_wrap_nil();
 }
@@ -1906,12 +1892,9 @@ static Janet jrl_cfun_DrawLine(int32_t argc, Janet *argv) {
 /* void DrawLineV(Vector2 startPos, Vector2 endPos, Color color) */
 static Janet jrl_cfun_DrawLineV(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector2 startPos;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &startPos);
-    Vector2 endPos;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &endPos);
-    Color color;
-    jrl_get_value(argv, 2, &jrl_type_Color, &color);
+    Vector2 startPos = jrl_get_Vector2(argv, 0);
+    Vector2 endPos = jrl_get_Vector2(argv, 1);
+    Color color = jrl_get_Color(argv, 2);
     DrawLineV(startPos, endPos, color);
     return janet_wrap_nil();
 }
@@ -1919,13 +1902,10 @@ static Janet jrl_cfun_DrawLineV(int32_t argc, Janet *argv) {
 /* void DrawLineEx(Vector2 startPos, Vector2 endPos, float thick, Color color) */
 static Janet jrl_cfun_DrawLineEx(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
-    Vector2 startPos;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &startPos);
-    Vector2 endPos;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &endPos);
+    Vector2 startPos = jrl_get_Vector2(argv, 0);
+    Vector2 endPos = jrl_get_Vector2(argv, 1);
     float thick = jrl_get_float(argv, 2);
-    Color color;
-    jrl_get_value(argv, 3, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 3);
     DrawLineEx(startPos, endPos, thick, color);
     return janet_wrap_nil();
 }
@@ -1934,8 +1914,7 @@ static Janet jrl_cfun_DrawLineEx(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_DrawLineStrip(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
     int pointCount = 0;
-    Color color;
-    jrl_get_value(argv, 1, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 1);
     int32_t jrl_n_points = 0;
     const Vector2* points = (const Vector2*) jrl_get_carray(argv, 0, JRL_K_TYPE, &jrl_type_Vector2, NULL, 0, 0, &jrl_n_points);
     pointCount = jrl_n_points;
@@ -1947,13 +1926,10 @@ static Janet jrl_cfun_DrawLineStrip(int32_t argc, Janet *argv) {
 /* void DrawLineBezier(Vector2 startPos, Vector2 endPos, float thick, Color color) */
 static Janet jrl_cfun_DrawLineBezier(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
-    Vector2 startPos;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &startPos);
-    Vector2 endPos;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &endPos);
+    Vector2 startPos = jrl_get_Vector2(argv, 0);
+    Vector2 endPos = jrl_get_Vector2(argv, 1);
     float thick = jrl_get_float(argv, 2);
-    Color color;
-    jrl_get_value(argv, 3, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 3);
     DrawLineBezier(startPos, endPos, thick, color);
     return janet_wrap_nil();
 }
@@ -1964,8 +1940,7 @@ static Janet jrl_cfun_DrawCircle(int32_t argc, Janet *argv) {
     int centerX = jrl_get_int(argv, 0);
     int centerY = jrl_get_int(argv, 1);
     float radius = jrl_get_float(argv, 2);
-    Color color;
-    jrl_get_value(argv, 3, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 3);
     DrawCircle(centerX, centerY, radius, color);
     return janet_wrap_nil();
 }
@@ -1973,14 +1948,12 @@ static Janet jrl_cfun_DrawCircle(int32_t argc, Janet *argv) {
 /* void DrawCircleSector(Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color) */
 static Janet jrl_cfun_DrawCircleSector(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 6);
-    Vector2 center;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &center);
+    Vector2 center = jrl_get_Vector2(argv, 0);
     float radius = jrl_get_float(argv, 1);
     float startAngle = jrl_get_float(argv, 2);
     float endAngle = jrl_get_float(argv, 3);
     int segments = jrl_get_int(argv, 4);
-    Color color;
-    jrl_get_value(argv, 5, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 5);
     DrawCircleSector(center, radius, startAngle, endAngle, segments, color);
     return janet_wrap_nil();
 }
@@ -1988,14 +1961,12 @@ static Janet jrl_cfun_DrawCircleSector(int32_t argc, Janet *argv) {
 /* void DrawCircleSectorLines(Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color) */
 static Janet jrl_cfun_DrawCircleSectorLines(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 6);
-    Vector2 center;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &center);
+    Vector2 center = jrl_get_Vector2(argv, 0);
     float radius = jrl_get_float(argv, 1);
     float startAngle = jrl_get_float(argv, 2);
     float endAngle = jrl_get_float(argv, 3);
     int segments = jrl_get_int(argv, 4);
-    Color color;
-    jrl_get_value(argv, 5, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 5);
     DrawCircleSectorLines(center, radius, startAngle, endAngle, segments, color);
     return janet_wrap_nil();
 }
@@ -2006,10 +1977,8 @@ static Janet jrl_cfun_DrawCircleGradient(int32_t argc, Janet *argv) {
     int centerX = jrl_get_int(argv, 0);
     int centerY = jrl_get_int(argv, 1);
     float radius = jrl_get_float(argv, 2);
-    Color inner;
-    jrl_get_value(argv, 3, &jrl_type_Color, &inner);
-    Color outer;
-    jrl_get_value(argv, 4, &jrl_type_Color, &outer);
+    Color inner = jrl_get_Color(argv, 3);
+    Color outer = jrl_get_Color(argv, 4);
     DrawCircleGradient(centerX, centerY, radius, inner, outer);
     return janet_wrap_nil();
 }
@@ -2017,11 +1986,9 @@ static Janet jrl_cfun_DrawCircleGradient(int32_t argc, Janet *argv) {
 /* void DrawCircleV(Vector2 center, float radius, Color color) */
 static Janet jrl_cfun_DrawCircleV(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector2 center;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &center);
+    Vector2 center = jrl_get_Vector2(argv, 0);
     float radius = jrl_get_float(argv, 1);
-    Color color;
-    jrl_get_value(argv, 2, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 2);
     DrawCircleV(center, radius, color);
     return janet_wrap_nil();
 }
@@ -2032,8 +1999,7 @@ static Janet jrl_cfun_DrawCircleLines(int32_t argc, Janet *argv) {
     int centerX = jrl_get_int(argv, 0);
     int centerY = jrl_get_int(argv, 1);
     float radius = jrl_get_float(argv, 2);
-    Color color;
-    jrl_get_value(argv, 3, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 3);
     DrawCircleLines(centerX, centerY, radius, color);
     return janet_wrap_nil();
 }
@@ -2041,11 +2007,9 @@ static Janet jrl_cfun_DrawCircleLines(int32_t argc, Janet *argv) {
 /* void DrawCircleLinesV(Vector2 center, float radius, Color color) */
 static Janet jrl_cfun_DrawCircleLinesV(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector2 center;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &center);
+    Vector2 center = jrl_get_Vector2(argv, 0);
     float radius = jrl_get_float(argv, 1);
-    Color color;
-    jrl_get_value(argv, 2, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 2);
     DrawCircleLinesV(center, radius, color);
     return janet_wrap_nil();
 }
@@ -2057,8 +2021,7 @@ static Janet jrl_cfun_DrawEllipse(int32_t argc, Janet *argv) {
     int centerY = jrl_get_int(argv, 1);
     float radiusH = jrl_get_float(argv, 2);
     float radiusV = jrl_get_float(argv, 3);
-    Color color;
-    jrl_get_value(argv, 4, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 4);
     DrawEllipse(centerX, centerY, radiusH, radiusV, color);
     return janet_wrap_nil();
 }
@@ -2070,8 +2033,7 @@ static Janet jrl_cfun_DrawEllipseLines(int32_t argc, Janet *argv) {
     int centerY = jrl_get_int(argv, 1);
     float radiusH = jrl_get_float(argv, 2);
     float radiusV = jrl_get_float(argv, 3);
-    Color color;
-    jrl_get_value(argv, 4, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 4);
     DrawEllipseLines(centerX, centerY, radiusH, radiusV, color);
     return janet_wrap_nil();
 }
@@ -2079,15 +2041,13 @@ static Janet jrl_cfun_DrawEllipseLines(int32_t argc, Janet *argv) {
 /* void DrawRing(Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color) */
 static Janet jrl_cfun_DrawRing(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 7);
-    Vector2 center;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &center);
+    Vector2 center = jrl_get_Vector2(argv, 0);
     float innerRadius = jrl_get_float(argv, 1);
     float outerRadius = jrl_get_float(argv, 2);
     float startAngle = jrl_get_float(argv, 3);
     float endAngle = jrl_get_float(argv, 4);
     int segments = jrl_get_int(argv, 5);
-    Color color;
-    jrl_get_value(argv, 6, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 6);
     DrawRing(center, innerRadius, outerRadius, startAngle, endAngle, segments, color);
     return janet_wrap_nil();
 }
@@ -2095,15 +2055,13 @@ static Janet jrl_cfun_DrawRing(int32_t argc, Janet *argv) {
 /* void DrawRingLines(Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color) */
 static Janet jrl_cfun_DrawRingLines(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 7);
-    Vector2 center;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &center);
+    Vector2 center = jrl_get_Vector2(argv, 0);
     float innerRadius = jrl_get_float(argv, 1);
     float outerRadius = jrl_get_float(argv, 2);
     float startAngle = jrl_get_float(argv, 3);
     float endAngle = jrl_get_float(argv, 4);
     int segments = jrl_get_int(argv, 5);
-    Color color;
-    jrl_get_value(argv, 6, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 6);
     DrawRingLines(center, innerRadius, outerRadius, startAngle, endAngle, segments, color);
     return janet_wrap_nil();
 }
@@ -2115,8 +2073,7 @@ static Janet jrl_cfun_DrawRectangle(int32_t argc, Janet *argv) {
     int posY = jrl_get_int(argv, 1);
     int width = jrl_get_int(argv, 2);
     int height = jrl_get_int(argv, 3);
-    Color color;
-    jrl_get_value(argv, 4, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 4);
     DrawRectangle(posX, posY, width, height, color);
     return janet_wrap_nil();
 }
@@ -2124,12 +2081,9 @@ static Janet jrl_cfun_DrawRectangle(int32_t argc, Janet *argv) {
 /* void DrawRectangleV(Vector2 position, Vector2 size, Color color) */
 static Janet jrl_cfun_DrawRectangleV(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector2 position;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &position);
-    Vector2 size;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &size);
-    Color color;
-    jrl_get_value(argv, 2, &jrl_type_Color, &color);
+    Vector2 position = jrl_get_Vector2(argv, 0);
+    Vector2 size = jrl_get_Vector2(argv, 1);
+    Color color = jrl_get_Color(argv, 2);
     DrawRectangleV(position, size, color);
     return janet_wrap_nil();
 }
@@ -2137,10 +2091,8 @@ static Janet jrl_cfun_DrawRectangleV(int32_t argc, Janet *argv) {
 /* void DrawRectangleRec(Rectangle rec, Color color) */
 static Janet jrl_cfun_DrawRectangleRec(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Rectangle rec;
-    jrl_get_value(argv, 0, &jrl_type_Rectangle, &rec);
-    Color color;
-    jrl_get_value(argv, 1, &jrl_type_Color, &color);
+    Rectangle rec = jrl_get_Rectangle(argv, 0);
+    Color color = jrl_get_Color(argv, 1);
     DrawRectangleRec(rec, color);
     return janet_wrap_nil();
 }
@@ -2148,13 +2100,10 @@ static Janet jrl_cfun_DrawRectangleRec(int32_t argc, Janet *argv) {
 /* void DrawRectanglePro(Rectangle rec, Vector2 origin, float rotation, Color color) */
 static Janet jrl_cfun_DrawRectanglePro(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
-    Rectangle rec;
-    jrl_get_value(argv, 0, &jrl_type_Rectangle, &rec);
-    Vector2 origin;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &origin);
+    Rectangle rec = jrl_get_Rectangle(argv, 0);
+    Vector2 origin = jrl_get_Vector2(argv, 1);
     float rotation = jrl_get_float(argv, 2);
-    Color color;
-    jrl_get_value(argv, 3, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 3);
     DrawRectanglePro(rec, origin, rotation, color);
     return janet_wrap_nil();
 }
@@ -2166,10 +2115,8 @@ static Janet jrl_cfun_DrawRectangleGradientV(int32_t argc, Janet *argv) {
     int posY = jrl_get_int(argv, 1);
     int width = jrl_get_int(argv, 2);
     int height = jrl_get_int(argv, 3);
-    Color top;
-    jrl_get_value(argv, 4, &jrl_type_Color, &top);
-    Color bottom;
-    jrl_get_value(argv, 5, &jrl_type_Color, &bottom);
+    Color top = jrl_get_Color(argv, 4);
+    Color bottom = jrl_get_Color(argv, 5);
     DrawRectangleGradientV(posX, posY, width, height, top, bottom);
     return janet_wrap_nil();
 }
@@ -2181,10 +2128,8 @@ static Janet jrl_cfun_DrawRectangleGradientH(int32_t argc, Janet *argv) {
     int posY = jrl_get_int(argv, 1);
     int width = jrl_get_int(argv, 2);
     int height = jrl_get_int(argv, 3);
-    Color left;
-    jrl_get_value(argv, 4, &jrl_type_Color, &left);
-    Color right;
-    jrl_get_value(argv, 5, &jrl_type_Color, &right);
+    Color left = jrl_get_Color(argv, 4);
+    Color right = jrl_get_Color(argv, 5);
     DrawRectangleGradientH(posX, posY, width, height, left, right);
     return janet_wrap_nil();
 }
@@ -2192,16 +2137,11 @@ static Janet jrl_cfun_DrawRectangleGradientH(int32_t argc, Janet *argv) {
 /* void DrawRectangleGradientEx(Rectangle rec, Color topLeft, Color bottomLeft, Color topRight, Color bottomRight) */
 static Janet jrl_cfun_DrawRectangleGradientEx(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 5);
-    Rectangle rec;
-    jrl_get_value(argv, 0, &jrl_type_Rectangle, &rec);
-    Color topLeft;
-    jrl_get_value(argv, 1, &jrl_type_Color, &topLeft);
-    Color bottomLeft;
-    jrl_get_value(argv, 2, &jrl_type_Color, &bottomLeft);
-    Color topRight;
-    jrl_get_value(argv, 3, &jrl_type_Color, &topRight);
-    Color bottomRight;
-    jrl_get_value(argv, 4, &jrl_type_Color, &bottomRight);
+    Rectangle rec = jrl_get_Rectangle(argv, 0);
+    Color topLeft = jrl_get_Color(argv, 1);
+    Color bottomLeft = jrl_get_Color(argv, 2);
+    Color topRight = jrl_get_Color(argv, 3);
+    Color bottomRight = jrl_get_Color(argv, 4);
     DrawRectangleGradientEx(rec, topLeft, bottomLeft, topRight, bottomRight);
     return janet_wrap_nil();
 }
@@ -2213,8 +2153,7 @@ static Janet jrl_cfun_DrawRectangleLines(int32_t argc, Janet *argv) {
     int posY = jrl_get_int(argv, 1);
     int width = jrl_get_int(argv, 2);
     int height = jrl_get_int(argv, 3);
-    Color color;
-    jrl_get_value(argv, 4, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 4);
     DrawRectangleLines(posX, posY, width, height, color);
     return janet_wrap_nil();
 }
@@ -2222,11 +2161,9 @@ static Janet jrl_cfun_DrawRectangleLines(int32_t argc, Janet *argv) {
 /* void DrawRectangleLinesEx(Rectangle rec, float lineThick, Color color) */
 static Janet jrl_cfun_DrawRectangleLinesEx(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Rectangle rec;
-    jrl_get_value(argv, 0, &jrl_type_Rectangle, &rec);
+    Rectangle rec = jrl_get_Rectangle(argv, 0);
     float lineThick = jrl_get_float(argv, 1);
-    Color color;
-    jrl_get_value(argv, 2, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 2);
     DrawRectangleLinesEx(rec, lineThick, color);
     return janet_wrap_nil();
 }
@@ -2234,12 +2171,10 @@ static Janet jrl_cfun_DrawRectangleLinesEx(int32_t argc, Janet *argv) {
 /* void DrawRectangleRounded(Rectangle rec, float roundness, int segments, Color color) */
 static Janet jrl_cfun_DrawRectangleRounded(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
-    Rectangle rec;
-    jrl_get_value(argv, 0, &jrl_type_Rectangle, &rec);
+    Rectangle rec = jrl_get_Rectangle(argv, 0);
     float roundness = jrl_get_float(argv, 1);
     int segments = jrl_get_int(argv, 2);
-    Color color;
-    jrl_get_value(argv, 3, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 3);
     DrawRectangleRounded(rec, roundness, segments, color);
     return janet_wrap_nil();
 }
@@ -2247,12 +2182,10 @@ static Janet jrl_cfun_DrawRectangleRounded(int32_t argc, Janet *argv) {
 /* void DrawRectangleRoundedLines(Rectangle rec, float roundness, int segments, Color color) */
 static Janet jrl_cfun_DrawRectangleRoundedLines(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
-    Rectangle rec;
-    jrl_get_value(argv, 0, &jrl_type_Rectangle, &rec);
+    Rectangle rec = jrl_get_Rectangle(argv, 0);
     float roundness = jrl_get_float(argv, 1);
     int segments = jrl_get_int(argv, 2);
-    Color color;
-    jrl_get_value(argv, 3, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 3);
     DrawRectangleRoundedLines(rec, roundness, segments, color);
     return janet_wrap_nil();
 }
@@ -2260,13 +2193,11 @@ static Janet jrl_cfun_DrawRectangleRoundedLines(int32_t argc, Janet *argv) {
 /* void DrawRectangleRoundedLinesEx(Rectangle rec, float roundness, int segments, float lineThick, Color color) */
 static Janet jrl_cfun_DrawRectangleRoundedLinesEx(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 5);
-    Rectangle rec;
-    jrl_get_value(argv, 0, &jrl_type_Rectangle, &rec);
+    Rectangle rec = jrl_get_Rectangle(argv, 0);
     float roundness = jrl_get_float(argv, 1);
     int segments = jrl_get_int(argv, 2);
     float lineThick = jrl_get_float(argv, 3);
-    Color color;
-    jrl_get_value(argv, 4, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 4);
     DrawRectangleRoundedLinesEx(rec, roundness, segments, lineThick, color);
     return janet_wrap_nil();
 }
@@ -2274,14 +2205,10 @@ static Janet jrl_cfun_DrawRectangleRoundedLinesEx(int32_t argc, Janet *argv) {
 /* void DrawTriangle(Vector2 v1, Vector2 v2, Vector2 v3, Color color) */
 static Janet jrl_cfun_DrawTriangle(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
-    Vector2 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v1);
-    Vector2 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &v2);
-    Vector2 v3;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &v3);
-    Color color;
-    jrl_get_value(argv, 3, &jrl_type_Color, &color);
+    Vector2 v1 = jrl_get_Vector2(argv, 0);
+    Vector2 v2 = jrl_get_Vector2(argv, 1);
+    Vector2 v3 = jrl_get_Vector2(argv, 2);
+    Color color = jrl_get_Color(argv, 3);
     DrawTriangle(v1, v2, v3, color);
     return janet_wrap_nil();
 }
@@ -2289,14 +2216,10 @@ static Janet jrl_cfun_DrawTriangle(int32_t argc, Janet *argv) {
 /* void DrawTriangleLines(Vector2 v1, Vector2 v2, Vector2 v3, Color color) */
 static Janet jrl_cfun_DrawTriangleLines(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
-    Vector2 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v1);
-    Vector2 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &v2);
-    Vector2 v3;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &v3);
-    Color color;
-    jrl_get_value(argv, 3, &jrl_type_Color, &color);
+    Vector2 v1 = jrl_get_Vector2(argv, 0);
+    Vector2 v2 = jrl_get_Vector2(argv, 1);
+    Vector2 v3 = jrl_get_Vector2(argv, 2);
+    Color color = jrl_get_Color(argv, 3);
     DrawTriangleLines(v1, v2, v3, color);
     return janet_wrap_nil();
 }
@@ -2305,8 +2228,7 @@ static Janet jrl_cfun_DrawTriangleLines(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_DrawTriangleFan(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
     int pointCount = 0;
-    Color color;
-    jrl_get_value(argv, 1, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 1);
     int32_t jrl_n_points = 0;
     const Vector2* points = (const Vector2*) jrl_get_carray(argv, 0, JRL_K_TYPE, &jrl_type_Vector2, NULL, 0, 0, &jrl_n_points);
     pointCount = jrl_n_points;
@@ -2319,8 +2241,7 @@ static Janet jrl_cfun_DrawTriangleFan(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_DrawTriangleStrip(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
     int pointCount = 0;
-    Color color;
-    jrl_get_value(argv, 1, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 1);
     int32_t jrl_n_points = 0;
     const Vector2* points = (const Vector2*) jrl_get_carray(argv, 0, JRL_K_TYPE, &jrl_type_Vector2, NULL, 0, 0, &jrl_n_points);
     pointCount = jrl_n_points;
@@ -2332,13 +2253,11 @@ static Janet jrl_cfun_DrawTriangleStrip(int32_t argc, Janet *argv) {
 /* void DrawPoly(Vector2 center, int sides, float radius, float rotation, Color color) */
 static Janet jrl_cfun_DrawPoly(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 5);
-    Vector2 center;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &center);
+    Vector2 center = jrl_get_Vector2(argv, 0);
     int sides = jrl_get_int(argv, 1);
     float radius = jrl_get_float(argv, 2);
     float rotation = jrl_get_float(argv, 3);
-    Color color;
-    jrl_get_value(argv, 4, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 4);
     DrawPoly(center, sides, radius, rotation, color);
     return janet_wrap_nil();
 }
@@ -2346,13 +2265,11 @@ static Janet jrl_cfun_DrawPoly(int32_t argc, Janet *argv) {
 /* void DrawPolyLines(Vector2 center, int sides, float radius, float rotation, Color color) */
 static Janet jrl_cfun_DrawPolyLines(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 5);
-    Vector2 center;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &center);
+    Vector2 center = jrl_get_Vector2(argv, 0);
     int sides = jrl_get_int(argv, 1);
     float radius = jrl_get_float(argv, 2);
     float rotation = jrl_get_float(argv, 3);
-    Color color;
-    jrl_get_value(argv, 4, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 4);
     DrawPolyLines(center, sides, radius, rotation, color);
     return janet_wrap_nil();
 }
@@ -2360,14 +2277,12 @@ static Janet jrl_cfun_DrawPolyLines(int32_t argc, Janet *argv) {
 /* void DrawPolyLinesEx(Vector2 center, int sides, float radius, float rotation, float lineThick, Color color) */
 static Janet jrl_cfun_DrawPolyLinesEx(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 6);
-    Vector2 center;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &center);
+    Vector2 center = jrl_get_Vector2(argv, 0);
     int sides = jrl_get_int(argv, 1);
     float radius = jrl_get_float(argv, 2);
     float rotation = jrl_get_float(argv, 3);
     float lineThick = jrl_get_float(argv, 4);
-    Color color;
-    jrl_get_value(argv, 5, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 5);
     DrawPolyLinesEx(center, sides, radius, rotation, lineThick, color);
     return janet_wrap_nil();
 }
@@ -2377,8 +2292,7 @@ static Janet jrl_cfun_DrawSplineLinear(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
     int pointCount = 0;
     float thick = jrl_get_float(argv, 1);
-    Color color;
-    jrl_get_value(argv, 2, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 2);
     int32_t jrl_n_points = 0;
     const Vector2* points = (const Vector2*) jrl_get_carray(argv, 0, JRL_K_TYPE, &jrl_type_Vector2, NULL, 0, 0, &jrl_n_points);
     pointCount = jrl_n_points;
@@ -2392,8 +2306,7 @@ static Janet jrl_cfun_DrawSplineBasis(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
     int pointCount = 0;
     float thick = jrl_get_float(argv, 1);
-    Color color;
-    jrl_get_value(argv, 2, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 2);
     int32_t jrl_n_points = 0;
     const Vector2* points = (const Vector2*) jrl_get_carray(argv, 0, JRL_K_TYPE, &jrl_type_Vector2, NULL, 0, 0, &jrl_n_points);
     pointCount = jrl_n_points;
@@ -2407,8 +2320,7 @@ static Janet jrl_cfun_DrawSplineCatmullRom(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
     int pointCount = 0;
     float thick = jrl_get_float(argv, 1);
-    Color color;
-    jrl_get_value(argv, 2, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 2);
     int32_t jrl_n_points = 0;
     const Vector2* points = (const Vector2*) jrl_get_carray(argv, 0, JRL_K_TYPE, &jrl_type_Vector2, NULL, 0, 0, &jrl_n_points);
     pointCount = jrl_n_points;
@@ -2422,8 +2334,7 @@ static Janet jrl_cfun_DrawSplineBezierQuadratic(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
     int pointCount = 0;
     float thick = jrl_get_float(argv, 1);
-    Color color;
-    jrl_get_value(argv, 2, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 2);
     int32_t jrl_n_points = 0;
     const Vector2* points = (const Vector2*) jrl_get_carray(argv, 0, JRL_K_TYPE, &jrl_type_Vector2, NULL, 0, 0, &jrl_n_points);
     pointCount = jrl_n_points;
@@ -2437,8 +2348,7 @@ static Janet jrl_cfun_DrawSplineBezierCubic(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
     int pointCount = 0;
     float thick = jrl_get_float(argv, 1);
-    Color color;
-    jrl_get_value(argv, 2, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 2);
     int32_t jrl_n_points = 0;
     const Vector2* points = (const Vector2*) jrl_get_carray(argv, 0, JRL_K_TYPE, &jrl_type_Vector2, NULL, 0, 0, &jrl_n_points);
     pointCount = jrl_n_points;
@@ -2450,13 +2360,10 @@ static Janet jrl_cfun_DrawSplineBezierCubic(int32_t argc, Janet *argv) {
 /* void DrawSplineSegmentLinear(Vector2 p1, Vector2 p2, float thick, Color color) */
 static Janet jrl_cfun_DrawSplineSegmentLinear(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
-    Vector2 p1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &p1);
-    Vector2 p2;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &p2);
+    Vector2 p1 = jrl_get_Vector2(argv, 0);
+    Vector2 p2 = jrl_get_Vector2(argv, 1);
     float thick = jrl_get_float(argv, 2);
-    Color color;
-    jrl_get_value(argv, 3, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 3);
     DrawSplineSegmentLinear(p1, p2, thick, color);
     return janet_wrap_nil();
 }
@@ -2464,17 +2371,12 @@ static Janet jrl_cfun_DrawSplineSegmentLinear(int32_t argc, Janet *argv) {
 /* void DrawSplineSegmentBasis(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float thick, Color color) */
 static Janet jrl_cfun_DrawSplineSegmentBasis(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 6);
-    Vector2 p1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &p1);
-    Vector2 p2;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &p2);
-    Vector2 p3;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &p3);
-    Vector2 p4;
-    jrl_get_value(argv, 3, &jrl_type_Vector2, &p4);
+    Vector2 p1 = jrl_get_Vector2(argv, 0);
+    Vector2 p2 = jrl_get_Vector2(argv, 1);
+    Vector2 p3 = jrl_get_Vector2(argv, 2);
+    Vector2 p4 = jrl_get_Vector2(argv, 3);
     float thick = jrl_get_float(argv, 4);
-    Color color;
-    jrl_get_value(argv, 5, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 5);
     DrawSplineSegmentBasis(p1, p2, p3, p4, thick, color);
     return janet_wrap_nil();
 }
@@ -2482,17 +2384,12 @@ static Janet jrl_cfun_DrawSplineSegmentBasis(int32_t argc, Janet *argv) {
 /* void DrawSplineSegmentCatmullRom(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float thick, Color color) */
 static Janet jrl_cfun_DrawSplineSegmentCatmullRom(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 6);
-    Vector2 p1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &p1);
-    Vector2 p2;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &p2);
-    Vector2 p3;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &p3);
-    Vector2 p4;
-    jrl_get_value(argv, 3, &jrl_type_Vector2, &p4);
+    Vector2 p1 = jrl_get_Vector2(argv, 0);
+    Vector2 p2 = jrl_get_Vector2(argv, 1);
+    Vector2 p3 = jrl_get_Vector2(argv, 2);
+    Vector2 p4 = jrl_get_Vector2(argv, 3);
     float thick = jrl_get_float(argv, 4);
-    Color color;
-    jrl_get_value(argv, 5, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 5);
     DrawSplineSegmentCatmullRom(p1, p2, p3, p4, thick, color);
     return janet_wrap_nil();
 }
@@ -2500,15 +2397,11 @@ static Janet jrl_cfun_DrawSplineSegmentCatmullRom(int32_t argc, Janet *argv) {
 /* void DrawSplineSegmentBezierQuadratic(Vector2 p1, Vector2 c2, Vector2 p3, float thick, Color color) */
 static Janet jrl_cfun_DrawSplineSegmentBezierQuadratic(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 5);
-    Vector2 p1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &p1);
-    Vector2 c2;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &c2);
-    Vector2 p3;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &p3);
+    Vector2 p1 = jrl_get_Vector2(argv, 0);
+    Vector2 c2 = jrl_get_Vector2(argv, 1);
+    Vector2 p3 = jrl_get_Vector2(argv, 2);
     float thick = jrl_get_float(argv, 3);
-    Color color;
-    jrl_get_value(argv, 4, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 4);
     DrawSplineSegmentBezierQuadratic(p1, c2, p3, thick, color);
     return janet_wrap_nil();
 }
@@ -2516,17 +2409,12 @@ static Janet jrl_cfun_DrawSplineSegmentBezierQuadratic(int32_t argc, Janet *argv
 /* void DrawSplineSegmentBezierCubic(Vector2 p1, Vector2 c2, Vector2 c3, Vector2 p4, float thick, Color color) */
 static Janet jrl_cfun_DrawSplineSegmentBezierCubic(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 6);
-    Vector2 p1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &p1);
-    Vector2 c2;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &c2);
-    Vector2 c3;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &c3);
-    Vector2 p4;
-    jrl_get_value(argv, 3, &jrl_type_Vector2, &p4);
+    Vector2 p1 = jrl_get_Vector2(argv, 0);
+    Vector2 c2 = jrl_get_Vector2(argv, 1);
+    Vector2 c3 = jrl_get_Vector2(argv, 2);
+    Vector2 p4 = jrl_get_Vector2(argv, 3);
     float thick = jrl_get_float(argv, 4);
-    Color color;
-    jrl_get_value(argv, 5, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 5);
     DrawSplineSegmentBezierCubic(p1, c2, c3, p4, thick, color);
     return janet_wrap_nil();
 }
@@ -2534,89 +2422,70 @@ static Janet jrl_cfun_DrawSplineSegmentBezierCubic(int32_t argc, Janet *argv) {
 /* Vector2 GetSplinePointLinear(Vector2 startPos, Vector2 endPos, float t) */
 static Janet jrl_cfun_GetSplinePointLinear(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector2 startPos;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &startPos);
-    Vector2 endPos;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &endPos);
+    Vector2 startPos = jrl_get_Vector2(argv, 0);
+    Vector2 endPos = jrl_get_Vector2(argv, 1);
     float t = jrl_get_float(argv, 2);
     Vector2 jrl_ret = GetSplinePointLinear(startPos, endPos, t);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 GetSplinePointBasis(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float t) */
 static Janet jrl_cfun_GetSplinePointBasis(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 5);
-    Vector2 p1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &p1);
-    Vector2 p2;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &p2);
-    Vector2 p3;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &p3);
-    Vector2 p4;
-    jrl_get_value(argv, 3, &jrl_type_Vector2, &p4);
+    Vector2 p1 = jrl_get_Vector2(argv, 0);
+    Vector2 p2 = jrl_get_Vector2(argv, 1);
+    Vector2 p3 = jrl_get_Vector2(argv, 2);
+    Vector2 p4 = jrl_get_Vector2(argv, 3);
     float t = jrl_get_float(argv, 4);
     Vector2 jrl_ret = GetSplinePointBasis(p1, p2, p3, p4, t);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 GetSplinePointCatmullRom(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float t) */
 static Janet jrl_cfun_GetSplinePointCatmullRom(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 5);
-    Vector2 p1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &p1);
-    Vector2 p2;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &p2);
-    Vector2 p3;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &p3);
-    Vector2 p4;
-    jrl_get_value(argv, 3, &jrl_type_Vector2, &p4);
+    Vector2 p1 = jrl_get_Vector2(argv, 0);
+    Vector2 p2 = jrl_get_Vector2(argv, 1);
+    Vector2 p3 = jrl_get_Vector2(argv, 2);
+    Vector2 p4 = jrl_get_Vector2(argv, 3);
     float t = jrl_get_float(argv, 4);
     Vector2 jrl_ret = GetSplinePointCatmullRom(p1, p2, p3, p4, t);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 GetSplinePointBezierQuad(Vector2 p1, Vector2 c2, Vector2 p3, float t) */
 static Janet jrl_cfun_GetSplinePointBezierQuad(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
-    Vector2 p1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &p1);
-    Vector2 c2;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &c2);
-    Vector2 p3;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &p3);
+    Vector2 p1 = jrl_get_Vector2(argv, 0);
+    Vector2 c2 = jrl_get_Vector2(argv, 1);
+    Vector2 p3 = jrl_get_Vector2(argv, 2);
     float t = jrl_get_float(argv, 3);
     Vector2 jrl_ret = GetSplinePointBezierQuad(p1, c2, p3, t);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 GetSplinePointBezierCubic(Vector2 p1, Vector2 c2, Vector2 c3, Vector2 p4, float t) */
 static Janet jrl_cfun_GetSplinePointBezierCubic(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 5);
-    Vector2 p1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &p1);
-    Vector2 c2;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &c2);
-    Vector2 c3;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &c3);
-    Vector2 p4;
-    jrl_get_value(argv, 3, &jrl_type_Vector2, &p4);
+    Vector2 p1 = jrl_get_Vector2(argv, 0);
+    Vector2 c2 = jrl_get_Vector2(argv, 1);
+    Vector2 c3 = jrl_get_Vector2(argv, 2);
+    Vector2 p4 = jrl_get_Vector2(argv, 3);
     float t = jrl_get_float(argv, 4);
     Vector2 jrl_ret = GetSplinePointBezierCubic(p1, c2, c3, p4, t);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* bool CheckCollisionRecs(Rectangle rec1, Rectangle rec2) */
 static Janet jrl_cfun_CheckCollisionRecs(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Rectangle rec1;
-    jrl_get_value(argv, 0, &jrl_type_Rectangle, &rec1);
-    Rectangle rec2;
-    jrl_get_value(argv, 1, &jrl_type_Rectangle, &rec2);
+    Rectangle rec1 = jrl_get_Rectangle(argv, 0);
+    Rectangle rec2 = jrl_get_Rectangle(argv, 1);
     bool jrl_ret = CheckCollisionRecs(rec1, rec2);
     Janet jrl_value = janet_wrap_boolean(jrl_ret);
     return jrl_value;
@@ -2625,11 +2494,9 @@ static Janet jrl_cfun_CheckCollisionRecs(int32_t argc, Janet *argv) {
 /* bool CheckCollisionCircles(Vector2 center1, float radius1, Vector2 center2, float radius2) */
 static Janet jrl_cfun_CheckCollisionCircles(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
-    Vector2 center1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &center1);
+    Vector2 center1 = jrl_get_Vector2(argv, 0);
     float radius1 = jrl_get_float(argv, 1);
-    Vector2 center2;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &center2);
+    Vector2 center2 = jrl_get_Vector2(argv, 2);
     float radius2 = jrl_get_float(argv, 3);
     bool jrl_ret = CheckCollisionCircles(center1, radius1, center2, radius2);
     Janet jrl_value = janet_wrap_boolean(jrl_ret);
@@ -2639,11 +2506,9 @@ static Janet jrl_cfun_CheckCollisionCircles(int32_t argc, Janet *argv) {
 /* bool CheckCollisionCircleRec(Vector2 center, float radius, Rectangle rec) */
 static Janet jrl_cfun_CheckCollisionCircleRec(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector2 center;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &center);
+    Vector2 center = jrl_get_Vector2(argv, 0);
     float radius = jrl_get_float(argv, 1);
-    Rectangle rec;
-    jrl_get_value(argv, 2, &jrl_type_Rectangle, &rec);
+    Rectangle rec = jrl_get_Rectangle(argv, 2);
     bool jrl_ret = CheckCollisionCircleRec(center, radius, rec);
     Janet jrl_value = janet_wrap_boolean(jrl_ret);
     return jrl_value;
@@ -2652,13 +2517,10 @@ static Janet jrl_cfun_CheckCollisionCircleRec(int32_t argc, Janet *argv) {
 /* bool CheckCollisionCircleLine(Vector2 center, float radius, Vector2 p1, Vector2 p2) */
 static Janet jrl_cfun_CheckCollisionCircleLine(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
-    Vector2 center;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &center);
+    Vector2 center = jrl_get_Vector2(argv, 0);
     float radius = jrl_get_float(argv, 1);
-    Vector2 p1;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &p1);
-    Vector2 p2;
-    jrl_get_value(argv, 3, &jrl_type_Vector2, &p2);
+    Vector2 p1 = jrl_get_Vector2(argv, 2);
+    Vector2 p2 = jrl_get_Vector2(argv, 3);
     bool jrl_ret = CheckCollisionCircleLine(center, radius, p1, p2);
     Janet jrl_value = janet_wrap_boolean(jrl_ret);
     return jrl_value;
@@ -2667,10 +2529,8 @@ static Janet jrl_cfun_CheckCollisionCircleLine(int32_t argc, Janet *argv) {
 /* bool CheckCollisionPointRec(Vector2 point, Rectangle rec) */
 static Janet jrl_cfun_CheckCollisionPointRec(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 point;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &point);
-    Rectangle rec;
-    jrl_get_value(argv, 1, &jrl_type_Rectangle, &rec);
+    Vector2 point = jrl_get_Vector2(argv, 0);
+    Rectangle rec = jrl_get_Rectangle(argv, 1);
     bool jrl_ret = CheckCollisionPointRec(point, rec);
     Janet jrl_value = janet_wrap_boolean(jrl_ret);
     return jrl_value;
@@ -2679,10 +2539,8 @@ static Janet jrl_cfun_CheckCollisionPointRec(int32_t argc, Janet *argv) {
 /* bool CheckCollisionPointCircle(Vector2 point, Vector2 center, float radius) */
 static Janet jrl_cfun_CheckCollisionPointCircle(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector2 point;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &point);
-    Vector2 center;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &center);
+    Vector2 point = jrl_get_Vector2(argv, 0);
+    Vector2 center = jrl_get_Vector2(argv, 1);
     float radius = jrl_get_float(argv, 2);
     bool jrl_ret = CheckCollisionPointCircle(point, center, radius);
     Janet jrl_value = janet_wrap_boolean(jrl_ret);
@@ -2692,14 +2550,10 @@ static Janet jrl_cfun_CheckCollisionPointCircle(int32_t argc, Janet *argv) {
 /* bool CheckCollisionPointTriangle(Vector2 point, Vector2 p1, Vector2 p2, Vector2 p3) */
 static Janet jrl_cfun_CheckCollisionPointTriangle(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
-    Vector2 point;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &point);
-    Vector2 p1;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &p1);
-    Vector2 p2;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &p2);
-    Vector2 p3;
-    jrl_get_value(argv, 3, &jrl_type_Vector2, &p3);
+    Vector2 point = jrl_get_Vector2(argv, 0);
+    Vector2 p1 = jrl_get_Vector2(argv, 1);
+    Vector2 p2 = jrl_get_Vector2(argv, 2);
+    Vector2 p3 = jrl_get_Vector2(argv, 3);
     bool jrl_ret = CheckCollisionPointTriangle(point, p1, p2, p3);
     Janet jrl_value = janet_wrap_boolean(jrl_ret);
     return jrl_value;
@@ -2708,12 +2562,9 @@ static Janet jrl_cfun_CheckCollisionPointTriangle(int32_t argc, Janet *argv) {
 /* bool CheckCollisionPointLine(Vector2 point, Vector2 p1, Vector2 p2, int threshold) */
 static Janet jrl_cfun_CheckCollisionPointLine(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
-    Vector2 point;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &point);
-    Vector2 p1;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &p1);
-    Vector2 p2;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &p2);
+    Vector2 point = jrl_get_Vector2(argv, 0);
+    Vector2 p1 = jrl_get_Vector2(argv, 1);
+    Vector2 p2 = jrl_get_Vector2(argv, 2);
     int threshold = jrl_get_int(argv, 3);
     bool jrl_ret = CheckCollisionPointLine(point, p1, p2, threshold);
     Janet jrl_value = janet_wrap_boolean(jrl_ret);
@@ -2723,8 +2574,7 @@ static Janet jrl_cfun_CheckCollisionPointLine(int32_t argc, Janet *argv) {
 /* bool CheckCollisionPointPoly(Vector2 point, const Vector2 * points, int pointCount) */
 static Janet jrl_cfun_CheckCollisionPointPoly(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 point;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &point);
+    Vector2 point = jrl_get_Vector2(argv, 0);
     int pointCount = 0;
     int32_t jrl_n_points = 0;
     const Vector2* points = (const Vector2*) jrl_get_carray(argv, 1, JRL_K_TYPE, &jrl_type_Vector2, NULL, 0, 0, &jrl_n_points);
@@ -2738,30 +2588,24 @@ static Janet jrl_cfun_CheckCollisionPointPoly(int32_t argc, Janet *argv) {
 /* bool CheckCollisionLines(Vector2 startPos1, Vector2 endPos1, Vector2 startPos2, Vector2 endPos2, Vector2 * collisionPoint) */
 static Janet jrl_cfun_CheckCollisionLines(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
-    Vector2 startPos1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &startPos1);
-    Vector2 endPos1;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &endPos1);
-    Vector2 startPos2;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &startPos2);
-    Vector2 endPos2;
-    jrl_get_value(argv, 3, &jrl_type_Vector2, &endPos2);
+    Vector2 startPos1 = jrl_get_Vector2(argv, 0);
+    Vector2 endPos1 = jrl_get_Vector2(argv, 1);
+    Vector2 startPos2 = jrl_get_Vector2(argv, 2);
+    Vector2 endPos2 = jrl_get_Vector2(argv, 3);
     Vector2 collisionPoint = {0};
     bool jrl_ret = CheckCollisionLines(startPos1, endPos1, startPos2, endPos2, &collisionPoint);
     Janet jrl_value = janet_wrap_boolean(jrl_ret);
-    Janet jrl_results[2] = {jrl_value, jrl_to_janet(&jrl_type_Vector2, &collisionPoint, janet_wrap_nil())};
+    Janet jrl_results[2] = {jrl_value, jrl_wrap_Vector2(collisionPoint)};
     return janet_wrap_tuple(janet_tuple_n(jrl_results, 2));
 }
 
 /* Rectangle GetCollisionRec(Rectangle rec1, Rectangle rec2) */
 static Janet jrl_cfun_GetCollisionRec(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Rectangle rec1;
-    jrl_get_value(argv, 0, &jrl_type_Rectangle, &rec1);
-    Rectangle rec2;
-    jrl_get_value(argv, 1, &jrl_type_Rectangle, &rec2);
+    Rectangle rec1 = jrl_get_Rectangle(argv, 0);
+    Rectangle rec2 = jrl_get_Rectangle(argv, 1);
     Rectangle jrl_ret = GetCollisionRec(rec1, rec2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Rectangle, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Rectangle(jrl_ret);
     return jrl_value;
 }
 
@@ -2902,8 +2746,7 @@ static Janet jrl_cfun_GenImageColor(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
     int width = jrl_get_int(argv, 0);
     int height = jrl_get_int(argv, 1);
-    Color color;
-    jrl_get_value(argv, 2, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 2);
     Image jrl_ret = GenImageColor(width, height, color);
     Janet jrl_value = jrl_handle_new(&jrl_type_Image, &jrl_ret, 0);
     return jrl_value;
@@ -2915,10 +2758,8 @@ static Janet jrl_cfun_GenImageGradientLinear(int32_t argc, Janet *argv) {
     int width = jrl_get_int(argv, 0);
     int height = jrl_get_int(argv, 1);
     int direction = jrl_get_int(argv, 2);
-    Color start;
-    jrl_get_value(argv, 3, &jrl_type_Color, &start);
-    Color end;
-    jrl_get_value(argv, 4, &jrl_type_Color, &end);
+    Color start = jrl_get_Color(argv, 3);
+    Color end = jrl_get_Color(argv, 4);
     Image jrl_ret = GenImageGradientLinear(width, height, direction, start, end);
     Janet jrl_value = jrl_handle_new(&jrl_type_Image, &jrl_ret, 0);
     return jrl_value;
@@ -2930,10 +2771,8 @@ static Janet jrl_cfun_GenImageGradientRadial(int32_t argc, Janet *argv) {
     int width = jrl_get_int(argv, 0);
     int height = jrl_get_int(argv, 1);
     float density = jrl_get_float(argv, 2);
-    Color inner;
-    jrl_get_value(argv, 3, &jrl_type_Color, &inner);
-    Color outer;
-    jrl_get_value(argv, 4, &jrl_type_Color, &outer);
+    Color inner = jrl_get_Color(argv, 3);
+    Color outer = jrl_get_Color(argv, 4);
     Image jrl_ret = GenImageGradientRadial(width, height, density, inner, outer);
     Janet jrl_value = jrl_handle_new(&jrl_type_Image, &jrl_ret, 0);
     return jrl_value;
@@ -2945,10 +2784,8 @@ static Janet jrl_cfun_GenImageGradientSquare(int32_t argc, Janet *argv) {
     int width = jrl_get_int(argv, 0);
     int height = jrl_get_int(argv, 1);
     float density = jrl_get_float(argv, 2);
-    Color inner;
-    jrl_get_value(argv, 3, &jrl_type_Color, &inner);
-    Color outer;
-    jrl_get_value(argv, 4, &jrl_type_Color, &outer);
+    Color inner = jrl_get_Color(argv, 3);
+    Color outer = jrl_get_Color(argv, 4);
     Image jrl_ret = GenImageGradientSquare(width, height, density, inner, outer);
     Janet jrl_value = jrl_handle_new(&jrl_type_Image, &jrl_ret, 0);
     return jrl_value;
@@ -2961,10 +2798,8 @@ static Janet jrl_cfun_GenImageChecked(int32_t argc, Janet *argv) {
     int height = jrl_get_int(argv, 1);
     int checksX = jrl_get_int(argv, 2);
     int checksY = jrl_get_int(argv, 3);
-    Color col1;
-    jrl_get_value(argv, 4, &jrl_type_Color, &col1);
-    Color col2;
-    jrl_get_value(argv, 5, &jrl_type_Color, &col2);
+    Color col1 = jrl_get_Color(argv, 4);
+    Color col2 = jrl_get_Color(argv, 5);
     Image jrl_ret = GenImageChecked(width, height, checksX, checksY, col1, col2);
     Janet jrl_value = jrl_handle_new(&jrl_type_Image, &jrl_ret, 0);
     return jrl_value;
@@ -3029,8 +2864,7 @@ static Janet jrl_cfun_ImageCopy(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_ImageFromImage(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
     Image image = *(Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
-    Rectangle rec;
-    jrl_get_value(argv, 1, &jrl_type_Rectangle, &rec);
+    Rectangle rec = jrl_get_Rectangle(argv, 1);
     Image jrl_ret = ImageFromImage(image, rec);
     Janet jrl_value = jrl_handle_new(&jrl_type_Image, &jrl_ret, 0);
     return jrl_value;
@@ -3051,8 +2885,7 @@ static Janet jrl_cfun_ImageText(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
     const char *text = jrl_get_cstring(argv, 0);
     int fontSize = jrl_get_int(argv, 1);
-    Color color;
-    jrl_get_value(argv, 2, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 2);
     Image jrl_ret = ImageText(text, fontSize, color);
     Janet jrl_value = jrl_handle_new(&jrl_type_Image, &jrl_ret, 0);
     return jrl_value;
@@ -3065,8 +2898,7 @@ static Janet jrl_cfun_ImageTextEx(int32_t argc, Janet *argv) {
     const char *text = jrl_get_cstring(argv, 1);
     float fontSize = jrl_get_float(argv, 2);
     float spacing = jrl_get_float(argv, 3);
-    Color tint;
-    jrl_get_value(argv, 4, &jrl_type_Color, &tint);
+    Color tint = jrl_get_Color(argv, 4);
     Image jrl_ret = ImageTextEx(font, text, fontSize, spacing, tint);
     Janet jrl_value = jrl_handle_new(&jrl_type_Image, &jrl_ret, 0);
     return jrl_value;
@@ -3085,8 +2917,7 @@ static Janet jrl_cfun_ImageFormat(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_ImageToPOT(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
     Image *image = (Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
-    Color fill;
-    jrl_get_value(argv, 1, &jrl_type_Color, &fill);
+    Color fill = jrl_get_Color(argv, 1);
     ImageToPOT(image, fill);
     return janet_wrap_nil();
 }
@@ -3095,8 +2926,7 @@ static Janet jrl_cfun_ImageToPOT(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_ImageCrop(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
     Image *image = (Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
-    Rectangle crop;
-    jrl_get_value(argv, 1, &jrl_type_Rectangle, &crop);
+    Rectangle crop = jrl_get_Rectangle(argv, 1);
     ImageCrop(image, crop);
     return janet_wrap_nil();
 }
@@ -3114,8 +2944,7 @@ static Janet jrl_cfun_ImageAlphaCrop(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_ImageAlphaClear(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
     Image *image = (Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
-    Color color;
-    jrl_get_value(argv, 1, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 1);
     float threshold = jrl_get_float(argv, 2);
     ImageAlphaClear(image, color, threshold);
     return janet_wrap_nil();
@@ -3188,8 +3017,7 @@ static Janet jrl_cfun_ImageResizeCanvas(int32_t argc, Janet *argv) {
     int newHeight = jrl_get_int(argv, 2);
     int offsetX = jrl_get_int(argv, 3);
     int offsetY = jrl_get_int(argv, 4);
-    Color fill;
-    jrl_get_value(argv, 5, &jrl_type_Color, &fill);
+    Color fill = jrl_get_Color(argv, 5);
     ImageResizeCanvas(image, newWidth, newHeight, offsetX, offsetY, fill);
     return janet_wrap_nil();
 }
@@ -3259,8 +3087,7 @@ static Janet jrl_cfun_ImageRotateCCW(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_ImageColorTint(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
     Image *image = (Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
-    Color color;
-    jrl_get_value(argv, 1, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 1);
     ImageColorTint(image, color);
     return janet_wrap_nil();
 }
@@ -3303,10 +3130,8 @@ static Janet jrl_cfun_ImageColorBrightness(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_ImageColorReplace(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
     Image *image = (Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
-    Color color;
-    jrl_get_value(argv, 1, &jrl_type_Color, &color);
-    Color replace;
-    jrl_get_value(argv, 2, &jrl_type_Color, &replace);
+    Color color = jrl_get_Color(argv, 1);
+    Color replace = jrl_get_Color(argv, 2);
     ImageColorReplace(image, color, replace);
     return janet_wrap_nil();
 }
@@ -3341,7 +3166,7 @@ static Janet jrl_cfun_GetImageAlphaBorder(int32_t argc, Janet *argv) {
     Image image = *(Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
     float threshold = jrl_get_float(argv, 1);
     Rectangle jrl_ret = GetImageAlphaBorder(image, threshold);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Rectangle, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Rectangle(jrl_ret);
     return jrl_value;
 }
 
@@ -3352,7 +3177,7 @@ static Janet jrl_cfun_GetImageColor(int32_t argc, Janet *argv) {
     int x = jrl_get_int(argv, 1);
     int y = jrl_get_int(argv, 2);
     Color jrl_ret = GetImageColor(image, x, y);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Color, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Color(jrl_ret);
     return jrl_value;
 }
 
@@ -3360,8 +3185,7 @@ static Janet jrl_cfun_GetImageColor(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_ImageClearBackground(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
     Image *dst = (Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
-    Color color;
-    jrl_get_value(argv, 1, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 1);
     ImageClearBackground(dst, color);
     return janet_wrap_nil();
 }
@@ -3372,8 +3196,7 @@ static Janet jrl_cfun_ImageDrawPixel(int32_t argc, Janet *argv) {
     Image *dst = (Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
     int posX = jrl_get_int(argv, 1);
     int posY = jrl_get_int(argv, 2);
-    Color color;
-    jrl_get_value(argv, 3, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 3);
     ImageDrawPixel(dst, posX, posY, color);
     return janet_wrap_nil();
 }
@@ -3382,10 +3205,8 @@ static Janet jrl_cfun_ImageDrawPixel(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_ImageDrawPixelV(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
     Image *dst = (Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
-    Vector2 position;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &position);
-    Color color;
-    jrl_get_value(argv, 2, &jrl_type_Color, &color);
+    Vector2 position = jrl_get_Vector2(argv, 1);
+    Color color = jrl_get_Color(argv, 2);
     ImageDrawPixelV(dst, position, color);
     return janet_wrap_nil();
 }
@@ -3398,8 +3219,7 @@ static Janet jrl_cfun_ImageDrawLine(int32_t argc, Janet *argv) {
     int startPosY = jrl_get_int(argv, 2);
     int endPosX = jrl_get_int(argv, 3);
     int endPosY = jrl_get_int(argv, 4);
-    Color color;
-    jrl_get_value(argv, 5, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 5);
     ImageDrawLine(dst, startPosX, startPosY, endPosX, endPosY, color);
     return janet_wrap_nil();
 }
@@ -3408,12 +3228,9 @@ static Janet jrl_cfun_ImageDrawLine(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_ImageDrawLineV(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
     Image *dst = (Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
-    Vector2 start;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &start);
-    Vector2 end;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &end);
-    Color color;
-    jrl_get_value(argv, 3, &jrl_type_Color, &color);
+    Vector2 start = jrl_get_Vector2(argv, 1);
+    Vector2 end = jrl_get_Vector2(argv, 2);
+    Color color = jrl_get_Color(argv, 3);
     ImageDrawLineV(dst, start, end, color);
     return janet_wrap_nil();
 }
@@ -3422,13 +3239,10 @@ static Janet jrl_cfun_ImageDrawLineV(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_ImageDrawLineEx(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 5);
     Image *dst = (Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
-    Vector2 start;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &start);
-    Vector2 end;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &end);
+    Vector2 start = jrl_get_Vector2(argv, 1);
+    Vector2 end = jrl_get_Vector2(argv, 2);
     int thick = jrl_get_int(argv, 3);
-    Color color;
-    jrl_get_value(argv, 4, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 4);
     ImageDrawLineEx(dst, start, end, thick, color);
     return janet_wrap_nil();
 }
@@ -3440,8 +3254,7 @@ static Janet jrl_cfun_ImageDrawCircle(int32_t argc, Janet *argv) {
     int centerX = jrl_get_int(argv, 1);
     int centerY = jrl_get_int(argv, 2);
     int radius = jrl_get_int(argv, 3);
-    Color color;
-    jrl_get_value(argv, 4, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 4);
     ImageDrawCircle(dst, centerX, centerY, radius, color);
     return janet_wrap_nil();
 }
@@ -3450,11 +3263,9 @@ static Janet jrl_cfun_ImageDrawCircle(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_ImageDrawCircleV(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
     Image *dst = (Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
-    Vector2 center;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &center);
+    Vector2 center = jrl_get_Vector2(argv, 1);
     int radius = jrl_get_int(argv, 2);
-    Color color;
-    jrl_get_value(argv, 3, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 3);
     ImageDrawCircleV(dst, center, radius, color);
     return janet_wrap_nil();
 }
@@ -3466,8 +3277,7 @@ static Janet jrl_cfun_ImageDrawCircleLines(int32_t argc, Janet *argv) {
     int centerX = jrl_get_int(argv, 1);
     int centerY = jrl_get_int(argv, 2);
     int radius = jrl_get_int(argv, 3);
-    Color color;
-    jrl_get_value(argv, 4, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 4);
     ImageDrawCircleLines(dst, centerX, centerY, radius, color);
     return janet_wrap_nil();
 }
@@ -3476,11 +3286,9 @@ static Janet jrl_cfun_ImageDrawCircleLines(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_ImageDrawCircleLinesV(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
     Image *dst = (Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
-    Vector2 center;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &center);
+    Vector2 center = jrl_get_Vector2(argv, 1);
     int radius = jrl_get_int(argv, 2);
-    Color color;
-    jrl_get_value(argv, 3, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 3);
     ImageDrawCircleLinesV(dst, center, radius, color);
     return janet_wrap_nil();
 }
@@ -3493,8 +3301,7 @@ static Janet jrl_cfun_ImageDrawRectangle(int32_t argc, Janet *argv) {
     int posY = jrl_get_int(argv, 2);
     int width = jrl_get_int(argv, 3);
     int height = jrl_get_int(argv, 4);
-    Color color;
-    jrl_get_value(argv, 5, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 5);
     ImageDrawRectangle(dst, posX, posY, width, height, color);
     return janet_wrap_nil();
 }
@@ -3503,12 +3310,9 @@ static Janet jrl_cfun_ImageDrawRectangle(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_ImageDrawRectangleV(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
     Image *dst = (Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
-    Vector2 position;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &position);
-    Vector2 size;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &size);
-    Color color;
-    jrl_get_value(argv, 3, &jrl_type_Color, &color);
+    Vector2 position = jrl_get_Vector2(argv, 1);
+    Vector2 size = jrl_get_Vector2(argv, 2);
+    Color color = jrl_get_Color(argv, 3);
     ImageDrawRectangleV(dst, position, size, color);
     return janet_wrap_nil();
 }
@@ -3517,10 +3321,8 @@ static Janet jrl_cfun_ImageDrawRectangleV(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_ImageDrawRectangleRec(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
     Image *dst = (Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
-    Rectangle rec;
-    jrl_get_value(argv, 1, &jrl_type_Rectangle, &rec);
-    Color color;
-    jrl_get_value(argv, 2, &jrl_type_Color, &color);
+    Rectangle rec = jrl_get_Rectangle(argv, 1);
+    Color color = jrl_get_Color(argv, 2);
     ImageDrawRectangleRec(dst, rec, color);
     return janet_wrap_nil();
 }
@@ -3529,11 +3331,9 @@ static Janet jrl_cfun_ImageDrawRectangleRec(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_ImageDrawRectangleLines(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
     Image *dst = (Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
-    Rectangle rec;
-    jrl_get_value(argv, 1, &jrl_type_Rectangle, &rec);
+    Rectangle rec = jrl_get_Rectangle(argv, 1);
     int thick = jrl_get_int(argv, 2);
-    Color color;
-    jrl_get_value(argv, 3, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 3);
     ImageDrawRectangleLines(dst, rec, thick, color);
     return janet_wrap_nil();
 }
@@ -3542,14 +3342,10 @@ static Janet jrl_cfun_ImageDrawRectangleLines(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_ImageDrawTriangle(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 5);
     Image *dst = (Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
-    Vector2 v1;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &v1);
-    Vector2 v2;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &v2);
-    Vector2 v3;
-    jrl_get_value(argv, 3, &jrl_type_Vector2, &v3);
-    Color color;
-    jrl_get_value(argv, 4, &jrl_type_Color, &color);
+    Vector2 v1 = jrl_get_Vector2(argv, 1);
+    Vector2 v2 = jrl_get_Vector2(argv, 2);
+    Vector2 v3 = jrl_get_Vector2(argv, 3);
+    Color color = jrl_get_Color(argv, 4);
     ImageDrawTriangle(dst, v1, v2, v3, color);
     return janet_wrap_nil();
 }
@@ -3558,18 +3354,12 @@ static Janet jrl_cfun_ImageDrawTriangle(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_ImageDrawTriangleEx(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 7);
     Image *dst = (Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
-    Vector2 v1;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &v1);
-    Vector2 v2;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &v2);
-    Vector2 v3;
-    jrl_get_value(argv, 3, &jrl_type_Vector2, &v3);
-    Color c1;
-    jrl_get_value(argv, 4, &jrl_type_Color, &c1);
-    Color c2;
-    jrl_get_value(argv, 5, &jrl_type_Color, &c2);
-    Color c3;
-    jrl_get_value(argv, 6, &jrl_type_Color, &c3);
+    Vector2 v1 = jrl_get_Vector2(argv, 1);
+    Vector2 v2 = jrl_get_Vector2(argv, 2);
+    Vector2 v3 = jrl_get_Vector2(argv, 3);
+    Color c1 = jrl_get_Color(argv, 4);
+    Color c2 = jrl_get_Color(argv, 5);
+    Color c3 = jrl_get_Color(argv, 6);
     ImageDrawTriangleEx(dst, v1, v2, v3, c1, c2, c3);
     return janet_wrap_nil();
 }
@@ -3578,14 +3368,10 @@ static Janet jrl_cfun_ImageDrawTriangleEx(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_ImageDrawTriangleLines(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 5);
     Image *dst = (Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
-    Vector2 v1;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &v1);
-    Vector2 v2;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &v2);
-    Vector2 v3;
-    jrl_get_value(argv, 3, &jrl_type_Vector2, &v3);
-    Color color;
-    jrl_get_value(argv, 4, &jrl_type_Color, &color);
+    Vector2 v1 = jrl_get_Vector2(argv, 1);
+    Vector2 v2 = jrl_get_Vector2(argv, 2);
+    Vector2 v3 = jrl_get_Vector2(argv, 3);
+    Color color = jrl_get_Color(argv, 4);
     ImageDrawTriangleLines(dst, v1, v2, v3, color);
     return janet_wrap_nil();
 }
@@ -3595,8 +3381,7 @@ static Janet jrl_cfun_ImageDrawTriangleFan(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
     Image *dst = (Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
     int pointCount = 0;
-    Color color;
-    jrl_get_value(argv, 2, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 2);
     int32_t jrl_n_points = 0;
     Vector2* points = (Vector2*) jrl_get_carray(argv, 1, JRL_K_TYPE, &jrl_type_Vector2, NULL, 0, 0, &jrl_n_points);
     pointCount = jrl_n_points;
@@ -3610,8 +3395,7 @@ static Janet jrl_cfun_ImageDrawTriangleStrip(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
     Image *dst = (Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
     int pointCount = 0;
-    Color color;
-    jrl_get_value(argv, 2, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 2);
     int32_t jrl_n_points = 0;
     Vector2* points = (Vector2*) jrl_get_carray(argv, 1, JRL_K_TYPE, &jrl_type_Vector2, NULL, 0, 0, &jrl_n_points);
     pointCount = jrl_n_points;
@@ -3625,12 +3409,9 @@ static Janet jrl_cfun_ImageDraw(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 5);
     Image *dst = (Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
     Image src = *(Image *) jrl_get_handle(argv, 1, &jrl_type_Image);
-    Rectangle srcRec;
-    jrl_get_value(argv, 2, &jrl_type_Rectangle, &srcRec);
-    Rectangle dstRec;
-    jrl_get_value(argv, 3, &jrl_type_Rectangle, &dstRec);
-    Color tint;
-    jrl_get_value(argv, 4, &jrl_type_Color, &tint);
+    Rectangle srcRec = jrl_get_Rectangle(argv, 2);
+    Rectangle dstRec = jrl_get_Rectangle(argv, 3);
+    Color tint = jrl_get_Color(argv, 4);
     ImageDraw(dst, src, srcRec, dstRec, tint);
     return janet_wrap_nil();
 }
@@ -3643,8 +3424,7 @@ static Janet jrl_cfun_ImageDrawText(int32_t argc, Janet *argv) {
     int posX = jrl_get_int(argv, 2);
     int posY = jrl_get_int(argv, 3);
     int fontSize = jrl_get_int(argv, 4);
-    Color color;
-    jrl_get_value(argv, 5, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 5);
     ImageDrawText(dst, text, posX, posY, fontSize, color);
     return janet_wrap_nil();
 }
@@ -3655,12 +3435,10 @@ static Janet jrl_cfun_ImageDrawTextEx(int32_t argc, Janet *argv) {
     Image *dst = (Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
     Font font = *(Font *) jrl_get_handle(argv, 1, &jrl_type_Font);
     const char *text = jrl_get_cstring(argv, 2);
-    Vector2 position;
-    jrl_get_value(argv, 3, &jrl_type_Vector2, &position);
+    Vector2 position = jrl_get_Vector2(argv, 3);
     float fontSize = jrl_get_float(argv, 4);
     float spacing = jrl_get_float(argv, 5);
-    Color tint;
-    jrl_get_value(argv, 6, &jrl_type_Color, &tint);
+    Color tint = jrl_get_Color(argv, 6);
     ImageDrawTextEx(dst, font, text, position, fontSize, spacing, tint);
     return janet_wrap_nil();
 }
@@ -3755,8 +3533,7 @@ static Janet jrl_cfun_UpdateTexture(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_UpdateTextureRec(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
     Texture2D texture = *(Texture2D *) jrl_get_handle(argv, 0, &jrl_type_Texture);
-    Rectangle rec;
-    jrl_get_value(argv, 1, &jrl_type_Rectangle, &rec);
+    Rectangle rec = jrl_get_Rectangle(argv, 1);
     JanetByteView jrl_v_pixels = jrl_get_bytes(argv, 2, 0);
     const void* pixels = (const void*) jrl_v_pixels.bytes;
     if (jrl_v_pixels.bytes != NULL && jrl_v_pixels.len < (int32_t) (GetPixelDataSize((int)rec.width, (int)rec.height, texture.format)))
@@ -3797,8 +3574,7 @@ static Janet jrl_cfun_DrawTexture(int32_t argc, Janet *argv) {
     Texture2D texture = *(Texture2D *) jrl_get_handle(argv, 0, &jrl_type_Texture);
     int posX = jrl_get_int(argv, 1);
     int posY = jrl_get_int(argv, 2);
-    Color tint;
-    jrl_get_value(argv, 3, &jrl_type_Color, &tint);
+    Color tint = jrl_get_Color(argv, 3);
     DrawTexture(texture, posX, posY, tint);
     return janet_wrap_nil();
 }
@@ -3807,10 +3583,8 @@ static Janet jrl_cfun_DrawTexture(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_DrawTextureV(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
     Texture2D texture = *(Texture2D *) jrl_get_handle(argv, 0, &jrl_type_Texture);
-    Vector2 position;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &position);
-    Color tint;
-    jrl_get_value(argv, 2, &jrl_type_Color, &tint);
+    Vector2 position = jrl_get_Vector2(argv, 1);
+    Color tint = jrl_get_Color(argv, 2);
     DrawTextureV(texture, position, tint);
     return janet_wrap_nil();
 }
@@ -3819,12 +3593,10 @@ static Janet jrl_cfun_DrawTextureV(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_DrawTextureEx(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 5);
     Texture2D texture = *(Texture2D *) jrl_get_handle(argv, 0, &jrl_type_Texture);
-    Vector2 position;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &position);
+    Vector2 position = jrl_get_Vector2(argv, 1);
     float rotation = jrl_get_float(argv, 2);
     float scale = jrl_get_float(argv, 3);
-    Color tint;
-    jrl_get_value(argv, 4, &jrl_type_Color, &tint);
+    Color tint = jrl_get_Color(argv, 4);
     DrawTextureEx(texture, position, rotation, scale, tint);
     return janet_wrap_nil();
 }
@@ -3833,12 +3605,9 @@ static Janet jrl_cfun_DrawTextureEx(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_DrawTextureRec(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
     Texture2D texture = *(Texture2D *) jrl_get_handle(argv, 0, &jrl_type_Texture);
-    Rectangle source;
-    jrl_get_value(argv, 1, &jrl_type_Rectangle, &source);
-    Vector2 position;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &position);
-    Color tint;
-    jrl_get_value(argv, 3, &jrl_type_Color, &tint);
+    Rectangle source = jrl_get_Rectangle(argv, 1);
+    Vector2 position = jrl_get_Vector2(argv, 2);
+    Color tint = jrl_get_Color(argv, 3);
     DrawTextureRec(texture, source, position, tint);
     return janet_wrap_nil();
 }
@@ -3847,15 +3616,11 @@ static Janet jrl_cfun_DrawTextureRec(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_DrawTexturePro(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 6);
     Texture2D texture = *(Texture2D *) jrl_get_handle(argv, 0, &jrl_type_Texture);
-    Rectangle source;
-    jrl_get_value(argv, 1, &jrl_type_Rectangle, &source);
-    Rectangle dest;
-    jrl_get_value(argv, 2, &jrl_type_Rectangle, &dest);
-    Vector2 origin;
-    jrl_get_value(argv, 3, &jrl_type_Vector2, &origin);
+    Rectangle source = jrl_get_Rectangle(argv, 1);
+    Rectangle dest = jrl_get_Rectangle(argv, 2);
+    Vector2 origin = jrl_get_Vector2(argv, 3);
     float rotation = jrl_get_float(argv, 4);
-    Color tint;
-    jrl_get_value(argv, 5, &jrl_type_Color, &tint);
+    Color tint = jrl_get_Color(argv, 5);
     DrawTexturePro(texture, source, dest, origin, rotation, tint);
     return janet_wrap_nil();
 }
@@ -3866,13 +3631,10 @@ static Janet jrl_cfun_DrawTextureNPatch(int32_t argc, Janet *argv) {
     Texture2D texture = *(Texture2D *) jrl_get_handle(argv, 0, &jrl_type_Texture);
     NPatchInfo nPatchInfo;
     jrl_get_value(argv, 1, &jrl_type_NPatchInfo, &nPatchInfo);
-    Rectangle dest;
-    jrl_get_value(argv, 2, &jrl_type_Rectangle, &dest);
-    Vector2 origin;
-    jrl_get_value(argv, 3, &jrl_type_Vector2, &origin);
+    Rectangle dest = jrl_get_Rectangle(argv, 2);
+    Vector2 origin = jrl_get_Vector2(argv, 3);
     float rotation = jrl_get_float(argv, 4);
-    Color tint;
-    jrl_get_value(argv, 5, &jrl_type_Color, &tint);
+    Color tint = jrl_get_Color(argv, 5);
     DrawTextureNPatch(texture, nPatchInfo, dest, origin, rotation, tint);
     return janet_wrap_nil();
 }
@@ -3880,10 +3642,8 @@ static Janet jrl_cfun_DrawTextureNPatch(int32_t argc, Janet *argv) {
 /* bool ColorIsEqual(Color col1, Color col2) */
 static Janet jrl_cfun_ColorIsEqual(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Color col1;
-    jrl_get_value(argv, 0, &jrl_type_Color, &col1);
-    Color col2;
-    jrl_get_value(argv, 1, &jrl_type_Color, &col2);
+    Color col1 = jrl_get_Color(argv, 0);
+    Color col2 = jrl_get_Color(argv, 1);
     bool jrl_ret = ColorIsEqual(col1, col2);
     Janet jrl_value = janet_wrap_boolean(jrl_ret);
     return jrl_value;
@@ -3892,19 +3652,17 @@ static Janet jrl_cfun_ColorIsEqual(int32_t argc, Janet *argv) {
 /* Color Fade(Color color, float alpha) */
 static Janet jrl_cfun_Fade(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Color color;
-    jrl_get_value(argv, 0, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 0);
     float alpha = jrl_get_float(argv, 1);
     Color jrl_ret = Fade(color, alpha);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Color, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Color(jrl_ret);
     return jrl_value;
 }
 
 /* int ColorToInt(Color color) */
 static Janet jrl_cfun_ColorToInt(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Color color;
-    jrl_get_value(argv, 0, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 0);
     int jrl_ret = ColorToInt(color);
     Janet jrl_value = janet_wrap_integer(jrl_ret);
     return jrl_value;
@@ -3913,30 +3671,27 @@ static Janet jrl_cfun_ColorToInt(int32_t argc, Janet *argv) {
 /* Vector4 ColorNormalize(Color color) */
 static Janet jrl_cfun_ColorNormalize(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Color color;
-    jrl_get_value(argv, 0, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 0);
     Vector4 jrl_ret = ColorNormalize(color);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Color ColorFromNormalized(Vector4 normalized) */
 static Janet jrl_cfun_ColorFromNormalized(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector4 normalized;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &normalized);
+    Vector4 normalized = jrl_get_Vector4(argv, 0);
     Color jrl_ret = ColorFromNormalized(normalized);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Color, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Color(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 ColorToHSV(Color color) */
 static Janet jrl_cfun_ColorToHSV(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Color color;
-    jrl_get_value(argv, 0, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 0);
     Vector3 jrl_ret = ColorToHSV(color);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
@@ -3947,79 +3702,69 @@ static Janet jrl_cfun_ColorFromHSV(int32_t argc, Janet *argv) {
     float saturation = jrl_get_float(argv, 1);
     float value = jrl_get_float(argv, 2);
     Color jrl_ret = ColorFromHSV(hue, saturation, value);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Color, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Color(jrl_ret);
     return jrl_value;
 }
 
 /* Color ColorTint(Color color, Color tint) */
 static Janet jrl_cfun_ColorTint(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Color color;
-    jrl_get_value(argv, 0, &jrl_type_Color, &color);
-    Color tint;
-    jrl_get_value(argv, 1, &jrl_type_Color, &tint);
+    Color color = jrl_get_Color(argv, 0);
+    Color tint = jrl_get_Color(argv, 1);
     Color jrl_ret = ColorTint(color, tint);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Color, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Color(jrl_ret);
     return jrl_value;
 }
 
 /* Color ColorBrightness(Color color, float factor) */
 static Janet jrl_cfun_ColorBrightness(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Color color;
-    jrl_get_value(argv, 0, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 0);
     float factor = jrl_get_float(argv, 1);
     Color jrl_ret = ColorBrightness(color, factor);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Color, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Color(jrl_ret);
     return jrl_value;
 }
 
 /* Color ColorContrast(Color color, float contrast) */
 static Janet jrl_cfun_ColorContrast(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Color color;
-    jrl_get_value(argv, 0, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 0);
     float contrast = jrl_get_float(argv, 1);
     Color jrl_ret = ColorContrast(color, contrast);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Color, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Color(jrl_ret);
     return jrl_value;
 }
 
 /* Color ColorAlpha(Color color, float alpha) */
 static Janet jrl_cfun_ColorAlpha(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Color color;
-    jrl_get_value(argv, 0, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 0);
     float alpha = jrl_get_float(argv, 1);
     Color jrl_ret = ColorAlpha(color, alpha);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Color, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Color(jrl_ret);
     return jrl_value;
 }
 
 /* Color ColorAlphaBlend(Color dst, Color src, Color tint) */
 static Janet jrl_cfun_ColorAlphaBlend(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Color dst;
-    jrl_get_value(argv, 0, &jrl_type_Color, &dst);
-    Color src;
-    jrl_get_value(argv, 1, &jrl_type_Color, &src);
-    Color tint;
-    jrl_get_value(argv, 2, &jrl_type_Color, &tint);
+    Color dst = jrl_get_Color(argv, 0);
+    Color src = jrl_get_Color(argv, 1);
+    Color tint = jrl_get_Color(argv, 2);
     Color jrl_ret = ColorAlphaBlend(dst, src, tint);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Color, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Color(jrl_ret);
     return jrl_value;
 }
 
 /* Color ColorLerp(Color color1, Color color2, float factor) */
 static Janet jrl_cfun_ColorLerp(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Color color1;
-    jrl_get_value(argv, 0, &jrl_type_Color, &color1);
-    Color color2;
-    jrl_get_value(argv, 1, &jrl_type_Color, &color2);
+    Color color1 = jrl_get_Color(argv, 0);
+    Color color2 = jrl_get_Color(argv, 1);
     float factor = jrl_get_float(argv, 2);
     Color jrl_ret = ColorLerp(color1, color2, factor);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Color, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Color(jrl_ret);
     return jrl_value;
 }
 
@@ -4028,7 +3773,7 @@ static Janet jrl_cfun_GetColor(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
     unsigned int hexValue = jrl_get_uint_bits(argv, 0);
     Color jrl_ret = GetColor(hexValue);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Color, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Color(jrl_ret);
     return jrl_value;
 }
 
@@ -4041,15 +3786,14 @@ static Janet jrl_cfun_GetPixelColor(int32_t argc, Janet *argv) {
     if (jrl_v_srcPtr.bytes != NULL && jrl_v_srcPtr.len < (int32_t) (GetPixelDataSize(1, 1, format)))
         janet_panicf("argument %d: expected at least %d bytes, got %d", 0, (int32_t) (GetPixelDataSize(1, 1, format)), jrl_v_srcPtr.len);
     Color jrl_ret = GetPixelColor(srcPtr, format);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Color, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Color(jrl_ret);
     return jrl_value;
 }
 
 /* void SetPixelColor(void * dstPtr, Color color, int format) */
 static Janet jrl_cfun_SetPixelColor(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Color color;
-    jrl_get_value(argv, 1, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 1);
     int format = (int) jrl_get_enum(argv, 2, &jrl_enum_PixelFormat);
     JanetBuffer *jrl_b_dstPtr = janet_getbuffer(argv, 0);
     void* dstPtr = jrl_b_dstPtr->data;
@@ -4107,8 +3851,7 @@ static Janet jrl_cfun_LoadFontEx(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_LoadFontFromImage(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
     Image image = *(Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
-    Color key;
-    jrl_get_value(argv, 1, &jrl_type_Color, &key);
+    Color key = jrl_get_Color(argv, 1);
     int firstChar = jrl_get_int(argv, 2);
     Font jrl_ret = LoadFontFromImage(image, key, firstChar);
     Janet jrl_value = jrl_handle_new(&jrl_type_Font, &jrl_ret, 0);
@@ -4210,8 +3953,7 @@ static Janet jrl_cfun_DrawText(int32_t argc, Janet *argv) {
     int posX = jrl_get_int(argv, 1);
     int posY = jrl_get_int(argv, 2);
     int fontSize = jrl_get_int(argv, 3);
-    Color color;
-    jrl_get_value(argv, 4, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 4);
     DrawText(text, posX, posY, fontSize, color);
     return janet_wrap_nil();
 }
@@ -4221,12 +3963,10 @@ static Janet jrl_cfun_DrawTextEx(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 6);
     Font font = *(Font *) jrl_get_handle(argv, 0, &jrl_type_Font);
     const char *text = jrl_get_cstring(argv, 1);
-    Vector2 position;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &position);
+    Vector2 position = jrl_get_Vector2(argv, 2);
     float fontSize = jrl_get_float(argv, 3);
     float spacing = jrl_get_float(argv, 4);
-    Color tint;
-    jrl_get_value(argv, 5, &jrl_type_Color, &tint);
+    Color tint = jrl_get_Color(argv, 5);
     DrawTextEx(font, text, position, fontSize, spacing, tint);
     return janet_wrap_nil();
 }
@@ -4236,15 +3976,12 @@ static Janet jrl_cfun_DrawTextPro(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 8);
     Font font = *(Font *) jrl_get_handle(argv, 0, &jrl_type_Font);
     const char *text = jrl_get_cstring(argv, 1);
-    Vector2 position;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &position);
-    Vector2 origin;
-    jrl_get_value(argv, 3, &jrl_type_Vector2, &origin);
+    Vector2 position = jrl_get_Vector2(argv, 2);
+    Vector2 origin = jrl_get_Vector2(argv, 3);
     float rotation = jrl_get_float(argv, 4);
     float fontSize = jrl_get_float(argv, 5);
     float spacing = jrl_get_float(argv, 6);
-    Color tint;
-    jrl_get_value(argv, 7, &jrl_type_Color, &tint);
+    Color tint = jrl_get_Color(argv, 7);
     DrawTextPro(font, text, position, origin, rotation, fontSize, spacing, tint);
     return janet_wrap_nil();
 }
@@ -4254,11 +3991,9 @@ static Janet jrl_cfun_DrawTextCodepoint(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 5);
     Font font = *(Font *) jrl_get_handle(argv, 0, &jrl_type_Font);
     int codepoint = jrl_get_int(argv, 1);
-    Vector2 position;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &position);
+    Vector2 position = jrl_get_Vector2(argv, 2);
     float fontSize = jrl_get_float(argv, 3);
-    Color tint;
-    jrl_get_value(argv, 4, &jrl_type_Color, &tint);
+    Color tint = jrl_get_Color(argv, 4);
     DrawTextCodepoint(font, codepoint, position, fontSize, tint);
     return janet_wrap_nil();
 }
@@ -4268,12 +4003,10 @@ static Janet jrl_cfun_DrawTextCodepoints(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 6);
     Font font = *(Font *) jrl_get_handle(argv, 0, &jrl_type_Font);
     int codepointCount = 0;
-    Vector2 position;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &position);
+    Vector2 position = jrl_get_Vector2(argv, 2);
     float fontSize = jrl_get_float(argv, 3);
     float spacing = jrl_get_float(argv, 4);
-    Color tint;
-    jrl_get_value(argv, 5, &jrl_type_Color, &tint);
+    Color tint = jrl_get_Color(argv, 5);
     int32_t jrl_n_codepoints = 0;
     const int* codepoints = (const int*) jrl_get_carray(argv, 1, JRL_K_INT, NULL, NULL, 0, 0, &jrl_n_codepoints);
     codepointCount = jrl_n_codepoints;
@@ -4308,7 +4041,7 @@ static Janet jrl_cfun_MeasureTextEx(int32_t argc, Janet *argv) {
     float fontSize = jrl_get_float(argv, 2);
     float spacing = jrl_get_float(argv, 3);
     Vector2 jrl_ret = MeasureTextEx(font, text, fontSize, spacing);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
@@ -4338,7 +4071,7 @@ static Janet jrl_cfun_GetGlyphAtlasRec(int32_t argc, Janet *argv) {
     Font font = *(Font *) jrl_get_handle(argv, 0, &jrl_type_Font);
     int codepoint = jrl_get_int(argv, 1);
     Rectangle jrl_ret = GetGlyphAtlasRec(font, codepoint);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Rectangle, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Rectangle(jrl_ret);
     return jrl_value;
 }
 
@@ -4569,12 +4302,9 @@ static Janet jrl_cfun_TextToFloat(int32_t argc, Janet *argv) {
 /* void DrawLine3D(Vector3 startPos, Vector3 endPos, Color color) */
 static Janet jrl_cfun_DrawLine3D(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector3 startPos;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &startPos);
-    Vector3 endPos;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &endPos);
-    Color color;
-    jrl_get_value(argv, 2, &jrl_type_Color, &color);
+    Vector3 startPos = jrl_get_Vector3(argv, 0);
+    Vector3 endPos = jrl_get_Vector3(argv, 1);
+    Color color = jrl_get_Color(argv, 2);
     DrawLine3D(startPos, endPos, color);
     return janet_wrap_nil();
 }
@@ -4582,10 +4312,8 @@ static Janet jrl_cfun_DrawLine3D(int32_t argc, Janet *argv) {
 /* void DrawPoint3D(Vector3 position, Color color) */
 static Janet jrl_cfun_DrawPoint3D(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 position;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &position);
-    Color color;
-    jrl_get_value(argv, 1, &jrl_type_Color, &color);
+    Vector3 position = jrl_get_Vector3(argv, 0);
+    Color color = jrl_get_Color(argv, 1);
     DrawPoint3D(position, color);
     return janet_wrap_nil();
 }
@@ -4593,14 +4321,11 @@ static Janet jrl_cfun_DrawPoint3D(int32_t argc, Janet *argv) {
 /* void DrawCircle3D(Vector3 center, float radius, Vector3 rotationAxis, float rotationAngle, Color color) */
 static Janet jrl_cfun_DrawCircle3D(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 5);
-    Vector3 center;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &center);
+    Vector3 center = jrl_get_Vector3(argv, 0);
     float radius = jrl_get_float(argv, 1);
-    Vector3 rotationAxis;
-    jrl_get_value(argv, 2, &jrl_type_Vector3, &rotationAxis);
+    Vector3 rotationAxis = jrl_get_Vector3(argv, 2);
     float rotationAngle = jrl_get_float(argv, 3);
-    Color color;
-    jrl_get_value(argv, 4, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 4);
     DrawCircle3D(center, radius, rotationAxis, rotationAngle, color);
     return janet_wrap_nil();
 }
@@ -4608,14 +4333,10 @@ static Janet jrl_cfun_DrawCircle3D(int32_t argc, Janet *argv) {
 /* void DrawTriangle3D(Vector3 v1, Vector3 v2, Vector3 v3, Color color) */
 static Janet jrl_cfun_DrawTriangle3D(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
-    Vector3 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v1);
-    Vector3 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &v2);
-    Vector3 v3;
-    jrl_get_value(argv, 2, &jrl_type_Vector3, &v3);
-    Color color;
-    jrl_get_value(argv, 3, &jrl_type_Color, &color);
+    Vector3 v1 = jrl_get_Vector3(argv, 0);
+    Vector3 v2 = jrl_get_Vector3(argv, 1);
+    Vector3 v3 = jrl_get_Vector3(argv, 2);
+    Color color = jrl_get_Color(argv, 3);
     DrawTriangle3D(v1, v2, v3, color);
     return janet_wrap_nil();
 }
@@ -4624,8 +4345,7 @@ static Janet jrl_cfun_DrawTriangle3D(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_DrawTriangleStrip3D(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
     int pointCount = 0;
-    Color color;
-    jrl_get_value(argv, 1, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 1);
     int32_t jrl_n_points = 0;
     const Vector3* points = (const Vector3*) jrl_get_carray(argv, 0, JRL_K_TYPE, &jrl_type_Vector3, NULL, 0, 0, &jrl_n_points);
     pointCount = jrl_n_points;
@@ -4637,13 +4357,11 @@ static Janet jrl_cfun_DrawTriangleStrip3D(int32_t argc, Janet *argv) {
 /* void DrawCube(Vector3 position, float width, float height, float length, Color color) */
 static Janet jrl_cfun_DrawCube(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 5);
-    Vector3 position;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &position);
+    Vector3 position = jrl_get_Vector3(argv, 0);
     float width = jrl_get_float(argv, 1);
     float height = jrl_get_float(argv, 2);
     float length = jrl_get_float(argv, 3);
-    Color color;
-    jrl_get_value(argv, 4, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 4);
     DrawCube(position, width, height, length, color);
     return janet_wrap_nil();
 }
@@ -4651,12 +4369,9 @@ static Janet jrl_cfun_DrawCube(int32_t argc, Janet *argv) {
 /* void DrawCubeV(Vector3 position, Vector3 size, Color color) */
 static Janet jrl_cfun_DrawCubeV(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector3 position;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &position);
-    Vector3 size;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &size);
-    Color color;
-    jrl_get_value(argv, 2, &jrl_type_Color, &color);
+    Vector3 position = jrl_get_Vector3(argv, 0);
+    Vector3 size = jrl_get_Vector3(argv, 1);
+    Color color = jrl_get_Color(argv, 2);
     DrawCubeV(position, size, color);
     return janet_wrap_nil();
 }
@@ -4664,13 +4379,11 @@ static Janet jrl_cfun_DrawCubeV(int32_t argc, Janet *argv) {
 /* void DrawCubeWires(Vector3 position, float width, float height, float length, Color color) */
 static Janet jrl_cfun_DrawCubeWires(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 5);
-    Vector3 position;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &position);
+    Vector3 position = jrl_get_Vector3(argv, 0);
     float width = jrl_get_float(argv, 1);
     float height = jrl_get_float(argv, 2);
     float length = jrl_get_float(argv, 3);
-    Color color;
-    jrl_get_value(argv, 4, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 4);
     DrawCubeWires(position, width, height, length, color);
     return janet_wrap_nil();
 }
@@ -4678,12 +4391,9 @@ static Janet jrl_cfun_DrawCubeWires(int32_t argc, Janet *argv) {
 /* void DrawCubeWiresV(Vector3 position, Vector3 size, Color color) */
 static Janet jrl_cfun_DrawCubeWiresV(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector3 position;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &position);
-    Vector3 size;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &size);
-    Color color;
-    jrl_get_value(argv, 2, &jrl_type_Color, &color);
+    Vector3 position = jrl_get_Vector3(argv, 0);
+    Vector3 size = jrl_get_Vector3(argv, 1);
+    Color color = jrl_get_Color(argv, 2);
     DrawCubeWiresV(position, size, color);
     return janet_wrap_nil();
 }
@@ -4691,11 +4401,9 @@ static Janet jrl_cfun_DrawCubeWiresV(int32_t argc, Janet *argv) {
 /* void DrawSphere(Vector3 centerPos, float radius, Color color) */
 static Janet jrl_cfun_DrawSphere(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector3 centerPos;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &centerPos);
+    Vector3 centerPos = jrl_get_Vector3(argv, 0);
     float radius = jrl_get_float(argv, 1);
-    Color color;
-    jrl_get_value(argv, 2, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 2);
     DrawSphere(centerPos, radius, color);
     return janet_wrap_nil();
 }
@@ -4703,13 +4411,11 @@ static Janet jrl_cfun_DrawSphere(int32_t argc, Janet *argv) {
 /* void DrawSphereEx(Vector3 centerPos, float radius, int rings, int slices, Color color) */
 static Janet jrl_cfun_DrawSphereEx(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 5);
-    Vector3 centerPos;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &centerPos);
+    Vector3 centerPos = jrl_get_Vector3(argv, 0);
     float radius = jrl_get_float(argv, 1);
     int rings = jrl_get_int(argv, 2);
     int slices = jrl_get_int(argv, 3);
-    Color color;
-    jrl_get_value(argv, 4, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 4);
     DrawSphereEx(centerPos, radius, rings, slices, color);
     return janet_wrap_nil();
 }
@@ -4717,13 +4423,11 @@ static Janet jrl_cfun_DrawSphereEx(int32_t argc, Janet *argv) {
 /* void DrawSphereWires(Vector3 centerPos, float radius, int rings, int slices, Color color) */
 static Janet jrl_cfun_DrawSphereWires(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 5);
-    Vector3 centerPos;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &centerPos);
+    Vector3 centerPos = jrl_get_Vector3(argv, 0);
     float radius = jrl_get_float(argv, 1);
     int rings = jrl_get_int(argv, 2);
     int slices = jrl_get_int(argv, 3);
-    Color color;
-    jrl_get_value(argv, 4, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 4);
     DrawSphereWires(centerPos, radius, rings, slices, color);
     return janet_wrap_nil();
 }
@@ -4731,14 +4435,12 @@ static Janet jrl_cfun_DrawSphereWires(int32_t argc, Janet *argv) {
 /* void DrawCylinder(Vector3 position, float radiusTop, float radiusBottom, float height, int slices, Color color) */
 static Janet jrl_cfun_DrawCylinder(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 6);
-    Vector3 position;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &position);
+    Vector3 position = jrl_get_Vector3(argv, 0);
     float radiusTop = jrl_get_float(argv, 1);
     float radiusBottom = jrl_get_float(argv, 2);
     float height = jrl_get_float(argv, 3);
     int slices = jrl_get_int(argv, 4);
-    Color color;
-    jrl_get_value(argv, 5, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 5);
     DrawCylinder(position, radiusTop, radiusBottom, height, slices, color);
     return janet_wrap_nil();
 }
@@ -4746,15 +4448,12 @@ static Janet jrl_cfun_DrawCylinder(int32_t argc, Janet *argv) {
 /* void DrawCylinderEx(Vector3 startPos, Vector3 endPos, float startRadius, float endRadius, int sides, Color color) */
 static Janet jrl_cfun_DrawCylinderEx(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 6);
-    Vector3 startPos;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &startPos);
-    Vector3 endPos;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &endPos);
+    Vector3 startPos = jrl_get_Vector3(argv, 0);
+    Vector3 endPos = jrl_get_Vector3(argv, 1);
     float startRadius = jrl_get_float(argv, 2);
     float endRadius = jrl_get_float(argv, 3);
     int sides = jrl_get_int(argv, 4);
-    Color color;
-    jrl_get_value(argv, 5, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 5);
     DrawCylinderEx(startPos, endPos, startRadius, endRadius, sides, color);
     return janet_wrap_nil();
 }
@@ -4762,14 +4461,12 @@ static Janet jrl_cfun_DrawCylinderEx(int32_t argc, Janet *argv) {
 /* void DrawCylinderWires(Vector3 position, float radiusTop, float radiusBottom, float height, int slices, Color color) */
 static Janet jrl_cfun_DrawCylinderWires(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 6);
-    Vector3 position;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &position);
+    Vector3 position = jrl_get_Vector3(argv, 0);
     float radiusTop = jrl_get_float(argv, 1);
     float radiusBottom = jrl_get_float(argv, 2);
     float height = jrl_get_float(argv, 3);
     int slices = jrl_get_int(argv, 4);
-    Color color;
-    jrl_get_value(argv, 5, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 5);
     DrawCylinderWires(position, radiusTop, radiusBottom, height, slices, color);
     return janet_wrap_nil();
 }
@@ -4777,15 +4474,12 @@ static Janet jrl_cfun_DrawCylinderWires(int32_t argc, Janet *argv) {
 /* void DrawCylinderWiresEx(Vector3 startPos, Vector3 endPos, float startRadius, float endRadius, int sides, Color color) */
 static Janet jrl_cfun_DrawCylinderWiresEx(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 6);
-    Vector3 startPos;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &startPos);
-    Vector3 endPos;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &endPos);
+    Vector3 startPos = jrl_get_Vector3(argv, 0);
+    Vector3 endPos = jrl_get_Vector3(argv, 1);
     float startRadius = jrl_get_float(argv, 2);
     float endRadius = jrl_get_float(argv, 3);
     int sides = jrl_get_int(argv, 4);
-    Color color;
-    jrl_get_value(argv, 5, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 5);
     DrawCylinderWiresEx(startPos, endPos, startRadius, endRadius, sides, color);
     return janet_wrap_nil();
 }
@@ -4793,15 +4487,12 @@ static Janet jrl_cfun_DrawCylinderWiresEx(int32_t argc, Janet *argv) {
 /* void DrawCapsule(Vector3 startPos, Vector3 endPos, float radius, int slices, int rings, Color color) */
 static Janet jrl_cfun_DrawCapsule(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 6);
-    Vector3 startPos;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &startPos);
-    Vector3 endPos;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &endPos);
+    Vector3 startPos = jrl_get_Vector3(argv, 0);
+    Vector3 endPos = jrl_get_Vector3(argv, 1);
     float radius = jrl_get_float(argv, 2);
     int slices = jrl_get_int(argv, 3);
     int rings = jrl_get_int(argv, 4);
-    Color color;
-    jrl_get_value(argv, 5, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 5);
     DrawCapsule(startPos, endPos, radius, slices, rings, color);
     return janet_wrap_nil();
 }
@@ -4809,15 +4500,12 @@ static Janet jrl_cfun_DrawCapsule(int32_t argc, Janet *argv) {
 /* void DrawCapsuleWires(Vector3 startPos, Vector3 endPos, float radius, int slices, int rings, Color color) */
 static Janet jrl_cfun_DrawCapsuleWires(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 6);
-    Vector3 startPos;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &startPos);
-    Vector3 endPos;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &endPos);
+    Vector3 startPos = jrl_get_Vector3(argv, 0);
+    Vector3 endPos = jrl_get_Vector3(argv, 1);
     float radius = jrl_get_float(argv, 2);
     int slices = jrl_get_int(argv, 3);
     int rings = jrl_get_int(argv, 4);
-    Color color;
-    jrl_get_value(argv, 5, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 5);
     DrawCapsuleWires(startPos, endPos, radius, slices, rings, color);
     return janet_wrap_nil();
 }
@@ -4825,12 +4513,9 @@ static Janet jrl_cfun_DrawCapsuleWires(int32_t argc, Janet *argv) {
 /* void DrawPlane(Vector3 centerPos, Vector2 size, Color color) */
 static Janet jrl_cfun_DrawPlane(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector3 centerPos;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &centerPos);
-    Vector2 size;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &size);
-    Color color;
-    jrl_get_value(argv, 2, &jrl_type_Color, &color);
+    Vector3 centerPos = jrl_get_Vector3(argv, 0);
+    Vector2 size = jrl_get_Vector2(argv, 1);
+    Color color = jrl_get_Color(argv, 2);
     DrawPlane(centerPos, size, color);
     return janet_wrap_nil();
 }
@@ -4840,8 +4525,7 @@ static Janet jrl_cfun_DrawRay(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
     Ray ray;
     jrl_get_value(argv, 0, &jrl_type_Ray, &ray);
-    Color color;
-    jrl_get_value(argv, 1, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 1);
     DrawRay(ray, color);
     return janet_wrap_nil();
 }
@@ -4905,11 +4589,9 @@ static Janet jrl_cfun_GetModelBoundingBox(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_DrawModel(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
     Model model = *(Model *) jrl_get_handle(argv, 0, &jrl_type_Model);
-    Vector3 position;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &position);
+    Vector3 position = jrl_get_Vector3(argv, 1);
     float scale = jrl_get_float(argv, 2);
-    Color tint;
-    jrl_get_value(argv, 3, &jrl_type_Color, &tint);
+    Color tint = jrl_get_Color(argv, 3);
     DrawModel(model, position, scale, tint);
     return janet_wrap_nil();
 }
@@ -4918,15 +4600,11 @@ static Janet jrl_cfun_DrawModel(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_DrawModelEx(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 6);
     Model model = *(Model *) jrl_get_handle(argv, 0, &jrl_type_Model);
-    Vector3 position;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &position);
-    Vector3 rotationAxis;
-    jrl_get_value(argv, 2, &jrl_type_Vector3, &rotationAxis);
+    Vector3 position = jrl_get_Vector3(argv, 1);
+    Vector3 rotationAxis = jrl_get_Vector3(argv, 2);
     float rotationAngle = jrl_get_float(argv, 3);
-    Vector3 scale;
-    jrl_get_value(argv, 4, &jrl_type_Vector3, &scale);
-    Color tint;
-    jrl_get_value(argv, 5, &jrl_type_Color, &tint);
+    Vector3 scale = jrl_get_Vector3(argv, 4);
+    Color tint = jrl_get_Color(argv, 5);
     DrawModelEx(model, position, rotationAxis, rotationAngle, scale, tint);
     return janet_wrap_nil();
 }
@@ -4935,11 +4613,9 @@ static Janet jrl_cfun_DrawModelEx(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_DrawModelWires(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
     Model model = *(Model *) jrl_get_handle(argv, 0, &jrl_type_Model);
-    Vector3 position;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &position);
+    Vector3 position = jrl_get_Vector3(argv, 1);
     float scale = jrl_get_float(argv, 2);
-    Color tint;
-    jrl_get_value(argv, 3, &jrl_type_Color, &tint);
+    Color tint = jrl_get_Color(argv, 3);
     DrawModelWires(model, position, scale, tint);
     return janet_wrap_nil();
 }
@@ -4948,15 +4624,11 @@ static Janet jrl_cfun_DrawModelWires(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_DrawModelWiresEx(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 6);
     Model model = *(Model *) jrl_get_handle(argv, 0, &jrl_type_Model);
-    Vector3 position;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &position);
-    Vector3 rotationAxis;
-    jrl_get_value(argv, 2, &jrl_type_Vector3, &rotationAxis);
+    Vector3 position = jrl_get_Vector3(argv, 1);
+    Vector3 rotationAxis = jrl_get_Vector3(argv, 2);
     float rotationAngle = jrl_get_float(argv, 3);
-    Vector3 scale;
-    jrl_get_value(argv, 4, &jrl_type_Vector3, &scale);
-    Color tint;
-    jrl_get_value(argv, 5, &jrl_type_Color, &tint);
+    Vector3 scale = jrl_get_Vector3(argv, 4);
+    Color tint = jrl_get_Color(argv, 5);
     DrawModelWiresEx(model, position, rotationAxis, rotationAngle, scale, tint);
     return janet_wrap_nil();
 }
@@ -4965,11 +4637,9 @@ static Janet jrl_cfun_DrawModelWiresEx(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_DrawModelPoints(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
     Model model = *(Model *) jrl_get_handle(argv, 0, &jrl_type_Model);
-    Vector3 position;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &position);
+    Vector3 position = jrl_get_Vector3(argv, 1);
     float scale = jrl_get_float(argv, 2);
-    Color tint;
-    jrl_get_value(argv, 3, &jrl_type_Color, &tint);
+    Color tint = jrl_get_Color(argv, 3);
     DrawModelPoints(model, position, scale, tint);
     return janet_wrap_nil();
 }
@@ -4978,15 +4648,11 @@ static Janet jrl_cfun_DrawModelPoints(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_DrawModelPointsEx(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 6);
     Model model = *(Model *) jrl_get_handle(argv, 0, &jrl_type_Model);
-    Vector3 position;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &position);
-    Vector3 rotationAxis;
-    jrl_get_value(argv, 2, &jrl_type_Vector3, &rotationAxis);
+    Vector3 position = jrl_get_Vector3(argv, 1);
+    Vector3 rotationAxis = jrl_get_Vector3(argv, 2);
     float rotationAngle = jrl_get_float(argv, 3);
-    Vector3 scale;
-    jrl_get_value(argv, 4, &jrl_type_Vector3, &scale);
-    Color tint;
-    jrl_get_value(argv, 5, &jrl_type_Color, &tint);
+    Vector3 scale = jrl_get_Vector3(argv, 4);
+    Color tint = jrl_get_Color(argv, 5);
     DrawModelPointsEx(model, position, rotationAxis, rotationAngle, scale, tint);
     return janet_wrap_nil();
 }
@@ -4996,8 +4662,7 @@ static Janet jrl_cfun_DrawBoundingBox(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
     BoundingBox box;
     jrl_get_value(argv, 0, &jrl_type_BoundingBox, &box);
-    Color color;
-    jrl_get_value(argv, 1, &jrl_type_Color, &color);
+    Color color = jrl_get_Color(argv, 1);
     DrawBoundingBox(box, color);
     return janet_wrap_nil();
 }
@@ -5008,11 +4673,9 @@ static Janet jrl_cfun_DrawBillboard(int32_t argc, Janet *argv) {
     Camera3D camera;
     jrl_get_value(argv, 0, &jrl_type_Camera3D, &camera);
     Texture2D texture = *(Texture2D *) jrl_get_handle(argv, 1, &jrl_type_Texture);
-    Vector3 position;
-    jrl_get_value(argv, 2, &jrl_type_Vector3, &position);
+    Vector3 position = jrl_get_Vector3(argv, 2);
     float scale = jrl_get_float(argv, 3);
-    Color tint;
-    jrl_get_value(argv, 4, &jrl_type_Color, &tint);
+    Color tint = jrl_get_Color(argv, 4);
     DrawBillboard(camera, texture, position, scale, tint);
     return janet_wrap_nil();
 }
@@ -5023,14 +4686,10 @@ static Janet jrl_cfun_DrawBillboardRec(int32_t argc, Janet *argv) {
     Camera3D camera;
     jrl_get_value(argv, 0, &jrl_type_Camera3D, &camera);
     Texture2D texture = *(Texture2D *) jrl_get_handle(argv, 1, &jrl_type_Texture);
-    Rectangle source;
-    jrl_get_value(argv, 2, &jrl_type_Rectangle, &source);
-    Vector3 position;
-    jrl_get_value(argv, 3, &jrl_type_Vector3, &position);
-    Vector2 size;
-    jrl_get_value(argv, 4, &jrl_type_Vector2, &size);
-    Color tint;
-    jrl_get_value(argv, 5, &jrl_type_Color, &tint);
+    Rectangle source = jrl_get_Rectangle(argv, 2);
+    Vector3 position = jrl_get_Vector3(argv, 3);
+    Vector2 size = jrl_get_Vector2(argv, 4);
+    Color tint = jrl_get_Color(argv, 5);
     DrawBillboardRec(camera, texture, source, position, size, tint);
     return janet_wrap_nil();
 }
@@ -5041,19 +4700,13 @@ static Janet jrl_cfun_DrawBillboardPro(int32_t argc, Janet *argv) {
     Camera3D camera;
     jrl_get_value(argv, 0, &jrl_type_Camera3D, &camera);
     Texture2D texture = *(Texture2D *) jrl_get_handle(argv, 1, &jrl_type_Texture);
-    Rectangle source;
-    jrl_get_value(argv, 2, &jrl_type_Rectangle, &source);
-    Vector3 position;
-    jrl_get_value(argv, 3, &jrl_type_Vector3, &position);
-    Vector3 up;
-    jrl_get_value(argv, 4, &jrl_type_Vector3, &up);
-    Vector2 size;
-    jrl_get_value(argv, 5, &jrl_type_Vector2, &size);
-    Vector2 origin;
-    jrl_get_value(argv, 6, &jrl_type_Vector2, &origin);
+    Rectangle source = jrl_get_Rectangle(argv, 2);
+    Vector3 position = jrl_get_Vector3(argv, 3);
+    Vector3 up = jrl_get_Vector3(argv, 4);
+    Vector2 size = jrl_get_Vector2(argv, 5);
+    Vector2 origin = jrl_get_Vector2(argv, 6);
     float rotation = jrl_get_float(argv, 7);
-    Color tint;
-    jrl_get_value(argv, 8, &jrl_type_Color, &tint);
+    Color tint = jrl_get_Color(argv, 8);
     DrawBillboardPro(camera, texture, source, position, up, size, origin, rotation, tint);
     return janet_wrap_nil();
 }
@@ -5257,8 +4910,7 @@ static Janet jrl_cfun_GenMeshKnot(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_GenMeshHeightmap(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
     Image heightmap = *(Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
-    Vector3 size;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &size);
+    Vector3 size = jrl_get_Vector3(argv, 1);
     Mesh jrl_ret = GenMeshHeightmap(heightmap, size);
     Janet jrl_value = jrl_handle_new(&jrl_type_Mesh, &jrl_ret, 0);
     return jrl_value;
@@ -5268,8 +4920,7 @@ static Janet jrl_cfun_GenMeshHeightmap(int32_t argc, Janet *argv) {
 static Janet jrl_cfun_GenMeshCubicmap(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
     Image cubicmap = *(Image *) jrl_get_handle(argv, 0, &jrl_type_Image);
-    Vector3 cubeSize;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &cubeSize);
+    Vector3 cubeSize = jrl_get_Vector3(argv, 1);
     Mesh jrl_ret = GenMeshCubicmap(cubicmap, cubeSize);
     Janet jrl_value = jrl_handle_new(&jrl_type_Mesh, &jrl_ret, 0);
     return jrl_value;
@@ -5396,11 +5047,9 @@ static Janet jrl_cfun_IsModelAnimationValid(int32_t argc, Janet *argv) {
 /* bool CheckCollisionSpheres(Vector3 center1, float radius1, Vector3 center2, float radius2) */
 static Janet jrl_cfun_CheckCollisionSpheres(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
-    Vector3 center1;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &center1);
+    Vector3 center1 = jrl_get_Vector3(argv, 0);
     float radius1 = jrl_get_float(argv, 1);
-    Vector3 center2;
-    jrl_get_value(argv, 2, &jrl_type_Vector3, &center2);
+    Vector3 center2 = jrl_get_Vector3(argv, 2);
     float radius2 = jrl_get_float(argv, 3);
     bool jrl_ret = CheckCollisionSpheres(center1, radius1, center2, radius2);
     Janet jrl_value = janet_wrap_boolean(jrl_ret);
@@ -5424,8 +5073,7 @@ static Janet jrl_cfun_CheckCollisionBoxSphere(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
     BoundingBox box;
     jrl_get_value(argv, 0, &jrl_type_BoundingBox, &box);
-    Vector3 center;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &center);
+    Vector3 center = jrl_get_Vector3(argv, 1);
     float radius = jrl_get_float(argv, 2);
     bool jrl_ret = CheckCollisionBoxSphere(box, center, radius);
     Janet jrl_value = janet_wrap_boolean(jrl_ret);
@@ -5437,8 +5085,7 @@ static Janet jrl_cfun_GetRayCollisionSphere(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
     Ray ray;
     jrl_get_value(argv, 0, &jrl_type_Ray, &ray);
-    Vector3 center;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &center);
+    Vector3 center = jrl_get_Vector3(argv, 1);
     float radius = jrl_get_float(argv, 2);
     RayCollision jrl_ret = GetRayCollisionSphere(ray, center, radius);
     Janet jrl_value = jrl_to_janet(&jrl_type_RayCollision, &jrl_ret, janet_wrap_nil());
@@ -5475,12 +5122,9 @@ static Janet jrl_cfun_GetRayCollisionTriangle(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
     Ray ray;
     jrl_get_value(argv, 0, &jrl_type_Ray, &ray);
-    Vector3 p1;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &p1);
-    Vector3 p2;
-    jrl_get_value(argv, 2, &jrl_type_Vector3, &p2);
-    Vector3 p3;
-    jrl_get_value(argv, 3, &jrl_type_Vector3, &p3);
+    Vector3 p1 = jrl_get_Vector3(argv, 1);
+    Vector3 p2 = jrl_get_Vector3(argv, 2);
+    Vector3 p3 = jrl_get_Vector3(argv, 3);
     RayCollision jrl_ret = GetRayCollisionTriangle(ray, p1, p2, p3);
     Janet jrl_value = jrl_to_janet(&jrl_type_RayCollision, &jrl_ret, janet_wrap_nil());
     return jrl_value;
@@ -5491,14 +5135,10 @@ static Janet jrl_cfun_GetRayCollisionQuad(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 5);
     Ray ray;
     jrl_get_value(argv, 0, &jrl_type_Ray, &ray);
-    Vector3 p1;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &p1);
-    Vector3 p2;
-    jrl_get_value(argv, 2, &jrl_type_Vector3, &p2);
-    Vector3 p3;
-    jrl_get_value(argv, 3, &jrl_type_Vector3, &p3);
-    Vector3 p4;
-    jrl_get_value(argv, 4, &jrl_type_Vector3, &p4);
+    Vector3 p1 = jrl_get_Vector3(argv, 1);
+    Vector3 p2 = jrl_get_Vector3(argv, 2);
+    Vector3 p3 = jrl_get_Vector3(argv, 3);
+    Vector3 p4 = jrl_get_Vector3(argv, 4);
     RayCollision jrl_ret = GetRayCollisionQuad(ray, p1, p2, p3, p4);
     Janet jrl_value = jrl_to_janet(&jrl_type_RayCollision, &jrl_ret, janet_wrap_nil());
     return jrl_value;

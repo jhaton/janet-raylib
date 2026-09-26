@@ -74,7 +74,7 @@ static Janet jrl_cfun_Vector2Zero(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 0);
     (void) argv;
     Vector2 jrl_ret = Vector2Zero();
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
@@ -83,61 +83,54 @@ static Janet jrl_cfun_Vector2One(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 0);
     (void) argv;
     Vector2 jrl_ret = Vector2One();
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 Vector2Add(Vector2 v1, Vector2 v2) */
 static Janet jrl_cfun_Vector2Add(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v1);
-    Vector2 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &v2);
+    Vector2 v1 = jrl_get_Vector2(argv, 0);
+    Vector2 v2 = jrl_get_Vector2(argv, 1);
     Vector2 jrl_ret = Vector2Add(v1, v2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 Vector2AddValue(Vector2 v, float add) */
 static Janet jrl_cfun_Vector2AddValue(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v);
+    Vector2 v = jrl_get_Vector2(argv, 0);
     float add = jrl_get_float(argv, 1);
     Vector2 jrl_ret = Vector2AddValue(v, add);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 Vector2Subtract(Vector2 v1, Vector2 v2) */
 static Janet jrl_cfun_Vector2Subtract(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v1);
-    Vector2 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &v2);
+    Vector2 v1 = jrl_get_Vector2(argv, 0);
+    Vector2 v2 = jrl_get_Vector2(argv, 1);
     Vector2 jrl_ret = Vector2Subtract(v1, v2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 Vector2SubtractValue(Vector2 v, float sub) */
 static Janet jrl_cfun_Vector2SubtractValue(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v);
+    Vector2 v = jrl_get_Vector2(argv, 0);
     float sub = jrl_get_float(argv, 1);
     Vector2 jrl_ret = Vector2SubtractValue(v, sub);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* float Vector2Length(Vector2 v) */
 static Janet jrl_cfun_Vector2Length(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector2 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v);
+    Vector2 v = jrl_get_Vector2(argv, 0);
     float jrl_ret = Vector2Length(v);
     Janet jrl_value = janet_wrap_number((double) jrl_ret);
     return jrl_value;
@@ -146,8 +139,7 @@ static Janet jrl_cfun_Vector2Length(int32_t argc, Janet *argv) {
 /* float Vector2LengthSqr(Vector2 v) */
 static Janet jrl_cfun_Vector2LengthSqr(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector2 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v);
+    Vector2 v = jrl_get_Vector2(argv, 0);
     float jrl_ret = Vector2LengthSqr(v);
     Janet jrl_value = janet_wrap_number((double) jrl_ret);
     return jrl_value;
@@ -156,10 +148,8 @@ static Janet jrl_cfun_Vector2LengthSqr(int32_t argc, Janet *argv) {
 /* float Vector2DotProduct(Vector2 v1, Vector2 v2) */
 static Janet jrl_cfun_Vector2DotProduct(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v1);
-    Vector2 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &v2);
+    Vector2 v1 = jrl_get_Vector2(argv, 0);
+    Vector2 v2 = jrl_get_Vector2(argv, 1);
     float jrl_ret = Vector2DotProduct(v1, v2);
     Janet jrl_value = janet_wrap_number((double) jrl_ret);
     return jrl_value;
@@ -168,10 +158,8 @@ static Janet jrl_cfun_Vector2DotProduct(int32_t argc, Janet *argv) {
 /* float Vector2Distance(Vector2 v1, Vector2 v2) */
 static Janet jrl_cfun_Vector2Distance(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v1);
-    Vector2 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &v2);
+    Vector2 v1 = jrl_get_Vector2(argv, 0);
+    Vector2 v2 = jrl_get_Vector2(argv, 1);
     float jrl_ret = Vector2Distance(v1, v2);
     Janet jrl_value = janet_wrap_number((double) jrl_ret);
     return jrl_value;
@@ -180,10 +168,8 @@ static Janet jrl_cfun_Vector2Distance(int32_t argc, Janet *argv) {
 /* float Vector2DistanceSqr(Vector2 v1, Vector2 v2) */
 static Janet jrl_cfun_Vector2DistanceSqr(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v1);
-    Vector2 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &v2);
+    Vector2 v1 = jrl_get_Vector2(argv, 0);
+    Vector2 v2 = jrl_get_Vector2(argv, 1);
     float jrl_ret = Vector2DistanceSqr(v1, v2);
     Janet jrl_value = janet_wrap_number((double) jrl_ret);
     return jrl_value;
@@ -192,10 +178,8 @@ static Janet jrl_cfun_Vector2DistanceSqr(int32_t argc, Janet *argv) {
 /* float Vector2Angle(Vector2 v1, Vector2 v2) */
 static Janet jrl_cfun_Vector2Angle(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v1);
-    Vector2 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &v2);
+    Vector2 v1 = jrl_get_Vector2(argv, 0);
+    Vector2 v2 = jrl_get_Vector2(argv, 1);
     float jrl_ret = Vector2Angle(v1, v2);
     Janet jrl_value = janet_wrap_number((double) jrl_ret);
     return jrl_value;
@@ -204,10 +188,8 @@ static Janet jrl_cfun_Vector2Angle(int32_t argc, Janet *argv) {
 /* float Vector2LineAngle(Vector2 start, Vector2 end) */
 static Janet jrl_cfun_Vector2LineAngle(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 start;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &start);
-    Vector2 end;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &end);
+    Vector2 start = jrl_get_Vector2(argv, 0);
+    Vector2 end = jrl_get_Vector2(argv, 1);
     float jrl_ret = Vector2LineAngle(start, end);
     Janet jrl_value = janet_wrap_number((double) jrl_ret);
     return jrl_value;
@@ -216,186 +198,160 @@ static Janet jrl_cfun_Vector2LineAngle(int32_t argc, Janet *argv) {
 /* Vector2 Vector2Scale(Vector2 v, float scale) */
 static Janet jrl_cfun_Vector2Scale(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v);
+    Vector2 v = jrl_get_Vector2(argv, 0);
     float scale = jrl_get_float(argv, 1);
     Vector2 jrl_ret = Vector2Scale(v, scale);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 Vector2Multiply(Vector2 v1, Vector2 v2) */
 static Janet jrl_cfun_Vector2Multiply(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v1);
-    Vector2 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &v2);
+    Vector2 v1 = jrl_get_Vector2(argv, 0);
+    Vector2 v2 = jrl_get_Vector2(argv, 1);
     Vector2 jrl_ret = Vector2Multiply(v1, v2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 Vector2Negate(Vector2 v) */
 static Janet jrl_cfun_Vector2Negate(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector2 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v);
+    Vector2 v = jrl_get_Vector2(argv, 0);
     Vector2 jrl_ret = Vector2Negate(v);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 Vector2Divide(Vector2 v1, Vector2 v2) */
 static Janet jrl_cfun_Vector2Divide(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v1);
-    Vector2 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &v2);
+    Vector2 v1 = jrl_get_Vector2(argv, 0);
+    Vector2 v2 = jrl_get_Vector2(argv, 1);
     Vector2 jrl_ret = Vector2Divide(v1, v2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 Vector2Normalize(Vector2 v) */
 static Janet jrl_cfun_Vector2Normalize(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector2 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v);
+    Vector2 v = jrl_get_Vector2(argv, 0);
     Vector2 jrl_ret = Vector2Normalize(v);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 Vector2Transform(Vector2 v, Matrix mat) */
 static Janet jrl_cfun_Vector2Transform(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v);
+    Vector2 v = jrl_get_Vector2(argv, 0);
     Matrix mat;
     jrl_get_value(argv, 1, &jrl_type_Matrix, &mat);
     Vector2 jrl_ret = Vector2Transform(v, mat);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 Vector2Lerp(Vector2 v1, Vector2 v2, float amount) */
 static Janet jrl_cfun_Vector2Lerp(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector2 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v1);
-    Vector2 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &v2);
+    Vector2 v1 = jrl_get_Vector2(argv, 0);
+    Vector2 v2 = jrl_get_Vector2(argv, 1);
     float amount = jrl_get_float(argv, 2);
     Vector2 jrl_ret = Vector2Lerp(v1, v2, amount);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 Vector2Reflect(Vector2 v, Vector2 normal) */
 static Janet jrl_cfun_Vector2Reflect(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v);
-    Vector2 normal;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &normal);
+    Vector2 v = jrl_get_Vector2(argv, 0);
+    Vector2 normal = jrl_get_Vector2(argv, 1);
     Vector2 jrl_ret = Vector2Reflect(v, normal);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 Vector2Min(Vector2 v1, Vector2 v2) */
 static Janet jrl_cfun_Vector2Min(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v1);
-    Vector2 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &v2);
+    Vector2 v1 = jrl_get_Vector2(argv, 0);
+    Vector2 v2 = jrl_get_Vector2(argv, 1);
     Vector2 jrl_ret = Vector2Min(v1, v2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 Vector2Max(Vector2 v1, Vector2 v2) */
 static Janet jrl_cfun_Vector2Max(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v1);
-    Vector2 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &v2);
+    Vector2 v1 = jrl_get_Vector2(argv, 0);
+    Vector2 v2 = jrl_get_Vector2(argv, 1);
     Vector2 jrl_ret = Vector2Max(v1, v2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 Vector2Rotate(Vector2 v, float angle) */
 static Janet jrl_cfun_Vector2Rotate(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v);
+    Vector2 v = jrl_get_Vector2(argv, 0);
     float angle = jrl_get_float(argv, 1);
     Vector2 jrl_ret = Vector2Rotate(v, angle);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 Vector2MoveTowards(Vector2 v, Vector2 target, float maxDistance) */
 static Janet jrl_cfun_Vector2MoveTowards(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector2 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v);
-    Vector2 target;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &target);
+    Vector2 v = jrl_get_Vector2(argv, 0);
+    Vector2 target = jrl_get_Vector2(argv, 1);
     float maxDistance = jrl_get_float(argv, 2);
     Vector2 jrl_ret = Vector2MoveTowards(v, target, maxDistance);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 Vector2Invert(Vector2 v) */
 static Janet jrl_cfun_Vector2Invert(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector2 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v);
+    Vector2 v = jrl_get_Vector2(argv, 0);
     Vector2 jrl_ret = Vector2Invert(v);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 Vector2Clamp(Vector2 v, Vector2 min, Vector2 max) */
 static Janet jrl_cfun_Vector2Clamp(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector2 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v);
-    Vector2 min;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &min);
-    Vector2 max;
-    jrl_get_value(argv, 2, &jrl_type_Vector2, &max);
+    Vector2 v = jrl_get_Vector2(argv, 0);
+    Vector2 min = jrl_get_Vector2(argv, 1);
+    Vector2 max = jrl_get_Vector2(argv, 2);
     Vector2 jrl_ret = Vector2Clamp(v, min, max);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* Vector2 Vector2ClampValue(Vector2 v, float min, float max) */
 static Janet jrl_cfun_Vector2ClampValue(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector2 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v);
+    Vector2 v = jrl_get_Vector2(argv, 0);
     float min = jrl_get_float(argv, 1);
     float max = jrl_get_float(argv, 2);
     Vector2 jrl_ret = Vector2ClampValue(v, min, max);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
 /* int Vector2Equals(Vector2 p, Vector2 q) */
 static Janet jrl_cfun_Vector2Equals(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector2 p;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &p);
-    Vector2 q;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &q);
+    Vector2 p = jrl_get_Vector2(argv, 0);
+    Vector2 q = jrl_get_Vector2(argv, 1);
     int jrl_ret = Vector2Equals(p, q);
     Janet jrl_value = janet_wrap_integer(jrl_ret);
     return jrl_value;
@@ -404,13 +360,11 @@ static Janet jrl_cfun_Vector2Equals(int32_t argc, Janet *argv) {
 /* Vector2 Vector2Refract(Vector2 v, Vector2 n, float r) */
 static Janet jrl_cfun_Vector2Refract(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector2 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector2, &v);
-    Vector2 n;
-    jrl_get_value(argv, 1, &jrl_type_Vector2, &n);
+    Vector2 v = jrl_get_Vector2(argv, 0);
+    Vector2 n = jrl_get_Vector2(argv, 1);
     float r = jrl_get_float(argv, 2);
     Vector2 jrl_ret = Vector2Refract(v, n, r);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector2, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector2(jrl_ret);
     return jrl_value;
 }
 
@@ -419,7 +373,7 @@ static Janet jrl_cfun_Vector3Zero(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 0);
     (void) argv;
     Vector3 jrl_ret = Vector3Zero();
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
@@ -428,106 +382,93 @@ static Janet jrl_cfun_Vector3One(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 0);
     (void) argv;
     Vector3 jrl_ret = Vector3One();
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3Add(Vector3 v1, Vector3 v2) */
 static Janet jrl_cfun_Vector3Add(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v1);
-    Vector3 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &v2);
+    Vector3 v1 = jrl_get_Vector3(argv, 0);
+    Vector3 v2 = jrl_get_Vector3(argv, 1);
     Vector3 jrl_ret = Vector3Add(v1, v2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3AddValue(Vector3 v, float add) */
 static Janet jrl_cfun_Vector3AddValue(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v);
+    Vector3 v = jrl_get_Vector3(argv, 0);
     float add = jrl_get_float(argv, 1);
     Vector3 jrl_ret = Vector3AddValue(v, add);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3Subtract(Vector3 v1, Vector3 v2) */
 static Janet jrl_cfun_Vector3Subtract(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v1);
-    Vector3 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &v2);
+    Vector3 v1 = jrl_get_Vector3(argv, 0);
+    Vector3 v2 = jrl_get_Vector3(argv, 1);
     Vector3 jrl_ret = Vector3Subtract(v1, v2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3SubtractValue(Vector3 v, float sub) */
 static Janet jrl_cfun_Vector3SubtractValue(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v);
+    Vector3 v = jrl_get_Vector3(argv, 0);
     float sub = jrl_get_float(argv, 1);
     Vector3 jrl_ret = Vector3SubtractValue(v, sub);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3Scale(Vector3 v, float scalar) */
 static Janet jrl_cfun_Vector3Scale(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v);
+    Vector3 v = jrl_get_Vector3(argv, 0);
     float scalar = jrl_get_float(argv, 1);
     Vector3 jrl_ret = Vector3Scale(v, scalar);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3Multiply(Vector3 v1, Vector3 v2) */
 static Janet jrl_cfun_Vector3Multiply(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v1);
-    Vector3 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &v2);
+    Vector3 v1 = jrl_get_Vector3(argv, 0);
+    Vector3 v2 = jrl_get_Vector3(argv, 1);
     Vector3 jrl_ret = Vector3Multiply(v1, v2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3CrossProduct(Vector3 v1, Vector3 v2) */
 static Janet jrl_cfun_Vector3CrossProduct(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v1);
-    Vector3 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &v2);
+    Vector3 v1 = jrl_get_Vector3(argv, 0);
+    Vector3 v2 = jrl_get_Vector3(argv, 1);
     Vector3 jrl_ret = Vector3CrossProduct(v1, v2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3Perpendicular(Vector3 v) */
 static Janet jrl_cfun_Vector3Perpendicular(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector3 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v);
+    Vector3 v = jrl_get_Vector3(argv, 0);
     Vector3 jrl_ret = Vector3Perpendicular(v);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* float Vector3Length(const Vector3 v) */
 static Janet jrl_cfun_Vector3Length(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector3 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v);
+    Vector3 v = jrl_get_Vector3(argv, 0);
     float jrl_ret = Vector3Length(v);
     Janet jrl_value = janet_wrap_number((double) jrl_ret);
     return jrl_value;
@@ -536,8 +477,7 @@ static Janet jrl_cfun_Vector3Length(int32_t argc, Janet *argv) {
 /* float Vector3LengthSqr(const Vector3 v) */
 static Janet jrl_cfun_Vector3LengthSqr(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector3 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v);
+    Vector3 v = jrl_get_Vector3(argv, 0);
     float jrl_ret = Vector3LengthSqr(v);
     Janet jrl_value = janet_wrap_number((double) jrl_ret);
     return jrl_value;
@@ -546,10 +486,8 @@ static Janet jrl_cfun_Vector3LengthSqr(int32_t argc, Janet *argv) {
 /* float Vector3DotProduct(Vector3 v1, Vector3 v2) */
 static Janet jrl_cfun_Vector3DotProduct(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v1);
-    Vector3 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &v2);
+    Vector3 v1 = jrl_get_Vector3(argv, 0);
+    Vector3 v2 = jrl_get_Vector3(argv, 1);
     float jrl_ret = Vector3DotProduct(v1, v2);
     Janet jrl_value = janet_wrap_number((double) jrl_ret);
     return jrl_value;
@@ -558,10 +496,8 @@ static Janet jrl_cfun_Vector3DotProduct(int32_t argc, Janet *argv) {
 /* float Vector3Distance(Vector3 v1, Vector3 v2) */
 static Janet jrl_cfun_Vector3Distance(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v1);
-    Vector3 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &v2);
+    Vector3 v1 = jrl_get_Vector3(argv, 0);
+    Vector3 v2 = jrl_get_Vector3(argv, 1);
     float jrl_ret = Vector3Distance(v1, v2);
     Janet jrl_value = janet_wrap_number((double) jrl_ret);
     return jrl_value;
@@ -570,10 +506,8 @@ static Janet jrl_cfun_Vector3Distance(int32_t argc, Janet *argv) {
 /* float Vector3DistanceSqr(Vector3 v1, Vector3 v2) */
 static Janet jrl_cfun_Vector3DistanceSqr(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v1);
-    Vector3 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &v2);
+    Vector3 v1 = jrl_get_Vector3(argv, 0);
+    Vector3 v2 = jrl_get_Vector3(argv, 1);
     float jrl_ret = Vector3DistanceSqr(v1, v2);
     Janet jrl_value = janet_wrap_number((double) jrl_ret);
     return jrl_value;
@@ -582,10 +516,8 @@ static Janet jrl_cfun_Vector3DistanceSqr(int32_t argc, Janet *argv) {
 /* float Vector3Angle(Vector3 v1, Vector3 v2) */
 static Janet jrl_cfun_Vector3Angle(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v1);
-    Vector3 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &v2);
+    Vector3 v1 = jrl_get_Vector3(argv, 0);
+    Vector3 v2 = jrl_get_Vector3(argv, 1);
     float jrl_ret = Vector3Angle(v1, v2);
     Janet jrl_value = janet_wrap_number((double) jrl_ret);
     return jrl_value;
@@ -594,56 +526,48 @@ static Janet jrl_cfun_Vector3Angle(int32_t argc, Janet *argv) {
 /* Vector3 Vector3Negate(Vector3 v) */
 static Janet jrl_cfun_Vector3Negate(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector3 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v);
+    Vector3 v = jrl_get_Vector3(argv, 0);
     Vector3 jrl_ret = Vector3Negate(v);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3Divide(Vector3 v1, Vector3 v2) */
 static Janet jrl_cfun_Vector3Divide(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v1);
-    Vector3 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &v2);
+    Vector3 v1 = jrl_get_Vector3(argv, 0);
+    Vector3 v2 = jrl_get_Vector3(argv, 1);
     Vector3 jrl_ret = Vector3Divide(v1, v2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3Normalize(Vector3 v) */
 static Janet jrl_cfun_Vector3Normalize(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector3 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v);
+    Vector3 v = jrl_get_Vector3(argv, 0);
     Vector3 jrl_ret = Vector3Normalize(v);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3Project(Vector3 v1, Vector3 v2) */
 static Janet jrl_cfun_Vector3Project(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v1);
-    Vector3 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &v2);
+    Vector3 v1 = jrl_get_Vector3(argv, 0);
+    Vector3 v2 = jrl_get_Vector3(argv, 1);
     Vector3 jrl_ret = Vector3Project(v1, v2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3Reject(Vector3 v1, Vector3 v2) */
 static Janet jrl_cfun_Vector3Reject(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v1);
-    Vector3 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &v2);
+    Vector3 v1 = jrl_get_Vector3(argv, 0);
+    Vector3 v2 = jrl_get_Vector3(argv, 1);
     Vector3 jrl_ret = Vector3Reject(v1, v2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
@@ -655,161 +579,136 @@ static Janet jrl_cfun_Vector3OrthoNormalize(int32_t argc, Janet *argv) {
     Vector3 v2;
     jrl_get_value(argv, 1, &jrl_type_Vector3, &v2);
     Vector3OrthoNormalize(&v1, &v2);
-    Janet jrl_results[2] = {jrl_to_janet(&jrl_type_Vector3, &v1, janet_wrap_nil()), jrl_to_janet(&jrl_type_Vector3, &v2, janet_wrap_nil())};
+    Janet jrl_results[2] = {jrl_wrap_Vector3(v1), jrl_wrap_Vector3(v2)};
     return janet_wrap_tuple(janet_tuple_n(jrl_results, 2));
 }
 
 /* Vector3 Vector3Transform(Vector3 v, Matrix mat) */
 static Janet jrl_cfun_Vector3Transform(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v);
+    Vector3 v = jrl_get_Vector3(argv, 0);
     Matrix mat;
     jrl_get_value(argv, 1, &jrl_type_Matrix, &mat);
     Vector3 jrl_ret = Vector3Transform(v, mat);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3RotateByQuaternion(Vector3 v, Quaternion q) */
 static Janet jrl_cfun_Vector3RotateByQuaternion(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v);
-    Vector4 q;
-    jrl_get_value(argv, 1, &jrl_type_Vector4, &q);
+    Vector3 v = jrl_get_Vector3(argv, 0);
+    Vector4 q = jrl_get_Vector4(argv, 1);
     Vector3 jrl_ret = Vector3RotateByQuaternion(v, q);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3RotateByAxisAngle(Vector3 v, Vector3 axis, float angle) */
 static Janet jrl_cfun_Vector3RotateByAxisAngle(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector3 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v);
-    Vector3 axis;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &axis);
+    Vector3 v = jrl_get_Vector3(argv, 0);
+    Vector3 axis = jrl_get_Vector3(argv, 1);
     float angle = jrl_get_float(argv, 2);
     Vector3 jrl_ret = Vector3RotateByAxisAngle(v, axis, angle);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3MoveTowards(Vector3 v, Vector3 target, float maxDistance) */
 static Janet jrl_cfun_Vector3MoveTowards(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector3 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v);
-    Vector3 target;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &target);
+    Vector3 v = jrl_get_Vector3(argv, 0);
+    Vector3 target = jrl_get_Vector3(argv, 1);
     float maxDistance = jrl_get_float(argv, 2);
     Vector3 jrl_ret = Vector3MoveTowards(v, target, maxDistance);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3Lerp(Vector3 v1, Vector3 v2, float amount) */
 static Janet jrl_cfun_Vector3Lerp(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector3 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v1);
-    Vector3 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &v2);
+    Vector3 v1 = jrl_get_Vector3(argv, 0);
+    Vector3 v2 = jrl_get_Vector3(argv, 1);
     float amount = jrl_get_float(argv, 2);
     Vector3 jrl_ret = Vector3Lerp(v1, v2, amount);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3CubicHermite(Vector3 v1, Vector3 tangent1, Vector3 v2, Vector3 tangent2, float amount) */
 static Janet jrl_cfun_Vector3CubicHermite(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 5);
-    Vector3 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v1);
-    Vector3 tangent1;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &tangent1);
-    Vector3 v2;
-    jrl_get_value(argv, 2, &jrl_type_Vector3, &v2);
-    Vector3 tangent2;
-    jrl_get_value(argv, 3, &jrl_type_Vector3, &tangent2);
+    Vector3 v1 = jrl_get_Vector3(argv, 0);
+    Vector3 tangent1 = jrl_get_Vector3(argv, 1);
+    Vector3 v2 = jrl_get_Vector3(argv, 2);
+    Vector3 tangent2 = jrl_get_Vector3(argv, 3);
     float amount = jrl_get_float(argv, 4);
     Vector3 jrl_ret = Vector3CubicHermite(v1, tangent1, v2, tangent2, amount);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3Reflect(Vector3 v, Vector3 normal) */
 static Janet jrl_cfun_Vector3Reflect(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v);
-    Vector3 normal;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &normal);
+    Vector3 v = jrl_get_Vector3(argv, 0);
+    Vector3 normal = jrl_get_Vector3(argv, 1);
     Vector3 jrl_ret = Vector3Reflect(v, normal);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3Min(Vector3 v1, Vector3 v2) */
 static Janet jrl_cfun_Vector3Min(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v1);
-    Vector3 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &v2);
+    Vector3 v1 = jrl_get_Vector3(argv, 0);
+    Vector3 v2 = jrl_get_Vector3(argv, 1);
     Vector3 jrl_ret = Vector3Min(v1, v2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3Max(Vector3 v1, Vector3 v2) */
 static Janet jrl_cfun_Vector3Max(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v1);
-    Vector3 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &v2);
+    Vector3 v1 = jrl_get_Vector3(argv, 0);
+    Vector3 v2 = jrl_get_Vector3(argv, 1);
     Vector3 jrl_ret = Vector3Max(v1, v2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3Barycenter(Vector3 p, Vector3 a, Vector3 b, Vector3 c) */
 static Janet jrl_cfun_Vector3Barycenter(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
-    Vector3 p;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &p);
-    Vector3 a;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &a);
-    Vector3 b;
-    jrl_get_value(argv, 2, &jrl_type_Vector3, &b);
-    Vector3 c;
-    jrl_get_value(argv, 3, &jrl_type_Vector3, &c);
+    Vector3 p = jrl_get_Vector3(argv, 0);
+    Vector3 a = jrl_get_Vector3(argv, 1);
+    Vector3 b = jrl_get_Vector3(argv, 2);
+    Vector3 c = jrl_get_Vector3(argv, 3);
     Vector3 jrl_ret = Vector3Barycenter(p, a, b, c);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3Unproject(Vector3 source, Matrix projection, Matrix view) */
 static Janet jrl_cfun_Vector3Unproject(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector3 source;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &source);
+    Vector3 source = jrl_get_Vector3(argv, 0);
     Matrix projection;
     jrl_get_value(argv, 1, &jrl_type_Matrix, &projection);
     Matrix view;
     jrl_get_value(argv, 2, &jrl_type_Matrix, &view);
     Vector3 jrl_ret = Vector3Unproject(source, projection, view);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* float3 Vector3ToFloatV(Vector3 v) */
 static Janet jrl_cfun_Vector3ToFloatV(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector3 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v);
+    Vector3 v = jrl_get_Vector3(argv, 0);
     float3 jrl_ret = Vector3ToFloatV(v);
     Janet jrl_value = jrl_to_janet(&jrl_type_float3, &jrl_ret, janet_wrap_nil());
     return jrl_value;
@@ -818,46 +717,39 @@ static Janet jrl_cfun_Vector3ToFloatV(int32_t argc, Janet *argv) {
 /* Vector3 Vector3Invert(Vector3 v) */
 static Janet jrl_cfun_Vector3Invert(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector3 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v);
+    Vector3 v = jrl_get_Vector3(argv, 0);
     Vector3 jrl_ret = Vector3Invert(v);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3Clamp(Vector3 v, Vector3 min, Vector3 max) */
 static Janet jrl_cfun_Vector3Clamp(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector3 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v);
-    Vector3 min;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &min);
-    Vector3 max;
-    jrl_get_value(argv, 2, &jrl_type_Vector3, &max);
+    Vector3 v = jrl_get_Vector3(argv, 0);
+    Vector3 min = jrl_get_Vector3(argv, 1);
+    Vector3 max = jrl_get_Vector3(argv, 2);
     Vector3 jrl_ret = Vector3Clamp(v, min, max);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 Vector3ClampValue(Vector3 v, float min, float max) */
 static Janet jrl_cfun_Vector3ClampValue(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector3 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v);
+    Vector3 v = jrl_get_Vector3(argv, 0);
     float min = jrl_get_float(argv, 1);
     float max = jrl_get_float(argv, 2);
     Vector3 jrl_ret = Vector3ClampValue(v, min, max);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* int Vector3Equals(Vector3 p, Vector3 q) */
 static Janet jrl_cfun_Vector3Equals(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 p;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &p);
-    Vector3 q;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &q);
+    Vector3 p = jrl_get_Vector3(argv, 0);
+    Vector3 q = jrl_get_Vector3(argv, 1);
     int jrl_ret = Vector3Equals(p, q);
     Janet jrl_value = janet_wrap_integer(jrl_ret);
     return jrl_value;
@@ -866,13 +758,11 @@ static Janet jrl_cfun_Vector3Equals(int32_t argc, Janet *argv) {
 /* Vector3 Vector3Refract(Vector3 v, Vector3 n, float r) */
 static Janet jrl_cfun_Vector3Refract(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector3 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &v);
-    Vector3 n;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &n);
+    Vector3 v = jrl_get_Vector3(argv, 0);
+    Vector3 n = jrl_get_Vector3(argv, 1);
     float r = jrl_get_float(argv, 2);
     Vector3 jrl_ret = Vector3Refract(v, n, r);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
@@ -881,7 +771,7 @@ static Janet jrl_cfun_Vector4Zero(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 0);
     (void) argv;
     Vector4 jrl_ret = Vector4Zero();
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
@@ -890,61 +780,54 @@ static Janet jrl_cfun_Vector4One(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 0);
     (void) argv;
     Vector4 jrl_ret = Vector4One();
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Vector4 Vector4Add(Vector4 v1, Vector4 v2) */
 static Janet jrl_cfun_Vector4Add(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector4 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &v1);
-    Vector4 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector4, &v2);
+    Vector4 v1 = jrl_get_Vector4(argv, 0);
+    Vector4 v2 = jrl_get_Vector4(argv, 1);
     Vector4 jrl_ret = Vector4Add(v1, v2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Vector4 Vector4AddValue(Vector4 v, float add) */
 static Janet jrl_cfun_Vector4AddValue(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector4 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &v);
+    Vector4 v = jrl_get_Vector4(argv, 0);
     float add = jrl_get_float(argv, 1);
     Vector4 jrl_ret = Vector4AddValue(v, add);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Vector4 Vector4Subtract(Vector4 v1, Vector4 v2) */
 static Janet jrl_cfun_Vector4Subtract(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector4 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &v1);
-    Vector4 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector4, &v2);
+    Vector4 v1 = jrl_get_Vector4(argv, 0);
+    Vector4 v2 = jrl_get_Vector4(argv, 1);
     Vector4 jrl_ret = Vector4Subtract(v1, v2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Vector4 Vector4SubtractValue(Vector4 v, float add) */
 static Janet jrl_cfun_Vector4SubtractValue(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector4 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &v);
+    Vector4 v = jrl_get_Vector4(argv, 0);
     float add = jrl_get_float(argv, 1);
     Vector4 jrl_ret = Vector4SubtractValue(v, add);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* float Vector4Length(Vector4 v) */
 static Janet jrl_cfun_Vector4Length(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector4 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &v);
+    Vector4 v = jrl_get_Vector4(argv, 0);
     float jrl_ret = Vector4Length(v);
     Janet jrl_value = janet_wrap_number((double) jrl_ret);
     return jrl_value;
@@ -953,8 +836,7 @@ static Janet jrl_cfun_Vector4Length(int32_t argc, Janet *argv) {
 /* float Vector4LengthSqr(Vector4 v) */
 static Janet jrl_cfun_Vector4LengthSqr(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector4 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &v);
+    Vector4 v = jrl_get_Vector4(argv, 0);
     float jrl_ret = Vector4LengthSqr(v);
     Janet jrl_value = janet_wrap_number((double) jrl_ret);
     return jrl_value;
@@ -963,10 +845,8 @@ static Janet jrl_cfun_Vector4LengthSqr(int32_t argc, Janet *argv) {
 /* float Vector4DotProduct(Vector4 v1, Vector4 v2) */
 static Janet jrl_cfun_Vector4DotProduct(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector4 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &v1);
-    Vector4 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector4, &v2);
+    Vector4 v1 = jrl_get_Vector4(argv, 0);
+    Vector4 v2 = jrl_get_Vector4(argv, 1);
     float jrl_ret = Vector4DotProduct(v1, v2);
     Janet jrl_value = janet_wrap_number((double) jrl_ret);
     return jrl_value;
@@ -975,10 +855,8 @@ static Janet jrl_cfun_Vector4DotProduct(int32_t argc, Janet *argv) {
 /* float Vector4Distance(Vector4 v1, Vector4 v2) */
 static Janet jrl_cfun_Vector4Distance(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector4 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &v1);
-    Vector4 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector4, &v2);
+    Vector4 v1 = jrl_get_Vector4(argv, 0);
+    Vector4 v2 = jrl_get_Vector4(argv, 1);
     float jrl_ret = Vector4Distance(v1, v2);
     Janet jrl_value = janet_wrap_number((double) jrl_ret);
     return jrl_value;
@@ -987,10 +865,8 @@ static Janet jrl_cfun_Vector4Distance(int32_t argc, Janet *argv) {
 /* float Vector4DistanceSqr(Vector4 v1, Vector4 v2) */
 static Janet jrl_cfun_Vector4DistanceSqr(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector4 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &v1);
-    Vector4 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector4, &v2);
+    Vector4 v1 = jrl_get_Vector4(argv, 0);
+    Vector4 v2 = jrl_get_Vector4(argv, 1);
     float jrl_ret = Vector4DistanceSqr(v1, v2);
     Janet jrl_value = janet_wrap_number((double) jrl_ret);
     return jrl_value;
@@ -999,125 +875,107 @@ static Janet jrl_cfun_Vector4DistanceSqr(int32_t argc, Janet *argv) {
 /* Vector4 Vector4Scale(Vector4 v, float scale) */
 static Janet jrl_cfun_Vector4Scale(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector4 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &v);
+    Vector4 v = jrl_get_Vector4(argv, 0);
     float scale = jrl_get_float(argv, 1);
     Vector4 jrl_ret = Vector4Scale(v, scale);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Vector4 Vector4Multiply(Vector4 v1, Vector4 v2) */
 static Janet jrl_cfun_Vector4Multiply(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector4 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &v1);
-    Vector4 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector4, &v2);
+    Vector4 v1 = jrl_get_Vector4(argv, 0);
+    Vector4 v2 = jrl_get_Vector4(argv, 1);
     Vector4 jrl_ret = Vector4Multiply(v1, v2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Vector4 Vector4Negate(Vector4 v) */
 static Janet jrl_cfun_Vector4Negate(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector4 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &v);
+    Vector4 v = jrl_get_Vector4(argv, 0);
     Vector4 jrl_ret = Vector4Negate(v);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Vector4 Vector4Divide(Vector4 v1, Vector4 v2) */
 static Janet jrl_cfun_Vector4Divide(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector4 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &v1);
-    Vector4 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector4, &v2);
+    Vector4 v1 = jrl_get_Vector4(argv, 0);
+    Vector4 v2 = jrl_get_Vector4(argv, 1);
     Vector4 jrl_ret = Vector4Divide(v1, v2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Vector4 Vector4Normalize(Vector4 v) */
 static Janet jrl_cfun_Vector4Normalize(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector4 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &v);
+    Vector4 v = jrl_get_Vector4(argv, 0);
     Vector4 jrl_ret = Vector4Normalize(v);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Vector4 Vector4Min(Vector4 v1, Vector4 v2) */
 static Janet jrl_cfun_Vector4Min(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector4 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &v1);
-    Vector4 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector4, &v2);
+    Vector4 v1 = jrl_get_Vector4(argv, 0);
+    Vector4 v2 = jrl_get_Vector4(argv, 1);
     Vector4 jrl_ret = Vector4Min(v1, v2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Vector4 Vector4Max(Vector4 v1, Vector4 v2) */
 static Janet jrl_cfun_Vector4Max(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector4 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &v1);
-    Vector4 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector4, &v2);
+    Vector4 v1 = jrl_get_Vector4(argv, 0);
+    Vector4 v2 = jrl_get_Vector4(argv, 1);
     Vector4 jrl_ret = Vector4Max(v1, v2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Vector4 Vector4Lerp(Vector4 v1, Vector4 v2, float amount) */
 static Janet jrl_cfun_Vector4Lerp(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector4 v1;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &v1);
-    Vector4 v2;
-    jrl_get_value(argv, 1, &jrl_type_Vector4, &v2);
+    Vector4 v1 = jrl_get_Vector4(argv, 0);
+    Vector4 v2 = jrl_get_Vector4(argv, 1);
     float amount = jrl_get_float(argv, 2);
     Vector4 jrl_ret = Vector4Lerp(v1, v2, amount);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Vector4 Vector4MoveTowards(Vector4 v, Vector4 target, float maxDistance) */
 static Janet jrl_cfun_Vector4MoveTowards(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector4 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &v);
-    Vector4 target;
-    jrl_get_value(argv, 1, &jrl_type_Vector4, &target);
+    Vector4 v = jrl_get_Vector4(argv, 0);
+    Vector4 target = jrl_get_Vector4(argv, 1);
     float maxDistance = jrl_get_float(argv, 2);
     Vector4 jrl_ret = Vector4MoveTowards(v, target, maxDistance);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Vector4 Vector4Invert(Vector4 v) */
 static Janet jrl_cfun_Vector4Invert(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector4 v;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &v);
+    Vector4 v = jrl_get_Vector4(argv, 0);
     Vector4 jrl_ret = Vector4Invert(v);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* int Vector4Equals(Vector4 p, Vector4 q) */
 static Janet jrl_cfun_Vector4Equals(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector4 p;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &p);
-    Vector4 q;
-    jrl_get_value(argv, 1, &jrl_type_Vector4, &q);
+    Vector4 p = jrl_get_Vector4(argv, 0);
+    Vector4 q = jrl_get_Vector4(argv, 1);
     int jrl_ret = Vector4Equals(p, q);
     Janet jrl_value = janet_wrap_integer(jrl_ret);
     return jrl_value;
@@ -1222,8 +1080,7 @@ static Janet jrl_cfun_MatrixTranslate(int32_t argc, Janet *argv) {
 /* Matrix MatrixRotate(Vector3 axis, float angle) */
 static Janet jrl_cfun_MatrixRotate(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 axis;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &axis);
+    Vector3 axis = jrl_get_Vector3(argv, 0);
     float angle = jrl_get_float(argv, 1);
     Matrix jrl_ret = MatrixRotate(axis, angle);
     Janet jrl_value = jrl_to_janet(&jrl_type_Matrix, &jrl_ret, janet_wrap_nil());
@@ -1260,8 +1117,7 @@ static Janet jrl_cfun_MatrixRotateZ(int32_t argc, Janet *argv) {
 /* Matrix MatrixRotateXYZ(Vector3 angle) */
 static Janet jrl_cfun_MatrixRotateXYZ(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector3 angle;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &angle);
+    Vector3 angle = jrl_get_Vector3(argv, 0);
     Matrix jrl_ret = MatrixRotateXYZ(angle);
     Janet jrl_value = jrl_to_janet(&jrl_type_Matrix, &jrl_ret, janet_wrap_nil());
     return jrl_value;
@@ -1270,8 +1126,7 @@ static Janet jrl_cfun_MatrixRotateXYZ(int32_t argc, Janet *argv) {
 /* Matrix MatrixRotateZYX(Vector3 angle) */
 static Janet jrl_cfun_MatrixRotateZYX(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector3 angle;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &angle);
+    Vector3 angle = jrl_get_Vector3(argv, 0);
     Matrix jrl_ret = MatrixRotateZYX(angle);
     Janet jrl_value = jrl_to_janet(&jrl_type_Matrix, &jrl_ret, janet_wrap_nil());
     return jrl_value;
@@ -1331,12 +1186,9 @@ static Janet jrl_cfun_MatrixOrtho(int32_t argc, Janet *argv) {
 /* Matrix MatrixLookAt(Vector3 eye, Vector3 target, Vector3 up) */
 static Janet jrl_cfun_MatrixLookAt(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector3 eye;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &eye);
-    Vector3 target;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &target);
-    Vector3 up;
-    jrl_get_value(argv, 2, &jrl_type_Vector3, &up);
+    Vector3 eye = jrl_get_Vector3(argv, 0);
+    Vector3 target = jrl_get_Vector3(argv, 1);
+    Vector3 up = jrl_get_Vector3(argv, 2);
     Matrix jrl_ret = MatrixLookAt(eye, target, up);
     Janet jrl_value = jrl_to_janet(&jrl_type_Matrix, &jrl_ret, janet_wrap_nil());
     return jrl_value;
@@ -1355,46 +1207,40 @@ static Janet jrl_cfun_MatrixToFloatV(int32_t argc, Janet *argv) {
 /* Quaternion QuaternionAdd(Quaternion q1, Quaternion q2) */
 static Janet jrl_cfun_QuaternionAdd(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector4 q1;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &q1);
-    Vector4 q2;
-    jrl_get_value(argv, 1, &jrl_type_Vector4, &q2);
+    Vector4 q1 = jrl_get_Vector4(argv, 0);
+    Vector4 q2 = jrl_get_Vector4(argv, 1);
     Vector4 jrl_ret = QuaternionAdd(q1, q2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Quaternion QuaternionAddValue(Quaternion q, float add) */
 static Janet jrl_cfun_QuaternionAddValue(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector4 q;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &q);
+    Vector4 q = jrl_get_Vector4(argv, 0);
     float add = jrl_get_float(argv, 1);
     Vector4 jrl_ret = QuaternionAddValue(q, add);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Quaternion QuaternionSubtract(Quaternion q1, Quaternion q2) */
 static Janet jrl_cfun_QuaternionSubtract(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector4 q1;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &q1);
-    Vector4 q2;
-    jrl_get_value(argv, 1, &jrl_type_Vector4, &q2);
+    Vector4 q1 = jrl_get_Vector4(argv, 0);
+    Vector4 q2 = jrl_get_Vector4(argv, 1);
     Vector4 jrl_ret = QuaternionSubtract(q1, q2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Quaternion QuaternionSubtractValue(Quaternion q, float sub) */
 static Janet jrl_cfun_QuaternionSubtractValue(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector4 q;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &q);
+    Vector4 q = jrl_get_Vector4(argv, 0);
     float sub = jrl_get_float(argv, 1);
     Vector4 jrl_ret = QuaternionSubtractValue(q, sub);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
@@ -1403,15 +1249,14 @@ static Janet jrl_cfun_QuaternionIdentity(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 0);
     (void) argv;
     Vector4 jrl_ret = QuaternionIdentity();
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* float QuaternionLength(Quaternion q) */
 static Janet jrl_cfun_QuaternionLength(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector4 q;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &q);
+    Vector4 q = jrl_get_Vector4(argv, 0);
     float jrl_ret = QuaternionLength(q);
     Janet jrl_value = janet_wrap_number((double) jrl_ret);
     return jrl_value;
@@ -1420,123 +1265,104 @@ static Janet jrl_cfun_QuaternionLength(int32_t argc, Janet *argv) {
 /* Quaternion QuaternionNormalize(Quaternion q) */
 static Janet jrl_cfun_QuaternionNormalize(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector4 q;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &q);
+    Vector4 q = jrl_get_Vector4(argv, 0);
     Vector4 jrl_ret = QuaternionNormalize(q);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Quaternion QuaternionInvert(Quaternion q) */
 static Janet jrl_cfun_QuaternionInvert(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector4 q;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &q);
+    Vector4 q = jrl_get_Vector4(argv, 0);
     Vector4 jrl_ret = QuaternionInvert(q);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Quaternion QuaternionMultiply(Quaternion q1, Quaternion q2) */
 static Janet jrl_cfun_QuaternionMultiply(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector4 q1;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &q1);
-    Vector4 q2;
-    jrl_get_value(argv, 1, &jrl_type_Vector4, &q2);
+    Vector4 q1 = jrl_get_Vector4(argv, 0);
+    Vector4 q2 = jrl_get_Vector4(argv, 1);
     Vector4 jrl_ret = QuaternionMultiply(q1, q2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Quaternion QuaternionScale(Quaternion q, float mul) */
 static Janet jrl_cfun_QuaternionScale(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector4 q;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &q);
+    Vector4 q = jrl_get_Vector4(argv, 0);
     float mul = jrl_get_float(argv, 1);
     Vector4 jrl_ret = QuaternionScale(q, mul);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Quaternion QuaternionDivide(Quaternion q1, Quaternion q2) */
 static Janet jrl_cfun_QuaternionDivide(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector4 q1;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &q1);
-    Vector4 q2;
-    jrl_get_value(argv, 1, &jrl_type_Vector4, &q2);
+    Vector4 q1 = jrl_get_Vector4(argv, 0);
+    Vector4 q2 = jrl_get_Vector4(argv, 1);
     Vector4 jrl_ret = QuaternionDivide(q1, q2);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Quaternion QuaternionLerp(Quaternion q1, Quaternion q2, float amount) */
 static Janet jrl_cfun_QuaternionLerp(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector4 q1;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &q1);
-    Vector4 q2;
-    jrl_get_value(argv, 1, &jrl_type_Vector4, &q2);
+    Vector4 q1 = jrl_get_Vector4(argv, 0);
+    Vector4 q2 = jrl_get_Vector4(argv, 1);
     float amount = jrl_get_float(argv, 2);
     Vector4 jrl_ret = QuaternionLerp(q1, q2, amount);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Quaternion QuaternionNlerp(Quaternion q1, Quaternion q2, float amount) */
 static Janet jrl_cfun_QuaternionNlerp(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector4 q1;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &q1);
-    Vector4 q2;
-    jrl_get_value(argv, 1, &jrl_type_Vector4, &q2);
+    Vector4 q1 = jrl_get_Vector4(argv, 0);
+    Vector4 q2 = jrl_get_Vector4(argv, 1);
     float amount = jrl_get_float(argv, 2);
     Vector4 jrl_ret = QuaternionNlerp(q1, q2, amount);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Quaternion QuaternionSlerp(Quaternion q1, Quaternion q2, float amount) */
 static Janet jrl_cfun_QuaternionSlerp(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 3);
-    Vector4 q1;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &q1);
-    Vector4 q2;
-    jrl_get_value(argv, 1, &jrl_type_Vector4, &q2);
+    Vector4 q1 = jrl_get_Vector4(argv, 0);
+    Vector4 q2 = jrl_get_Vector4(argv, 1);
     float amount = jrl_get_float(argv, 2);
     Vector4 jrl_ret = QuaternionSlerp(q1, q2, amount);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Quaternion QuaternionCubicHermiteSpline(Quaternion q1, Quaternion outTangent1, Quaternion q2, Quaternion inTangent2, float t) */
 static Janet jrl_cfun_QuaternionCubicHermiteSpline(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 5);
-    Vector4 q1;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &q1);
-    Vector4 outTangent1;
-    jrl_get_value(argv, 1, &jrl_type_Vector4, &outTangent1);
-    Vector4 q2;
-    jrl_get_value(argv, 2, &jrl_type_Vector4, &q2);
-    Vector4 inTangent2;
-    jrl_get_value(argv, 3, &jrl_type_Vector4, &inTangent2);
+    Vector4 q1 = jrl_get_Vector4(argv, 0);
+    Vector4 outTangent1 = jrl_get_Vector4(argv, 1);
+    Vector4 q2 = jrl_get_Vector4(argv, 2);
+    Vector4 inTangent2 = jrl_get_Vector4(argv, 3);
     float t = jrl_get_float(argv, 4);
     Vector4 jrl_ret = QuaternionCubicHermiteSpline(q1, outTangent1, q2, inTangent2, t);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Quaternion QuaternionFromVector3ToVector3(Vector3 from, Vector3 to) */
 static Janet jrl_cfun_QuaternionFromVector3ToVector3(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 from;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &from);
-    Vector3 to;
-    jrl_get_value(argv, 1, &jrl_type_Vector3, &to);
+    Vector3 from = jrl_get_Vector3(argv, 0);
+    Vector3 to = jrl_get_Vector3(argv, 1);
     Vector4 jrl_ret = QuaternionFromVector3ToVector3(from, to);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
@@ -1546,15 +1372,14 @@ static Janet jrl_cfun_QuaternionFromMatrix(int32_t argc, Janet *argv) {
     Matrix mat;
     jrl_get_value(argv, 0, &jrl_type_Matrix, &mat);
     Vector4 jrl_ret = QuaternionFromMatrix(mat);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Matrix QuaternionToMatrix(Quaternion q) */
 static Janet jrl_cfun_QuaternionToMatrix(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector4 q;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &q);
+    Vector4 q = jrl_get_Vector4(argv, 0);
     Matrix jrl_ret = QuaternionToMatrix(q);
     Janet jrl_value = jrl_to_janet(&jrl_type_Matrix, &jrl_ret, janet_wrap_nil());
     return jrl_value;
@@ -1563,23 +1388,21 @@ static Janet jrl_cfun_QuaternionToMatrix(int32_t argc, Janet *argv) {
 /* Quaternion QuaternionFromAxisAngle(Vector3 axis, float angle) */
 static Janet jrl_cfun_QuaternionFromAxisAngle(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector3 axis;
-    jrl_get_value(argv, 0, &jrl_type_Vector3, &axis);
+    Vector3 axis = jrl_get_Vector3(argv, 0);
     float angle = jrl_get_float(argv, 1);
     Vector4 jrl_ret = QuaternionFromAxisAngle(axis, angle);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* void QuaternionToAxisAngle(Quaternion q, Vector3 * outAxis, float * outAngle) */
 static Janet jrl_cfun_QuaternionToAxisAngle(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector4 q;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &q);
+    Vector4 q = jrl_get_Vector4(argv, 0);
     Vector3 outAxis = {0};
     float outAngle = 0;
     QuaternionToAxisAngle(q, &outAxis, &outAngle);
-    Janet jrl_results[2] = {jrl_to_janet(&jrl_type_Vector3, &outAxis, janet_wrap_nil()), janet_wrap_number(outAngle)};
+    Janet jrl_results[2] = {jrl_wrap_Vector3(outAxis), janet_wrap_number(outAngle)};
     return janet_wrap_tuple(janet_tuple_n(jrl_results, 2));
 }
 
@@ -1590,39 +1413,35 @@ static Janet jrl_cfun_QuaternionFromEuler(int32_t argc, Janet *argv) {
     float yaw = jrl_get_float(argv, 1);
     float roll = jrl_get_float(argv, 2);
     Vector4 jrl_ret = QuaternionFromEuler(pitch, yaw, roll);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* Vector3 QuaternionToEuler(Quaternion q) */
 static Janet jrl_cfun_QuaternionToEuler(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    Vector4 q;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &q);
+    Vector4 q = jrl_get_Vector4(argv, 0);
     Vector3 jrl_ret = QuaternionToEuler(q);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector3, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector3(jrl_ret);
     return jrl_value;
 }
 
 /* Quaternion QuaternionTransform(Quaternion q, Matrix mat) */
 static Janet jrl_cfun_QuaternionTransform(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector4 q;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &q);
+    Vector4 q = jrl_get_Vector4(argv, 0);
     Matrix mat;
     jrl_get_value(argv, 1, &jrl_type_Matrix, &mat);
     Vector4 jrl_ret = QuaternionTransform(q, mat);
-    Janet jrl_value = jrl_to_janet(&jrl_type_Vector4, &jrl_ret, janet_wrap_nil());
+    Janet jrl_value = jrl_wrap_Vector4(jrl_ret);
     return jrl_value;
 }
 
 /* int QuaternionEquals(Quaternion p, Quaternion q) */
 static Janet jrl_cfun_QuaternionEquals(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 2);
-    Vector4 p;
-    jrl_get_value(argv, 0, &jrl_type_Vector4, &p);
-    Vector4 q;
-    jrl_get_value(argv, 1, &jrl_type_Vector4, &q);
+    Vector4 p = jrl_get_Vector4(argv, 0);
+    Vector4 q = jrl_get_Vector4(argv, 1);
     int jrl_ret = QuaternionEquals(p, q);
     Janet jrl_value = janet_wrap_integer(jrl_ret);
     return jrl_value;
@@ -1637,7 +1456,7 @@ static Janet jrl_cfun_MatrixDecompose(int32_t argc, Janet *argv) {
     Vector4 rotation = {0};
     Vector3 scale = {0};
     MatrixDecompose(mat, &translation, &rotation, &scale);
-    Janet jrl_results[3] = {jrl_to_janet(&jrl_type_Vector3, &translation, janet_wrap_nil()), jrl_to_janet(&jrl_type_Vector4, &rotation, janet_wrap_nil()), jrl_to_janet(&jrl_type_Vector3, &scale, janet_wrap_nil())};
+    Janet jrl_results[3] = {jrl_wrap_Vector3(translation), jrl_wrap_Vector4(rotation), jrl_wrap_Vector3(scale)};
     return janet_wrap_tuple(janet_tuple_n(jrl_results, 3));
 }
 

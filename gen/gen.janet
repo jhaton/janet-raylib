@@ -456,6 +456,17 @@
 
 (defn- value-decl [ct] (canonical (ct :base)))
 
+# Tuple types with inline conversions in jrl.h (jrl_get_T / jrl_wrap_T).
+(def fast-tuples {"Vector2" true "Vector3" true "Vector4" true "Rectangle" true "Color" true})
+(defn- fast-tuple? [base] (fast-tuples (canonical base)))
+
+(defn- value-to-janet
+  "C expression converting the value-struct lvalue expr of type base to Janet."
+  [base expr]
+  (if (fast-tuple? base)
+    (string "jrl_wrap_" (canonical base) "(" expr ")")
+    (string "jrl_to_janet(&" (type-sym base) ", &" expr ", janet_wrap_nil())")))
+
 (def uniform-families {:rlgl "JRL_UNIFORM_RLGL" :attrib "JRL_UNIFORM_ATTRIB"})
 
 (defn emit-function
@@ -489,8 +500,10 @@
       :char (line "char " n " = jrl_get_char(argv, " i ");")
       :enum (line (ct :base) " " n " = (" (ct :base) ") jrl_get_enum(argv, " i ", &" (enum-sym (p :enum)) ");")
       :string (line "const char *" n " = " (if (p :nullable) "jrl_opt_cstring" "jrl_get_cstring") "(argv, " i ");")
-      :value (do (line (value-decl ct) " " n ";")
-               (line "jrl_get_value(argv, " i ", &" (type-sym (ct :base)) ", &" n ");"))
+      :value (if (fast-tuple? (ct :base))
+               (line (value-decl ct) " " n " = jrl_get_" (canonical (ct :base)) "(argv, " i ");")
+               (do (line (value-decl ct) " " n ";")
+                 (line "jrl_get_value(argv, " i ", &" (type-sym (ct :base)) ", &" n ");")))
       :handle (line (ct :base) " " n " = *(" (ct :base) " *) jrl_get_handle(argv, " i ", &" (type-sym (ct :base)) ");")
       :handle-ptr (line (ct :base) " *" n " = (" (ct :base) " *) jrl_get_handle(argv, " i ", &" (type-sym (ct :base)) ");")
       :unload (do
@@ -511,11 +524,11 @@
                                        "float" "janet_wrap_number(" "double" "janet_wrap_number("
                                        "bool" "janet_wrap_boolean(" "janet_wrap_integer(")
                                      n ")")
-                             (string "jrl_to_janet(&" (type-sym (ct :base)) ", &" n ", janet_wrap_nil())")))))
+                             (value-to-janet (ct :base) n)))))
       :inout (do
                (line (value-decl ct) " " n ";")
                (line "jrl_get_value(argv, " i ", &" (type-sym (ct :base)) ", &" n ");")
-               (array/push results (string "jrl_to_janet(&" (type-sym (ct :base)) ", &" n ", janet_wrap_nil())")))))
+               (array/push results (value-to-janet (ct :base) n)))))
   # phase 2: arguments whose conversion reads other arguments
   (each p plans
     (def ct (p :ct))
@@ -631,7 +644,7 @@
         (line (canonical (rct :base)) " jrl_ret = " call ";")
         (if (handle? (rct :base))
           (string "jrl_handle_new(&" (type-sym (rct :base)) ", &jrl_ret, 0)")
-          (string "jrl_to_janet(&" (type-sym (rct :base)) ", &jrl_ret, janet_wrap_nil())")))
+          (value-to-janet (rct :base) "jrl_ret")))
       (do (problem c-name ": unsupported return type " ret) "janet_wrap_nil()")))
   (when ret-expr (line "Janet jrl_value = " ret-expr ";"))
   (when-let [frames (rspec :frames)]

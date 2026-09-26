@@ -311,9 +311,30 @@ static int32_t tuple_width(const JrlType *t) {
     return width;
 }
 
+/* The inline getters in jrl.h fill these structs as float arrays. */
+_Static_assert(sizeof(Vector2) == 2 * sizeof(float), "Vector2 layout");
+_Static_assert(sizeof(Vector3) == 3 * sizeof(float), "Vector3 layout");
+_Static_assert(sizeof(Vector4) == 4 * sizeof(float), "Vector4 layout");
+_Static_assert(sizeof(Rectangle) == 4 * sizeof(float), "Rectangle layout");
+
+int jrl_color_keyword(Janet v, Color *out) {
+    int32_t i = find_key(janet_unwrap_keyword(v), jrl_color_names, jrl_color_name_count, sizeof(JrlColorName));
+    if (i < 0) return 0;
+    *out = jrl_color_names[i].color;
+    return 1;
+}
+
 static void tuple_from_janet(const JrlType *t, Janet v, void *out, const char *what) {
     const Janet *items;
     int32_t len;
+    /* The inline getters' shapes first, for arrays of points and struct
+     * fields; everything else takes the checked path below. */
+    if (t == &jrl_type_Color) {
+        if (jrl_fast_color(v, out)) return;
+    } else if (t == &jrl_type_Vector2 || t == &jrl_type_Vector3 || t == &jrl_type_Vector4 ||
+               t == &jrl_type_Rectangle) {
+        if (jrl_fast_floats(v, out, (int32_t) (t->size / sizeof(float)))) return;
+    }
     int32_t width = tuple_width(t);
     if (t == &jrl_type_Color) {
         Color *c = out;
