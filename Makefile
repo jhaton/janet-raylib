@@ -4,7 +4,7 @@
 #   make test       headless tests
 #   make smoke      open a window, draw, and capture build/smoke.png
 #   make embed      build and run the C embedding example
-#   make gen        regenerate src/gen and API.md from api/ and overrides.jdn
+#   make gen        regenerate src/gen, API.md, and the docs/ cheatsheets from api/ and overrides.jdn
 #   make api        regenerate api/*.jdn from the raylib submodule's headers
 #   make check-gen  fail if the committed generated files are stale
 
@@ -91,6 +91,7 @@ embed: $(BUILD)/embed-example
 
 gen:
 	$(JANET) gen/gen.janet
+	$(JANET) gen/cheatsheet.janet
 
 $(BUILD)/raylib_parser: vendor/raylib/parser/raylib_parser.c | $(BUILD)
 	$(CC) -O1 -w -o $@ $<
@@ -102,7 +103,7 @@ api: $(BUILD)/raylib_parser
 	for h in raylib raymath rlgl; do $(JANET) gen/api.janet $(BUILD)/$${h}_api.json api/$$h.jdn || exit 1; done
 
 check-gen: gen
-	git diff --exit-code -- src/gen API.md
+	git diff --exit-code -- src/gen API.md docs
 
 compile_flags.txt:
 	printf -- '-std=c99\n-Wall\n-Wextra\n-Isrc\n-Iinclude\n-I$(RAYLIB)\n-I$(JANET_INCLUDE)\n' > $@

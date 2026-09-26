@@ -687,14 +687,16 @@
   # enums
   (each name enum-order
     (def e (enums name))
+    # Sorted by keyword so the runtime can binary-search member lookups.
     (bpush c "static const JrlEnumMember jrl_enum_members_" name "[] = {\n")
-    (each v (e :values)
-      (bpush c "    {" (c-string (enum-key e (v :name))) ", " (v :name) "},\n"))
+    (each [key member] (sort-by first (map |[(enum-key e ($ :name)) ($ :name)] (e :values)))
+      (bpush c "    {" (c-string key) ", " member "},\n"))
     (bpush c "};\nconst JrlEnum jrl_enum_" name " = {" (c-string name) ", jrl_enum_members_" name ", "
                  (length (e :values)) ", " (if (e :flags) 1 0) "};\n\n"))
   # colors
+  # Sorted by keyword for binary search.
   (bpush c "const JrlColorName jrl_color_names[] = {\n")
-  (each [key [r g b a]] colors
+  (each [key [r g b a]] (sort-by |(string (first $)) colors)
     (bpush c "    {" (c-string (string key)) ", {" r ", " g ", " b ", " a "}},\n"))
   (bpush c "};\nconst int32_t jrl_color_name_count = " (length colors) ";\n\n")
   # structs

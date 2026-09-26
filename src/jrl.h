@@ -58,7 +58,7 @@ typedef struct {
 
 typedef struct {
     const char *name;
-    const JrlEnumMember *members;
+    const JrlEnumMember *members; /* sorted by key for binary search */
     int32_t count;
     int flags; /* accepts an indexed collection of members, OR-ed */
 } JrlEnum;
@@ -93,7 +93,7 @@ typedef struct {
     Color color;
 } JrlColorName;
 
-extern const JrlColorName jrl_color_names[];
+extern const JrlColorName jrl_color_names[]; /* sorted by key for binary search */
 extern const int32_t jrl_color_name_count;
 
 /* Handle behaviour shared by every generated abstract type. */

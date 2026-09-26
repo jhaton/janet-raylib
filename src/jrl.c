@@ -1,5 +1,6 @@
 /* jrl.c - conversions, guarded handles, and array views. See jrl.h. */
 #include "jrl.h"
+#include "gen/types.h"
 
 #include <string.h>
 
@@ -124,11 +125,32 @@ static double number_of(Janet v, const char *what) {
     return janet_unwrap_number(v);
 }
 
-static char arg_what[32];
+/* Error context for argument n. The labels are static so the success path of
+ * every conversion stays free of string formatting. */
+static const char *const argument_labels[] = {
+    "argument 0", "argument 1", "argument 2", "argument 3", "argument 4",
+    "argument 5", "argument 6", "argument 7", "argument 8", "argument 9",
+    "argument 10", "argument 11", "argument 12", "argument 13", "argument 14",
+    "argument 15"
+};
 
 static const char *argument_label(int32_t n) {
-    snprintf(arg_what, sizeof(arg_what), "argument %d", (int) n);
-    return arg_what;
+    if (n >= 0 && n < (int32_t) (sizeof(argument_labels) / sizeof(argument_labels[0])))
+        return argument_labels[n];
+    return "argument";
+}
+
+/* Binary search over a key-sorted table of records whose first member is the key. */
+static int32_t find_key(const uint8_t *kw, const void *table, int32_t count, size_t stride) {
+    int32_t lo = 0, hi = count - 1;
+    while (lo <= hi) {
+        int32_t mid = lo + (hi - lo) / 2;
+        int cmp = janet_cstrcmp(kw, *(const char *const *) ((const char *) table + (size_t) mid * stride));
+        if (cmp == 0) return mid;
+        if (cmp < 0) hi = mid - 1;
+        else lo = mid + 1;
+    }
+    return -1;
 }
 
 int jrl_get_int(const Janet *argv, int32_t n) {
@@ -181,9 +203,8 @@ Janet jrl_wrap_cstring(const char *s) {
 static int64_t enum_member(const JrlEnum *e, Janet v, const char *what) {
     if (janet_checktype(v, JANET_KEYWORD)) {
         const uint8_t *kw = janet_unwrap_keyword(v);
-        for (int32_t i = 0; i < e->count; i++) {
-            if (!janet_cstrcmp(kw, e->members[i].key)) return e->members[i].value;
-        }
+        int32_t i = find_key(kw, e->members, e->count, sizeof(JrlEnumMember));
+        if (i >= 0) return e->members[i].value;
         janet_panicf("%s: unknown %s member %q", what, e->name, v);
     }
     return integer_in(v, INT32_MIN, UINT32_MAX, what);
@@ -286,15 +307,13 @@ static void tuple_from_janet(const JrlType *t, Janet v, void *out, const char *w
     const Janet *items;
     int32_t len;
     int32_t width = tuple_width(t);
-    if (t->at == NULL && !strcmp(t->name, "Color")) {
+    if (t == &jrl_type_Color) {
         Color *c = out;
         if (janet_checktype(v, JANET_KEYWORD)) {
-            const uint8_t *kw = janet_unwrap_keyword(v);
-            for (int32_t i = 0; i < jrl_color_name_count; i++) {
-                if (!janet_cstrcmp(kw, jrl_color_names[i].key)) {
-                    *c = jrl_color_names[i].color;
-                    return;
-                }
+            int32_t i = find_key(janet_unwrap_keyword(v), jrl_color_names, jrl_color_name_count, sizeof(JrlColorName));
+            if (i >= 0) {
+                *c = jrl_color_names[i].color;
+                return;
             }
             janet_panicf("%s: unknown color %q", what, v);
         }

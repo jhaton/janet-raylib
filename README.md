@@ -12,12 +12,15 @@ Eight of the exclusions are `Unload*` functions for memory the binding frees its
 
 The binding produces a Janet native module plus a static library that embeds raylib, the bindings, and the Janet layer into a C program.
 
+Quick reference cards in the style of raylib's cheatsheet live in [`docs/`](docs/index.html): raylib (with janet-raylib's extras, value rules, structs, colors, and enum keywords), raymath, and rlgl. Hover a line for its C signature and conversion notes, and press `/` to filter.
+
 ## Layout
 
 ```text
 api/*.jdn          raylib's API description (raylib_parser JSON -> JDN), committed
 overrides.jdn      the policy headers cannot express: ownership, sizes, enums, exclusions
 gen/gen.janet      generator: api + overrides -> src/gen/*.c and API.md
+gen/cheatsheet.janet  the same plans -> docs/*.html quick reference cards
 src/jrl.{h,c}      hand-written runtime: conversions, guarded handles, array views
 src/manual.c       the few functions the generator cannot express
 lib/raylib/        thin Janet layer: with-* forms for Begin/End pairs
@@ -145,11 +148,15 @@ Link `build/libjanet-raylib.a` (the bindings, the Janet layer, and raylib), `lib
 
 ```sh
 mise exec -- make api        # api/*.jdn from the submodule's headers (after bumping vendor/raylib)
-mise exec -- make gen        # src/gen/*.c and API.md
+mise exec -- make gen        # src/gen/*.c, API.md, and docs/*.html
 mise exec -- make check-gen  # fails if the committed generated files are stale
 ```
 
 The generator stops and lists every pointer parameter, pointer field, or pointer return that neither a rule nor `overrides.jdn` explains. A raylib version bump therefore shows up as reviewable diffs in `api/`, `src/gen/`, and `API.md`, plus a list of new signatures that need a policy decision.
+
+### Cheatsheets on GitHub Pages
+
+`docs/` is a static site with no build step: generated HTML plus `style.css`, `cheatsheet.js`, and `.nojekyll`. To publish it, set Settings → Pages → Source to "Deploy from a branch", branch `main`, folder `/docs`.
 
 ## Platform notes
 

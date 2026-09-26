@@ -1,3 +1,4 @@
 api/*.jdn linguist-generated
 src/gen/** linguist-generated
 API.md linguist-generated
+docs/*.html linguist-generated
