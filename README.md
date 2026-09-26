@@ -87,10 +87,13 @@ Examples: `key-down?`, `draw-texture-n-patch`, `begin-mode-2d`, `vector2-dot-pro
 | enum `int` parameters | integer or member keyword (`:a`, `:left`, `:perspective`) | integer |
 | flag parameters (`ConfigFlags`, `Gesture`) | integer, keyword, or a tuple of keywords (OR-ed) | integer |
 | `bool` | `true`/`false` only (Janet treats `0` as truthy) | boolean |
+| `unsigned int` | integer `0`…`4294967295`; `get-color` also takes the negative packed colors `color-to-int` returns, as C converts them | number |
+
+`set-shader-value` and `set-shader-value-v` take rlgl's uniform types (`:float` … `:ivec4`, `:uint` … `:uivec4`, `:sampler2d`), because raylib passes the type straight to `rlSetUniform`. The integer constant `shader-uniform-sampler2d` (8) is rlgl's `uint` in raylib 5.5, so it fails for samplers in C too; use `:sampler2d`.
 
 Pointer parameters follow the rules in `overrides.jdn`:
 
-- **Arrays** (`const Vector2 *points, int pointCount`): pass a tuple. The count parameter disappears from the Janet signature.
+- **Arrays** (`const Vector2 *points, int pointCount`): pass a tuple. The count parameter disappears from the Janet signature. Where C accepts `NULL` (such as the codepoints of `load-font-data`), `nil` and an empty tuple both pass `NULL`.
 - **Byte data** (`const void *data, int dataSize`): pass a string or buffer. Where raylib reads a fixed amount (such as `update-texture`), the length is checked first.
 - **Outputs**: returned instead of passed. A function with a return value and outputs returns a tuple, e.g. `(check-collision-lines a b c d)` → `[true [1 1]]`.
 - **In/out** (`UpdateCamera(Camera *camera, int mode)`): the updated value is returned, so write `(set camera (rl/update-camera camera :orbital))`.

@@ -114,8 +114,8 @@ static int64_t integer_in(Janet v, int64_t lo, int64_t hi, const char *what) {
         janet_panicf("%s: expected integer, got %q", what, v);
     double d = janet_unwrap_number(v);
     if (d != (double)(int64_t)d || d < (double)lo || d > (double)hi)
-        janet_panicf("%s: expected integer in range [%d, %d], got %q", what,
-                     (int64_t) lo, (int64_t) hi, v);
+        janet_panicf("%s: expected integer in range [%q, %q], got %q", what,
+                     janet_wrap_number((double) lo), janet_wrap_number((double) hi), v);
     return (int64_t) d;
 }
 
@@ -159,6 +159,12 @@ int jrl_get_int(const Janet *argv, int32_t n) {
 
 unsigned int jrl_get_uint(const Janet *argv, int32_t n) {
     return (unsigned int) integer_in(argv[n], 0, UINT32_MAX, argument_label(n));
+}
+
+/* A 32-bit pattern such as a packed color: negative values wrap as C's
+ * int -> unsigned int conversion does, so (get-color (color-to-int c)) works. */
+unsigned int jrl_get_uint_bits(const Janet *argv, int32_t n) {
+    return (unsigned int) (uint32_t) integer_in(argv[n], INT32_MIN, UINT32_MAX, argument_label(n));
 }
 
 unsigned char jrl_get_uchar(const Janet *argv, int32_t n) {
@@ -771,6 +777,13 @@ void *jrl_get_carray(const Janet *argv, int32_t n, JrlKind kind, const JrlType *
     }
     if (!janet_indexed_view(argv[n], &items, &len))
         janet_panicf("argument %d: expected a tuple or array, got %q", n, argv[n]);
+    /* raylib treats a count of 0 as "use the default count" and then reads
+     * that many elements from a non-NULL pointer (LoadFontData), so an empty
+     * array must reach C as NULL. */
+    if (nullable && len == 0) {
+        *count = 0;
+        return NULL;
+    }
     if (fixed > 0 && len != fixed)
         janet_panicf("argument %d: expected exactly %d elements, got %d", n, fixed, len);
     size_t size = kind_size(kind, t);
@@ -816,11 +829,6 @@ static void uniform_layout(int family, int type, int *elem, int *components) {
     if (family != JRL_UNIFORM_ATTRIB && type >= 4 && type <= 7) {
         *elem = 1;
         *components = type - 3;
-        return;
-    }
-    if (family == JRL_UNIFORM_RAYLIB && type == SHADER_UNIFORM_SAMPLER2D) {
-        *elem = 1;
-        *components = 1;
         return;
     }
     if (family == JRL_UNIFORM_RLGL && type >= RL_SHADER_UNIFORM_UINT && type <= RL_SHADER_UNIFORM_UIVEC4) {

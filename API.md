@@ -131,8 +131,8 @@ These names shadow Janet core bindings under `(use raylib)`; prefer `(import ray
 - `(shader-valid? shader)`
 - `(get-shader-location shader uniform-name)`
 - `(get-shader-location-attrib shader attrib-name)`
-- `(set-shader-value shader loc-index value uniform-type)` — uniform-type accepts ShaderUniformDataType keywords
-- `(set-shader-value-v shader loc-index value uniform-type count)` — uniform-type accepts ShaderUniformDataType keywords
+- `(set-shader-value shader loc-index value uniform-type)` — uniform-type accepts rlShaderUniformDataType keywords
+- `(set-shader-value-v shader loc-index value uniform-type count)` — uniform-type accepts rlShaderUniformDataType keywords
 - `(set-shader-value-matrix shader loc-index mat)`
 - `(set-shader-value-texture shader loc-index texture)`
 - `(unload-shader shader)` — shader is unloaded; later use raises an error

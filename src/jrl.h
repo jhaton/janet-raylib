@@ -106,6 +106,7 @@ Janet jrl_handle_next(void *data, Janet key);
 /* Scalars */
 int jrl_get_int(const Janet *argv, int32_t n);
 unsigned int jrl_get_uint(const Janet *argv, int32_t n);
+unsigned int jrl_get_uint_bits(const Janet *argv, int32_t n);
 unsigned char jrl_get_uchar(const Janet *argv, int32_t n);
 char jrl_get_char(const Janet *argv, int32_t n);
 float jrl_get_float(const Janet *argv, int32_t n);
@@ -143,7 +144,6 @@ void *jrl_get_carray(const Janet *argv, int32_t n, JrlKind kind, const JrlType *
 JanetByteView jrl_get_bytes(const Janet *argv, int32_t n, int nullable);
 void *jrl_get_raw_pointer(const Janet *argv, int32_t n);
 
-#define JRL_UNIFORM_RAYLIB 0
 #define JRL_UNIFORM_RLGL 1
 #define JRL_UNIFORM_ATTRIB 2
 void *jrl_get_uniform(const Janet *argv, int32_t n, int family, int type, int count);

@@ -323,7 +323,10 @@
     (cond
       (and (int-type? ct) (enum-for fn-name (p :name)))
       (merge-into rec {:kind :enum :enum (enum-for fn-name (p :name))})
-      (scalar-kinds base) (put rec :kind :scalar)
+      (scalar-kinds base)
+      (do (when (and (o :bits) (not= base "unsigned int"))
+            (problem fn-name ": :bits on parameter " (p :name) " needs an unsigned int, got " (p :type)))
+        (put rec :kind :scalar))
       (= base "char") (put rec :kind :char)
       (and (value-type? base) (handle? base)) (put rec :kind :handle)
       (value-type? base) (put rec :kind :value)
@@ -403,7 +406,7 @@
 
 (defn- value-decl [ct] (canonical (ct :base)))
 
-(def uniform-families {:raylib "JRL_UNIFORM_RAYLIB" :rlgl "JRL_UNIFORM_RLGL" :attrib "JRL_UNIFORM_ATTRIB"})
+(def uniform-families {:rlgl "JRL_UNIFORM_RLGL" :attrib "JRL_UNIFORM_ATTRIB"})
 
 (defn emit-function
   "C source for one wrapper. Returns [c-text janet-signature notes]."
@@ -427,7 +430,9 @@
       :scalar
       (line (ct :base) " " n " = "
             (case (ct :base)
-              "int" "jrl_get_int" "unsigned int" "jrl_get_uint" "unsigned char" "jrl_get_uchar"
+              "int" "jrl_get_int"
+              "unsigned int" (if (p :bits) "jrl_get_uint_bits" "jrl_get_uint")
+              "unsigned char" "jrl_get_uchar"
               "unsigned short" "(unsigned short) jrl_get_uint" "float" "jrl_get_float"
               "double" "jrl_get_double" "bool" "jrl_get_bool")
             "(argv, " i ");")

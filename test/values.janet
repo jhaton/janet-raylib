@@ -27,6 +27,10 @@
 (check "color returned as tuple" (rl/fade :red 0.5) [230 41 55 127])
 (check-error "color component range" (rl/color-to-int [256 0 0]) "range [0, 255]")
 (check-error "unknown color keyword" (rl/color-to-int :no-such-color) "unknown color :no-such-color")
+(check "packed colors round trip through signed color-to-int"
+       (rl/get-color (rl/color-to-int :maroon)) [190 33 55 255])
+(check-error "unsigned range shows its real upper bound" (rl/get-color 0x100000000)
+             "range [-2147483648, 4294967295]")
 
 # plain structs
 (def camera {:position [0 2 4] :target [0 0 0] :up [0 1 0] :fovy 45 :projection :perspective})
@@ -59,6 +63,17 @@
 (check "string arrays" (rl/text-join ["a" "b" "c"] "-") "a-b-c")
 (check-error "string array element type" (rl/text-join ["a" 1] "-") "element 1 must be a string")
 (check-error "array argument type" (rl/check-collision-point-poly [1 1] 5) "expected a tuple or array")
+(check "empty nullable array means NULL, like nil"
+       (let [data (slurp "vendor/raylib/examples/text/resources/anonymous_pro_bold.ttf")
+             glyphs (rl/load-font-data data 16 [] :default)]
+         (defer (rl/unload-font-data glyphs)
+           [(length glyphs) ((first glyphs) :value) ((last glyphs) :value)]))
+       [95 32 126])
+(check "nullable file name: nil makes an empty list"
+       (let [list (rl/load-automation-event-list nil)]
+         (defer (rl/unload-automation-event-list list)
+           [(list :count) (list :capacity)]))
+       [0 16384])
 
 # bytes
 (check "buffer written in place"

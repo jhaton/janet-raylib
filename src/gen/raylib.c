@@ -697,8 +697,8 @@ static Janet jrl_cfun_SetShaderValue(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 4);
     Shader shader = *(Shader *) jrl_get_handle(argv, 0, &jrl_type_Shader);
     int locIndex = jrl_get_int(argv, 1);
-    int uniformType = (int) jrl_get_enum(argv, 3, &jrl_enum_ShaderUniformDataType);
-    const void *value = jrl_get_uniform(argv, 2, JRL_UNIFORM_RAYLIB, (int) (uniformType), (int) (1));
+    int uniformType = (int) jrl_get_enum(argv, 3, &jrl_enum_rlShaderUniformDataType);
+    const void *value = jrl_get_uniform(argv, 2, JRL_UNIFORM_RLGL, (int) (uniformType), (int) (1));
     SetShaderValue(shader, locIndex, value, uniformType);
     janet_sfree((void *) value);
     return janet_wrap_nil();
@@ -709,9 +709,9 @@ static Janet jrl_cfun_SetShaderValueV(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 5);
     Shader shader = *(Shader *) jrl_get_handle(argv, 0, &jrl_type_Shader);
     int locIndex = jrl_get_int(argv, 1);
-    int uniformType = (int) jrl_get_enum(argv, 3, &jrl_enum_ShaderUniformDataType);
+    int uniformType = (int) jrl_get_enum(argv, 3, &jrl_enum_rlShaderUniformDataType);
     int count = jrl_get_int(argv, 4);
-    const void *value = jrl_get_uniform(argv, 2, JRL_UNIFORM_RAYLIB, (int) (uniformType), (int) (count));
+    const void *value = jrl_get_uniform(argv, 2, JRL_UNIFORM_RLGL, (int) (uniformType), (int) (count));
     SetShaderValueV(shader, locIndex, value, uniformType, count);
     janet_sfree((void *) value);
     return janet_wrap_nil();
@@ -1332,7 +1332,7 @@ static Janet jrl_cfun_ComputeSHA1(int32_t argc, Janet *argv) {
 /* AutomationEventList LoadAutomationEventList(const char * fileName) */
 static Janet jrl_cfun_LoadAutomationEventList(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    const char *fileName = jrl_get_cstring(argv, 0);
+    const char *fileName = jrl_opt_cstring(argv, 0);
     AutomationEventList jrl_ret = LoadAutomationEventList(fileName);
     Janet jrl_value = jrl_handle_new(&jrl_type_AutomationEventList, &jrl_ret, 0);
     return jrl_value;
@@ -4024,7 +4024,7 @@ static Janet jrl_cfun_ColorLerp(int32_t argc, Janet *argv) {
 /* Color GetColor(unsigned int hexValue) */
 static Janet jrl_cfun_GetColor(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    unsigned int hexValue = jrl_get_uint(argv, 0);
+    unsigned int hexValue = jrl_get_uint_bits(argv, 0);
     Color jrl_ret = GetColor(hexValue);
     Janet jrl_value = jrl_to_janet(&jrl_type_Color, &jrl_ret, janet_wrap_nil());
     return jrl_value;
@@ -6141,8 +6141,8 @@ static const JanetRegExt jrl_raylib_cfuns[] = {
     {"shader-valid?", jrl_cfun_IsShaderValid, "(shader-valid? shader)\n\nCheck if a shader is valid (loaded on GPU)\n\nC: bool IsShaderValid(Shader shader)", __FILE__, __LINE__},
     {"get-shader-location", jrl_cfun_GetShaderLocation, "(get-shader-location shader uniform-name)\n\nGet shader uniform location\n\nC: int GetShaderLocation(Shader shader, const char * uniformName)", __FILE__, __LINE__},
     {"get-shader-location-attrib", jrl_cfun_GetShaderLocationAttrib, "(get-shader-location-attrib shader attrib-name)\n\nGet shader attribute location\n\nC: int GetShaderLocationAttrib(Shader shader, const char * attribName)", __FILE__, __LINE__},
-    {"set-shader-value", jrl_cfun_SetShaderValue, "(set-shader-value shader loc-index value uniform-type)\n\nSet shader uniform value\n\nuniform-type accepts ShaderUniformDataType keywords.\n\nC: void SetShaderValue(Shader shader, int locIndex, const void * value, int uniformType)", __FILE__, __LINE__},
-    {"set-shader-value-v", jrl_cfun_SetShaderValueV, "(set-shader-value-v shader loc-index value uniform-type count)\n\nSet shader uniform value vector\n\nuniform-type accepts ShaderUniformDataType keywords.\n\nC: void SetShaderValueV(Shader shader, int locIndex, const void * value, int uniformType, int count)", __FILE__, __LINE__},
+    {"set-shader-value", jrl_cfun_SetShaderValue, "(set-shader-value shader loc-index value uniform-type)\n\nSet shader uniform value\n\nuniform-type accepts rlShaderUniformDataType keywords.\n\nC: void SetShaderValue(Shader shader, int locIndex, const void * value, int uniformType)", __FILE__, __LINE__},
+    {"set-shader-value-v", jrl_cfun_SetShaderValueV, "(set-shader-value-v shader loc-index value uniform-type count)\n\nSet shader uniform value vector\n\nuniform-type accepts rlShaderUniformDataType keywords.\n\nC: void SetShaderValueV(Shader shader, int locIndex, const void * value, int uniformType, int count)", __FILE__, __LINE__},
     {"set-shader-value-matrix", jrl_cfun_SetShaderValueMatrix, "(set-shader-value-matrix shader loc-index mat)\n\nSet shader uniform value (matrix 4x4)\n\nC: void SetShaderValueMatrix(Shader shader, int locIndex, Matrix mat)", __FILE__, __LINE__},
     {"set-shader-value-texture", jrl_cfun_SetShaderValueTexture, "(set-shader-value-texture shader loc-index texture)\n\nSet shader uniform value for texture (sampler2d)\n\nC: void SetShaderValueTexture(Shader shader, int locIndex, Texture2D texture)", __FILE__, __LINE__},
     {"unload-shader", jrl_cfun_UnloadShader, "(unload-shader shader)\n\nUnload shader from GPU memory (VRAM)\n\nshader is unloaded; later use raises an error.\n\nC: void UnloadShader(Shader shader)", __FILE__, __LINE__},

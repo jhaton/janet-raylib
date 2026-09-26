@@ -18,7 +18,10 @@
 #   :string      char * treated as an input string.  :nullable passes nil as NULL.
 #   :raw-pointer nil, a Janet pointer, or a buffer's address.
 #   :unload-array  An array returned by a Load* function; :count PARAM is filled.
-# Any parameter may be :nullable. :consumed marks a resource adopted by the result.
+# Any parameter may be :nullable; an empty :nullable :array also passes NULL,
+# because raylib reads a default count from a non-NULL pointer when the count
+# is 0. :consumed marks a resource adopted by the result. :bits on an unsigned
+# int parameter accepts any 32-bit integer and wraps negatives as C does.
 #
 # Return kinds:
 #   :array / :bytes / :string  copy C memory into Janet, then call :free (if any).
@@ -108,11 +111,13 @@
                "Texture" {"format" "PixelFormat"}}
 
  # int parameters that take enum members, by parameter name ...
+ # SetShaderValue(V) passes uniformType straight to rlSetUniform, so it takes
+ # rlgl's enum (raylib 5.5's SHADER_UNIFORM_SAMPLER2D = 8 is rlgl's UINT).
  :enum-params {"key" "KeyboardKey" "flags" "ConfigFlags" "flag" "ConfigFlags"
                "logLevel" "TraceLogLevel" "axis" "GamepadAxis" "cursor" "MouseCursor"
                "gesture" "Gesture" "newFormat" "PixelFormat" "layout" "CubemapLayout"
                "filter" "TextureFilter" "wrap" "TextureWrap" "mapType" "MaterialMapIndex"
-               "uniformType" "ShaderUniformDataType"}
+               "uniformType" "rlShaderUniformDataType"}
 
  # ... and by function where the same name means different enums.
  :enum-params-by-fn
@@ -141,7 +146,6 @@
   "rlGenTextureMipmaps" {"format" "rlPixelFormat"}
   "rlSetBlendMode" {"mode" "rlBlendMode"}
   "rlSetCullFace" {"mode" "rlCullMode"}
-  "rlSetUniform" {"uniformType" "rlShaderUniformDataType"}
   "rlSetVertexAttributeDefault" {"attribType" "rlShaderAttributeDataType"}
   "rlFramebufferAttach" {"attachType" "rlFramebufferAttachType"
                          "texType" "rlFramebufferAttachTextureType"}}
@@ -179,6 +183,8 @@
   "UnloadWaveSamples" {:skip "freed by the binding when load-wave-samples returns"}
 
   "GetWindowHandle" {:returns {:kind :pointer}}
+  "LoadAutomationEventList" {:params {"fileName" {:kind :string :nullable true}}}
+  "GetColor" {:params {"hexValue" {:bits true}}}
   "LoadRandomSequence" {:returns {:kind :array :count "count" :free "UnloadRandomSequence"}}
   "LoadFileData" {:returns {:kind :bytes :size "dataSize" :free "UnloadFileData"}}
   "SaveFileData" {:params {"data" {:kind :bytes :size "dataSize"}}}
@@ -203,8 +209,8 @@
                          "fsFileName" {:kind :string :nullable true}}}
   "LoadShaderFromMemory" {:params {"vsCode" {:kind :string :nullable true}
                                    "fsCode" {:kind :string :nullable true}}}
-  "SetShaderValue" {:params {"value" {:kind :uniform :type "uniformType" :count "1" :family :raylib}}}
-  "SetShaderValueV" {:params {"value" {:kind :uniform :type "uniformType" :count "count" :family :raylib}}}
+  "SetShaderValue" {:params {"value" {:kind :uniform :type "uniformType" :count "1" :family :rlgl}}}
+  "SetShaderValueV" {:params {"value" {:kind :uniform :type "uniformType" :count "count" :family :rlgl}}}
 
   "ExportImageToMemory" {:returns {:kind :bytes :size "fileSize" :free "MemFree"}}
   "ImageKernelConvolution" {:params {"kernel" {:kind :array :count "kernelSize"}}}
