@@ -222,15 +222,16 @@
   (get-in overrides [:fields struct-name field-name] {}))
 
 (defn- count-expr
-  "C expression for a :count spec, plus the struct fields it reads."
+  "C expression for a :count spec, the struct fields it reads, and the field
+   that holds the count with its factor (nil for constants)."
   [st spec]
   (def field-names (tabseq [f :in (st :fields)] (f :name) true))
   (cond
     (string? spec)
-    (if (field-names spec) [(string "s->" spec) [spec]] [spec []])
+    (if (field-names spec) [(string "s->" spec) [spec] [spec 1]] [spec [] nil])
     (indexed? spec)
-    (let [[f factor] spec] [(string "s->" f " * " factor) [f]])
-    (do (problem "bad count spec " (string/format "%j" spec)) ["0" []])))
+    (let [[f factor] spec] [(string "s->" f " * " factor) [f] [f factor]])
+    (do (problem "bad count spec " (string/format "%j" spec)) ["0" [] nil])))
 
 (defn build-fields
   "Field records for a struct, and C text for its count functions."
@@ -239,12 +240,14 @@
   (def count-fns @[])
   (def readonly @{})
   (def records @[])
+  (def field-index (tabseq [[i f] :pairs (st :fields)] (f :name) i))
   (each f (st :fields)
     (def ct (parse-ctype (f :type)))
     (def fname (f :name))
     (def o (field-override name fname))
     (def enum-name (get-in overrides [:enum-fields name fname]))
-    (def rec @{:key (kebab fname) :c fname :enum enum-name :readonly (o :readonly)})
+    (def rec @{:key (kebab fname) :c fname :enum enum-name :readonly (o :readonly)
+               :index-enum (o :index-enum) :count-field -1 :count-factor 1})
     (defn count-fn [suffix expr]
       (def fn-name (string "jrl_count_" name "_" fname suffix))
       (array/push count-fns
@@ -260,12 +263,12 @@
         (merge-into rec {:shape "JRL_FIELD_CHARS" :fixed (ct :fixed) :kind ["JRL_K_UCHAR" "NULL"]})
         (merge-into rec {:shape "JRL_FIELD_FIXED" :fixed (ct :fixed) :kind (elem-kind (ct :base))}))
       (zero? (ct :ptr))
-      (merge-into rec {:shape "JRL_FIELD_SCALAR" :kind (elem-kind (ct :base))})
+      (merge-into rec {:shape "JRL_FIELD_SCALAR" :kind (elem-kind (ct :base)) :elem (ct :base)})
       (o :bytes)
       (do
         (each r (o :reads) (put readonly r true))
         (merge-into rec {:shape "JRL_FIELD_BYTES" :kind ["JRL_K_UCHAR" "NULL"]
-                         :count (count-fn "" (o :bytes))}))
+                         :count (count-fn "" (o :bytes)) :reads (map kebab (o :reads))}))
       (and (= (ct :ptr) 2) (o :inner))
       (let [[outer oreads] (count-expr st (o :count))
             [inner ireads] (count-expr st (o :inner))]
@@ -273,10 +276,13 @@
         (merge-into rec {:shape "JRL_FIELD_POINTER2" :kind (elem-kind (ct :base))
                          :count (count-fn "" outer) :inner (count-fn "_inner" inner)}))
       (o :count)
-      (let [[expr reads] (count-expr st (o :count))
+      (let [[expr reads source] (count-expr st (o :count))
             base (if (and (= (ct :base) "char") (= (ct :ptr) 2)) "char" (ct :base))]
         (each r reads (put readonly r true))
-        (merge-into rec {:shape "JRL_FIELD_POINTER" :kind (elem-kind base)
+        (when-let [[field factor] source]
+          (merge-into rec {:count-field (field-index field) :count-factor factor
+                           :count-name (kebab field)}))
+        (merge-into rec {:shape "JRL_FIELD_POINTER" :kind (elem-kind base) :elem base
                          :count (count-fn "" expr)}))
       (do
         (problem "struct field " name "." fname " (" (f :type) ") needs :count, :bytes, or :hidden")
@@ -285,6 +291,50 @@
   (each rec records
     (when (readonly (rec :c)) (put rec :readonly true)))
   [records count-fns])
+
+# ---------------------------------------------------------------------------
+# Constructors: make-<type> for the handle types in overrides :constructors
+# ---------------------------------------------------------------------------
+
+(def constructor-names
+  (sort (seq [name :keys (overrides :constructors)]
+          (unless (handle? name) (problem "constructor type " name " is not a handle type"))
+          [name (string "make-" (kebab name))])))
+
+(defn constructor-doc
+  "Signature and docstring for make-<name>, from its field table."
+  [name]
+  (def [records _] (build-fields name))
+  (def visible (filter |(not= ($ :shape) "JRL_FIELD_HIDDEN") records))
+  (defn handle-field? [r] (and (r :elem) (value-type? (r :elem)) (handle? (r :elem))))
+  (def arrays
+    (seq [r :in visible :when (= (r :shape) "JRL_FIELD_POINTER")]
+      (string ":" (r :key)
+              (cond
+                (handle-field? r) (string " (an owned " (canonical (r :elem)) " array from a Load* call, adopted)")
+                (r :count-name) (if (= 1 (r :count-factor))
+                                  (string " (fills :" (r :count-name) ")")
+                                  (string " (flat, " (r :count-factor) " per :" (r :count-name) ")"))
+                " (fixed length)"))))
+  (def bytes
+    (seq [r :in visible :when (= (r :shape) "JRL_FIELD_BYTES")]
+      (string ":" (r :key) " (exactly the size given by " (string/join (map |(string ":" $) (r :reads)) " ") ")")))
+  (def adopted
+    (seq [r :in visible :when (and (= (r :shape) "JRL_FIELD_SCALAR") (handle-field? r))]
+      (string ":" (r :key))))
+  [(string "(" (string "make-" (kebab name)) " fields)")
+   (string (get-in overrides [:constructors name]) "\n\n"
+           "Builds " (if (string/find (string/slice name 0 1) "AEIOU") "an " "a ") name
+           " from a struct or table of fields, like C's (" name "){ .field = ... }: "
+           "omitted fields are zero, unknown fields are errors. Fields: "
+           (string/join (map |(string ":" ($ :key)) visible) " ") "."
+           (if (empty? arrays) ""
+             (string " Arrays are tuples, arrays, or views, copied into raylib memory; a count left out comes from the array: "
+                     (string/join arrays ", ") "."))
+           (if (empty? bytes) "" (string " Bytes (string or buffer), copied: " (string/join bytes ", ") "."))
+           (if (empty? adopted) ""
+             (string " Handles adopted by the result, so only it can be unloaded: " (string/join adopted ", ") "."))
+           " Free the result with the usual unload function.")])
 
 # ---------------------------------------------------------------------------
 # Function plans
@@ -443,7 +493,11 @@
                (line "jrl_get_value(argv, " i ", &" (type-sym (ct :base)) ", &" n ");"))
       :handle (line (ct :base) " " n " = *(" (ct :base) " *) jrl_get_handle(argv, " i ", &" (type-sym (ct :base)) ");")
       :handle-ptr (line (ct :base) " *" n " = (" (ct :base) " *) jrl_get_handle(argv, " i ", &" (type-sym (ct :base)) ");")
-      :unload (do (line (ct :base) " " n " = *(" (ct :base) " *) jrl_unload_handle(argv, " i ", &" (type-sym (ct :base)) ");")
+      :unload (do
+                (when (p :skip-raylib-owned)
+                  (line "if (jrl_handle_raylib_owned(argv[" i "])) return janet_wrap_nil();")
+                  (array/push notes (string (kebab (p :c-name)) " owned by raylib (as from a Get* call) is left alone, as in C")))
+                (line (ct :base) " " n " = *(" (ct :base) " *) jrl_unload_handle(argv, " i ", &" (type-sym (ct :base)) ");")
                 (array/push post (string "jrl_mark_unloaded(argv[" i "]);")))
       :raw-pointer (line "void *" n " = jrl_get_raw_pointer(argv, " i ");")
       :computed (line (ct :base) " " n " = 0;")
@@ -580,6 +634,9 @@
           (string "jrl_to_janet(&" (type-sym (rct :base)) ", &jrl_ret, janet_wrap_nil())")))
       (do (problem c-name ": unsupported return type " ret) "janet_wrap_nil()")))
   (when ret-expr (line "Janet jrl_value = " ret-expr ";"))
+  (when-let [frames (rspec :frames)]
+    (line "jrl_handle_set_frames(jrl_value, " frames ");")
+    (array/push notes (string "the image's :data spans all " (kebab frames))))
   (when-let [owner (rspec :owner)]
     (line "jrl_handle_attach(jrl_value, argv[" ((find |(= ($ :c-name) owner) plans) :index) "]);")
     (array/push notes (string "keeps " (kebab owner) " alive")))
@@ -715,7 +772,9 @@
       (bpush c "    {" (c-string (r :key)) ", " (r :shape) ", " kind ", " tptr ", "
                    (if (r :enum) (string "&" (enum-sym (r :enum))) "NULL") ", "
                    "offsetof(" name ", " (r :c) "), " (or (r :fixed) 0) ", "
-                   (or (r :count) "NULL") ", " (or (r :inner) "NULL") ", " (if (r :readonly) 1 0) "},\n"))
+                   (or (r :count) "NULL") ", " (or (r :inner) "NULL") ", " (if (r :readonly) 1 0) ", "
+                   (r :count-field) ", " (r :count-factor) ", "
+                   (if (r :index-enum) (string "&" (enum-sym (r :index-enum))) "NULL") "},\n"))
     (bpush c "};\n")
     (when (= shape :handle)
       (bpush c "static const JanetAbstractType jrl_at_" name " = {\n"
@@ -725,8 +784,21 @@
                  (case shape :tuple "JRL_SHAPE_TUPLE" :handle "JRL_SHAPE_HANDLE" "JRL_SHAPE_STRUCT") ", "
                  "jrl_fields_" name ", " (length records) ", "
                  (if (= shape :handle) (string "&jrl_at_" name) "NULL") "};\n\n"))
+  # constructors
+  (each [name janet-name] constructor-names
+    (bpush c "static Janet jrl_cfun_make_" name "(int32_t argc, Janet *argv) {\n"
+             "    janet_fixarity(argc, 1);\n"
+             "    return jrl_make(&" (type-sym name) ", argv, 0);\n}\n"))
+  (bpush c "static const JanetRegExt jrl_constructor_cfuns[] = {\n")
+  (each [name janet-name] constructor-names
+    (def [signature text] (constructor-doc name))
+    (claim-name janet-name (string "constructor for " name))
+    (bpush c "    {" (c-string janet-name) ", jrl_cfun_make_" name ", "
+             (c-string (string signature "\n\n" text)) ", __FILE__, __LINE__},\n"))
+  (bpush c "    {NULL, NULL, NULL, NULL, 0}\n};\n\n")
   # constants
   (bpush c "void jrl_register_types(JanetTable *env) {\n")
+  (bpush c "    janet_cfuns_ext(env, NULL, jrl_constructor_cfuns);\n")
   (defn def-const [name expr docstring]
     (claim-name name docstring)
     (bpush c "    janet_def(env, " (c-string name) ", " expr ", " (c-string docstring) ");\n"))
@@ -781,6 +853,10 @@
       (when (p :manual) (bpush out "- `" (p :name) "` (`" (p :c-name) "`): " (p :manual) "\n"))))
   (eachp [name what] (overrides :extras)
     (bpush out "- `" name "`: " what "\n"))
+  (bpush out "\n## Constructors\n\n")
+  (each [name janet-name] constructor-names
+    (def [signature text] (constructor-doc name))
+    (bpush out "- `" signature "`: " (string/replace-all "\n\n" " " text) "\n"))
   (each h header-names
     (bpush out "\n## " h ".h\n\n")
     (each [plan signature notes] (docs-by-header h)

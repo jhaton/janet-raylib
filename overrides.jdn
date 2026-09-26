@@ -22,6 +22,8 @@
 # because raylib reads a default count from a non-NULL pointer when the count
 # is 0. :consumed marks a resource adopted by the result. :bits on an unsigned
 # int parameter accepts any 32-bit integer and wraps negatives as C does.
+# :skip-raylib-owned on an Unload* parameter makes a raylib-owned handle (from
+# a Get* call) a no-op, as C's function is, instead of an error.
 #
 # Return kinds:
 #   :array / :bytes / :string  copy C memory into Janet, then call :free (if any).
@@ -29,6 +31,7 @@
 #   :borrowed                  a resource raylib owns; it cannot be unloaded.
 #   :pointer                   a raw Janet pointer.
 # :owner PARAM keeps the returned resource tied to a parameter's lifetime.
+# :frames PARAM records an animated image's frame count, so :data spans them all.
 
 {:tuple-types ["Vector2" "Vector3" "Vector4" "Matrix" "Color" "Rectangle" "float3" "float16"]
 
@@ -57,9 +60,20 @@
           "take-trace-logs" "drains queued log messages as [level message] tuples"
           "unload-model-resources" "unloads a model and the distinct textures its materials reference, except those in keep"}
 
+ # make-<type> constructors, for structs C code builds by hand. The text heads
+ # each docstring; the generator adds the field rules.
+ :constructors
+ {"Texture" "Wrap a texture made with rlgl (rl-load-texture, rl-load-texture-depth, rl-load-texture-cubemap). The result owns :id; unload-texture deletes it."
+  "RenderTexture" "Wrap a framebuffer made with rlgl (rl-load-framebuffer) and textures from make-texture. unload-render-texture deletes the color texture, the framebuffer, and whatever depth attachment it has."
+  "Mesh" "Build a mesh from vertex data, as GenMeshCustom-style C code does; upload it with upload-mesh."
+  "Font" "Build a font from load-font-data glyphs, gen-image-font-atlas recs, and an atlas texture. unload-font frees them all."
+  "Image" "Build an image around pixel data, as C code does with a static array. Set :mipmaps to 1 for ordinary images; only one level of data is copied."
+  "Wave" "Build a wave around sample data, as C code does with a static array."}
+
  # Pointer fields: :count FIELD | [FIELD FACTOR] | C-CONSTANT, :inner for T**,
  # :bytes C-EXPR (with :reads FIELDS), or :hidden. Fields that size memory are
- # read-only automatically.
+# read-only automatically. :index-enum ENUM lets the field's array view take
+# that enum's member keywords as indices.
  :fields
  {"Image" {"data" {:bytes "GetPixelDataSize(s->width, s->height, s->format)"
                    :reads ["width" "height" "format"]}
@@ -83,7 +97,7 @@
           "vboId" {:count "MAX_MESH_VERTEX_BUFFERS"}
           "vaoId" {:readonly true}}
   "Shader" {"locs" {:count "RL_MAX_SHADER_LOCATIONS"} "id" {:readonly true}}
-  "Material" {"maps" {:count "MAX_MATERIAL_MAPS"}}
+  "Material" {"maps" {:count "MAX_MATERIAL_MAPS" :index-enum "MaterialMapIndex"}}
   "Model" {"meshes" {:count "meshCount"}
            "materials" {:count "materialCount"}
            "meshMaterial" {:count "meshCount"}
@@ -215,6 +229,8 @@
   "ExportImageToMemory" {:returns {:kind :bytes :size "fileSize" :free "MemFree"}}
   "ImageKernelConvolution" {:params {"kernel" {:kind :array :count "kernelSize"}}}
   "LoadImageColors" {:returns {:kind :array :count "image.width * image.height" :free "UnloadImageColors"}}
+  "LoadImageAnim" {:returns {:frames "frames"}}
+  "LoadImageAnimFromMemory" {:returns {:frames "frames"}}
   "LoadImagePalette" {:returns {:kind :array :count "colorCount" :free "UnloadImagePalette"}}
   "ImageDrawTriangleFan" {:params {"points" {:kind :array :count "pointCount"}}}
   "ImageDrawTriangleStrip" {:params {"points" {:kind :array :count "pointCount"}}}
@@ -224,6 +240,7 @@
   "SetPixelColor" {:params {"dstPtr" {:kind :buffer :min "GetPixelDataSize(1, 1, format)"}}}
 
   "GetFontDefault" {:returns {:kind :borrowed}}
+  "UnloadFont" {:params {"font" {:skip-raylib-owned true}}}
   "UpdateSound" {:params {"data" {:kind :bytes :min "sampleCount * sound.stream.channels * (sound.stream.sampleSize / 8)"}}}
   "UpdateAudioStream" {:params {"data" {:kind :bytes :min "frameCount * stream.channels * (stream.sampleSize / 8)"}}}
   "GetShapesTexture" {:returns {:kind :borrowed}}
@@ -237,6 +254,7 @@
               :returns {:kind :string :free "UnloadUTF8"}}
   "LoadCodepoints" {:returns {:kind :array :count "count" :free "UnloadCodepoints"}}
   "TextReplace" {:returns {:kind :string :free "MemFree"}}
+  "GetCodepointPrevious" {:skip "reads the bytes before its pointer; a Janet string can only be passed from its start, so every call would read outside it"}
   "TextInsert" {:returns {:kind :string :free "MemFree"}}
   "TextSplit" {:returns {:kind :array :count "count"}}
 

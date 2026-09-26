@@ -8,6 +8,7 @@ typedef struct {
     const JrlType *type;
     void *ptr;
     Janet owner;
+    int32_t frames;        /* images from load-image-anim: :data spans every frame */
     uint8_t unloaded;
     uint8_t borrowed;
     uint8_t view;
@@ -26,6 +27,7 @@ typedef struct {
     int32_t count;         /* owned arrays */
     uint8_t owned;
     uint8_t unloaded;
+    uint8_t adopted;       /* owned arrays moved into a value built by make-<type> */
     uint8_t readonly;
 } JrlArray;
 
@@ -476,6 +478,7 @@ Janet jrl_handle_new(const JrlType *t, const void *value, int borrowed) {
     h->type = t;
     h->ptr = (char *) h + JRL_STORAGE_OFFSET;
     h->owner = janet_wrap_nil();
+    h->frames = 1;
     h->unloaded = 0;
     h->borrowed = (uint8_t) (borrowed != 0);
     h->view = 0;
@@ -488,6 +491,7 @@ Janet jrl_handle_view(const JrlType *t, void *ptr, Janet owner) {
     h->type = t;
     h->ptr = ptr;
     h->owner = owner;
+    h->frames = 1;
     h->unloaded = 0;
     h->borrowed = 1;
     h->view = 1;
@@ -535,6 +539,18 @@ void jrl_handle_attach(Janet handle, Janet owner) {
     if (h != NULL) h->owner = owner;
 }
 
+void jrl_handle_set_frames(Janet handle, int32_t frames) {
+    JrlHandle *h = as_handle(handle);
+    if (h != NULL && frames > 1) h->frames = frames;
+}
+
+/* A handle raylib owns itself (get-font-default), as opposed to one adopted
+ * by or viewed through another resource. */
+int jrl_handle_raylib_owned(Janet x) {
+    JrlHandle *h = as_handle(x);
+    return h != NULL && h->borrowed && !h->view && janet_checktype(h->owner, JANET_NIL);
+}
+
 static const JrlField *find_field(const JrlType *t, Janet key) {
     if (!janet_checktype(key, JANET_KEYWORD)) return NULL;
     const uint8_t *kw = janet_unwrap_keyword(key);
@@ -550,6 +566,13 @@ int jrl_handle_get(void *data, Janet key, Janet *out) {
     const JrlField *f = find_field(h->type, key);
     if (f == NULL) return 0;
     check_handle_live(h, "field access");
+    if (f->shape == JRL_FIELD_BYTES && h->frames > 1) {
+        const void *bytes = *(void *const *) ((char *) h->ptr + f->offset);
+        int64_t size = (int64_t) f->count(h->ptr) * h->frames;
+        if (size > INT32_MAX) janet_panicf("%s :%s is too large for a Janet buffer", h->type->name, f->key);
+        *out = bytes ? jrl_wrap_bytes(bytes, (int32_t) size) : janet_wrap_nil();
+        return 1;
+    }
     *out = field_to_janet(f, h->ptr, janet_wrap_abstract(h));
     return 1;
 }
@@ -637,6 +660,7 @@ Janet jrl_array_owned(JrlKind kind, const JrlType *t, void *ptr, int32_t count) 
 
 static void *array_resolve(JrlArray *a, int32_t *count) {
     if (a->owned) {
+        if (a->adopted) janet_panicf("array of %s was adopted by another resource", a->type ? a->type->name : "values");
         if (a->unloaded) janet_panicf("array of %s was already unloaded", a->type ? a->type->name : "values");
         *count = a->count;
         return a->ptr;
@@ -668,9 +692,17 @@ static int jrl_array_gcmark(void *data, size_t len) {
     return 0;
 }
 
-static int array_index(Janet key, int32_t count, int32_t *index) {
-    if (!janet_checkint(key)) return 0;
-    int32_t i = janet_unwrap_integer(key);
+/* Integer index, or a member keyword for fields indexed by an enum
+ * (material maps: :albedo is material-map-albedo). */
+static int array_index(const JrlArray *a, Janet key, int32_t count, int32_t *index) {
+    int32_t i;
+    if (janet_checktype(key, JANET_KEYWORD) && !a->owned && a->field->index_enum) {
+        i = (int32_t) enum_member(a->field->index_enum, key, "array index");
+    } else if (janet_checkint(key)) {
+        i = janet_unwrap_integer(key);
+    } else {
+        return 0;
+    }
     if (i < 0 || i >= count) return 0;
     *index = i;
     return 1;
@@ -680,7 +712,7 @@ static int jrl_array_get(void *data, Janet key, Janet *out) {
     JrlArray *a = data;
     int32_t count, i;
     void *ptr = array_resolve(a, &count);
-    if (!array_index(key, count, &i)) return 0;
+    if (!array_index(a, key, count, &i)) return 0;
     if (array_is_rows(a)) {
         *out = array_view(a->field, a->owner, i);
         return 1;
@@ -696,7 +728,7 @@ static void jrl_array_put(void *data, Janet key, Janet value) {
     void *ptr = array_resolve(a, &count);
     if (a->readonly || array_is_rows(a) || a->kind == JRL_K_CSTRING)
         janet_panicf("array is read-only");
-    if (!array_index(key, count, &i))
+    if (!array_index(a, key, count, &i))
         janet_panicf("array index %q out of range [0, %d)", key, count);
     size_t size = kind_size(a->kind, a->type);
     write_elem(a->kind, a->type, a->enumt, (char *) ptr + (size_t) i * size, value, "array element");
@@ -754,6 +786,7 @@ static JrlArray *get_array_of(const Janet *argv, int32_t n, const JrlType *t) {
 void *jrl_unload_array(const Janet *argv, int32_t n, const JrlType *t, int32_t *count) {
     JrlArray *a = get_array_of(argv, n, t);
     if (!a->owned) janet_panicf("argument %d: cannot unload a view into another resource", n);
+    if (a->adopted) janet_panicf("argument %d: array of %s was adopted by another resource", n, t->name);
     if (a->unloaded) janet_panicf("argument %d: array of %s was already unloaded", n, t->name);
     *count = a->count;
     return a->ptr;
@@ -761,6 +794,215 @@ void *jrl_unload_array(const Janet *argv, int32_t n, const JrlType *t, int32_t *
 
 void *jrl_get_handle_array(const Janet *argv, int32_t n, const JrlType *t, int32_t *count) {
     return array_resolve(get_array_of(argv, n, t), count);
+}
+
+/* ---------------------------------------------------------------------------
+ * Constructors
+ *
+ * make-<type> builds a value the way C code writes (T){ .field = ... }:
+ * omitted fields are zero. Arrays and bytes are copied into memory from
+ * raylib's allocator, so the normal Unload* function frees them; a count
+ * field left out is filled from its array's length. Handle fields (a
+ * RenderTexture's textures) and owned arrays of handles (load-font-data's
+ * glyphs) are adopted: the new value owns them afterwards. Everything is
+ * converted and checked into scratch memory before anything is allocated
+ * or adopted, so a bad argument leaves the inputs untouched.
+ * ------------------------------------------------------------------------- */
+
+#define JRL_MAKE_MAX_FIELDS 64
+
+typedef struct {
+    const JrlField *field;
+    void *scratch;   /* converted contents, or NULL */
+    size_t size;     /* bytes in scratch */
+    JrlArray *moved; /* owned array whose memory the new value takes over */
+} JrlPending;
+
+static int32_t read_count(const JrlField *cf, const void *base) {
+    const void *p = (const char *) base + cf->offset;
+    return cf->kind == JRL_K_UINT ? (int32_t) *(const unsigned int *) p : *(const int *) p;
+}
+
+static void write_count(const JrlField *cf, void *base, int32_t n) {
+    void *p = (char *) base + cf->offset;
+    if (cf->kind == JRL_K_UINT) *(unsigned int *) p = (unsigned int) n;
+    else *(int *) p = n;
+}
+
+static JrlHandle *adoptable(Janet v, const JrlType *t, const char *what, const char *key) {
+    JrlHandle *h = as_handle(v);
+    if (h == NULL || h->type != t) janet_panicf("%s: field :%s expects %s, got %q", what, key, t->name, v);
+    check_handle_live(h, what);
+    if (h->view || h->borrowed)
+        janet_panicf("%s: field :%s: this %s is owned by raylib or another resource, so it cannot be adopted",
+                     what, key, t->name);
+    return h;
+}
+
+/* Element count of a pointer field's value, and its elements when they are
+ * Janet values (items) or live C memory (a view's ptr). */
+static int32_t field_value_count(const JrlField *f, Janet fv, const char *what,
+                                 JrlArray **array, void **ptr, const Janet **items) {
+    int32_t len;
+    JrlArray *a = as_array(fv);
+    *array = a;
+    *ptr = NULL;
+    *items = NULL;
+    if (a != NULL) {
+        if (a->kind != f->kind || a->type != f->type)
+            janet_panicf("%s: field :%s expects %s elements, got %q", what, f->key, kind_name(f->kind, f->type), fv);
+        *ptr = array_resolve(a, &len);
+        return len;
+    }
+    if (!janet_indexed_view(fv, items, &len))
+        janet_panicf("%s: field :%s expects a tuple or array, got %q", what, f->key, fv);
+    return len;
+}
+
+Janet jrl_make(const JrlType *t, const Janet *argv, int32_t n) {
+    const char *what = argument_label(n);
+    Janet v = argv[n];
+    if (!janet_checktypes(v, JANET_TFLAG_DICTIONARY))
+        janet_panicf("%s: expected a struct or table of %s fields, got %q", what, t->name, v);
+    if (t->field_count > JRL_MAKE_MAX_FIELDS) janet_panicf("%s has too many fields to build", t->name);
+
+    const JanetKV *kvs;
+    int32_t kv_len, kv_cap;
+    janet_dictionary_view(v, &kvs, &kv_len, &kv_cap);
+    for (int32_t i = 0; i < kv_cap; i++) {
+        if (janet_checktype(kvs[i].key, JANET_NIL)) continue;
+        const JrlField *f = find_field(t, kvs[i].key);
+        if (f == NULL) janet_panicf("%s: %s has no field %q", what, t->name, kvs[i].key);
+        if (f->shape == JRL_FIELD_POINTER2)
+            janet_panicf("%s: %s field :%s cannot be built from Janet values", what, t->name, f->key);
+    }
+
+    void *base = janet_smalloc(t->size);
+    memset(base, 0, t->size);
+    uint8_t set[JRL_MAKE_MAX_FIELDS] = {0};
+    JrlHandle *adopted[JRL_MAKE_MAX_FIELDS];
+    int32_t adopted_count = 0;
+    JrlPending pending[JRL_MAKE_MAX_FIELDS];
+    int32_t pending_count = 0;
+
+    /* Scalars first: the counts and sizes the pointer fields are checked against. */
+    for (int32_t i = 0; i < t->field_count; i++) {
+        const JrlField *f = &t->fields[i];
+        if (f->shape != JRL_FIELD_SCALAR && f->shape != JRL_FIELD_FIXED && f->shape != JRL_FIELD_CHARS) continue;
+        Janet fv = janet_get(v, janet_ckeywordv(f->key));
+        if (janet_checktype(fv, JANET_NIL)) continue;
+        if (f->shape == JRL_FIELD_SCALAR && f->kind == JRL_K_TYPE && f->type->shape == JRL_SHAPE_HANDLE) {
+            JrlHandle *h = adoptable(fv, f->type, what, f->key);
+            for (int32_t j = 0; j < adopted_count; j++)
+                if (adopted[j] == h) janet_panicf("%s: the same %s is given for two fields", what, f->type->name);
+            memcpy((char *) base + f->offset, h->ptr, f->type->size);
+            adopted[adopted_count++] = h;
+        } else {
+            field_from_janet(f, base, fv, what);
+        }
+        set[i] = 1;
+    }
+
+    /* Counts not given explicitly come from the array lengths, which must agree. */
+    for (int32_t i = 0; i < t->field_count; i++) {
+        const JrlField *f = &t->fields[i];
+        if (f->shape != JRL_FIELD_POINTER || f->count_field < 0) continue;
+        Janet fv = janet_get(v, janet_ckeywordv(f->key));
+        if (janet_checktype(fv, JANET_NIL)) continue;
+        JrlArray *a;
+        void *ptr;
+        const Janet *items;
+        int32_t len = field_value_count(f, fv, what, &a, &ptr, &items);
+        const JrlField *cf = &t->fields[f->count_field];
+        int32_t factor = f->count_factor;
+        if (len % factor)
+            janet_panicf("%s: field :%s needs a multiple of %d elements, got %d", what, f->key, factor, len);
+        if (set[f->count_field]) {
+            int32_t have = read_count(cf, base);
+            if ((int64_t) have * factor != len)
+                janet_panicf("%s: field :%s has %d elements, but :%s %d needs %d", what, f->key, len,
+                             cf->key, have, have * factor);
+        } else {
+            write_count(cf, base, len / factor);
+            set[f->count_field] = 1;
+        }
+    }
+
+    /* Convert array and byte contents into scratch memory. */
+    for (int32_t i = 0; i < t->field_count; i++) {
+        const JrlField *f = &t->fields[i];
+        if (f->shape != JRL_FIELD_POINTER && f->shape != JRL_FIELD_BYTES) continue;
+        Janet fv = janet_get(v, janet_ckeywordv(f->key));
+        if (janet_checktype(fv, JANET_NIL)) continue;
+        JrlPending *p = &pending[pending_count++];
+        p->field = f;
+        p->scratch = NULL;
+        p->size = 0;
+        p->moved = NULL;
+        int32_t need = f->count(base);
+        if (need < 0) janet_panicf("%s: field :%s has a negative size", what, f->key);
+        if (f->shape == JRL_FIELD_BYTES) {
+            JanetByteView bytes;
+            if (!janet_bytes_view(fv, &bytes.bytes, &bytes.len))
+                janet_panicf("%s: field :%s expects a string or buffer, got %q", what, f->key, fv);
+            if (bytes.len != need)
+                janet_panicf("%s: field :%s needs %d bytes for the other fields, got %d", what, f->key, need, bytes.len);
+            p->size = (size_t) need;
+            p->scratch = janet_smalloc(need > 0 ? p->size : 1);
+            memcpy(p->scratch, bytes.bytes, p->size);
+            continue;
+        }
+        JrlArray *a;
+        void *ptr;
+        const Janet *items;
+        int32_t len = field_value_count(f, fv, what, &a, &ptr, &items);
+        if (len != need)
+            janet_panicf("%s: field :%s needs %d elements, got %d", what, f->key, need, len);
+        if (a != NULL && a->owned) {
+            for (int32_t j = 0; j < pending_count - 1; j++)
+                if (pending[j].moved == a) janet_panicf("%s: the same array is given for two fields", what);
+            p->moved = a;
+            continue;
+        }
+        if (f->kind == JRL_K_TYPE && f->type->shape == JRL_SHAPE_HANDLE)
+            janet_panicf("%s: field :%s takes an owned array of %s from a Load* function, which the new %s adopts",
+                         what, f->key, f->type->name, t->name);
+        if (f->kind == JRL_K_CSTRING)
+            janet_panicf("%s: field :%s cannot be built from Janet strings", what, f->key);
+        size_t size = kind_size(f->kind, f->type);
+        p->size = (size_t) need * size;
+        p->scratch = janet_smalloc(p->size > 0 ? p->size : 1);
+        if (ptr != NULL) {
+            memcpy(p->scratch, ptr, p->size);
+        } else {
+            for (int32_t j = 0; j < len; j++)
+                write_elem(f->kind, f->type, f->enumt, (char *) p->scratch + (size_t) j * size, items[j], what);
+        }
+    }
+
+    /* Everything is valid: allocate, move, adopt. */
+    Janet result = jrl_handle_new(t, base, 0);
+    JrlHandle *rh = as_handle(result);
+    janet_sfree(base);
+    for (int32_t i = 0; i < pending_count; i++) {
+        JrlPending *p = &pending[i];
+        void **slot = (void **) ((char *) rh->ptr + p->field->offset);
+        if (p->moved) {
+            *slot = p->moved->ptr;
+            p->moved->ptr = NULL;
+            p->moved->unloaded = 1;
+            p->moved->adopted = 1;
+            continue;
+        }
+        if (p->size > 0) {
+            *slot = RL_MALLOC(p->size);
+            if (*slot == NULL) janet_panicf("out of memory building %s :%s", t->name, p->field->key);
+            memcpy(*slot, p->scratch, p->size);
+        }
+        janet_sfree(p->scratch);
+    }
+    for (int32_t i = 0; i < adopted_count; i++) jrl_adopt(janet_wrap_abstract(adopted[i]), result);
+    return result;
 }
 
 /* ---------------------------------------------------------------------------

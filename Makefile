@@ -29,7 +29,16 @@ else ifeq ($(UNAME_S),Darwin)
   SYSLIBS := -framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio -framework CoreVideo
 endif
 
-RAYLIB_DEFINES := -DPLATFORM_DESKTOP_GLFW -DGRAPHICS_API_OPENGL_33 -D_GNU_SOURCE $(GLFW_DEFINES)
+# JANET_RAYLIB_OPENGL=43 builds raylib for OpenGL 4.3, which adds compute shaders
+# and SSBOs (rl-load-compute-shader-program, rl-load-shader-buffer, ...) but needs
+# a 4.3 driver; macOS stops at 4.1. The default, 33, runs wherever raylib does.
+JANET_RAYLIB_OPENGL ?= 33
+ifeq ($(filter 33 43,$(JANET_RAYLIB_OPENGL)),)
+  $(error JANET_RAYLIB_OPENGL must be 33 or 43, got $(JANET_RAYLIB_OPENGL))
+endif
+
+RAYLIB_DEFINES := -DPLATFORM_DESKTOP_GLFW -DGRAPHICS_API_OPENGL_$(JANET_RAYLIB_OPENGL) \
+                  -DSUPPORT_FILEFORMAT_HDR -D_GNU_SOURCE $(GLFW_DEFINES)
 RAYLIB_CFLAGS := $(CFLAGS) $(PIC) -std=gnu99 -w $(RAYLIB_DEFINES) -I$(RAYLIB) -I$(RAYLIB)/external/glfw/include
 RAYLIB_MODULES := rcore rshapes rtextures rtext rmodels raudio utils rglfw
 RAYLIB_OBJS := $(RAYLIB_MODULES:%=$(BUILD)/raylib/%.o)
@@ -43,7 +52,7 @@ MODULE_DIR := $(BUILD)/lib/raylib
 MODULE := $(MODULE_DIR)/native.so
 STATIC := $(BUILD)/libjanet-raylib.a
 
-.PHONY: all module static test smoke embed gen api check-gen clean
+.PHONY: all module static test smoke embed gen api check-gen clean FORCE
 
 all: module static
 
@@ -51,7 +60,13 @@ module: $(MODULE) $(MODULE_DIR)/init.janet
 
 static: $(STATIC)
 
-$(BUILD)/raylib/%.o: $(RAYLIB)/%.c | $(BUILD)/raylib
+# raylib's objects depend on the flags they were built with, so switching
+# JANET_RAYLIB_OPENGL rebuilds them.
+RAYLIB_FLAGS_STAMP := $(BUILD)/raylib/flags
+$(RAYLIB_FLAGS_STAMP): FORCE | $(BUILD)/raylib
+	@echo '$(RAYLIB_CFLAGS)' | cmp -s - $@ || echo '$(RAYLIB_CFLAGS)' > $@
+
+$(BUILD)/raylib/%.o: $(RAYLIB)/%.c $(RAYLIB_FLAGS_STAMP) | $(BUILD)/raylib
 	$(CC) $(RAYLIB_CFLAGS) -c $< -o $@
 
 $(BUILD)/obj/%.o: src/%.c src/jrl.h src/gen/types.h | $(BUILD)/obj/gen

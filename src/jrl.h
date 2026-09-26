@@ -77,6 +77,9 @@ typedef struct {
     JrlCountFn count;
     JrlCountFn inner;
     int readonly;
+    int32_t count_field;       /* JRL_FIELD_POINTER: index of the field holding the count, or -1 */
+    int32_t count_factor;      /* elements per count unit (vertexCount * 3) */
+    const JrlEnum *index_enum; /* array views also accept these member keywords as indices */
 } JrlField;
 
 struct JrlType {
@@ -130,6 +133,11 @@ void *jrl_get_handle(const Janet *argv, int32_t n, const JrlType *t);
 void *jrl_unload_handle(const Janet *argv, int32_t n, const JrlType *t);
 void jrl_mark_unloaded(Janet x);
 void jrl_adopt(Janet handle, Janet owner);
+void jrl_handle_set_frames(Janet handle, int32_t frames);
+int jrl_handle_raylib_owned(Janet x);
+
+/* make-<type>: an owned handle built from a struct of fields (see jrl.c). */
+Janet jrl_make(const JrlType *t, const Janet *argv, int32_t n);
 void jrl_handle_attach(Janet handle, Janet owner);
 int jrl_value_live(Janet x);
 

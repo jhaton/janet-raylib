@@ -291,10 +291,16 @@
   (each name ["set-trace-log-capture" "take-trace-logs"]
     (def [signature desc] (manual name))
     (array/push rows (sig-entry name signature desc (when (= name "take-trace-logs") "@[[level message] ...]"))))
+  (array/push rows [:section "Constructors: C's (T){ .field = ... }; omitted fields are zero"])
+  (each [type-name janet-name] gen/constructor-names
+    (def [signature text] (gen/constructor-doc type-name))
+    (array/push rows (entry :name janet-name :args ["{...}"] :ret type-name
+                            :note (first (string/split ". " (first (string/split "\n\n" text))))
+                            :hover (string/replace-all "\n\n" "\n" text))))
   (array/push rows [:section "Handle fields"])
   (array/push rows (entry :name "texture :width" :note "read a field by keyword; (keys handle) lists them"))
   (array/push rows (entry :name "put model :transform m" :note "write a field; fields that size memory are read-only"))
-  (array/push rows (entry :name "get-in model [:materials 0 :maps 0]" :note "views into owned memory; they die with their owner"))
+  (array/push rows (entry :name "get-in model [:materials 0 :maps :albedo]" :note "views into owned memory; they die with their owner. Material maps also take MaterialMapIndex keywords"))
   rows)
 
 (defn- value-rows []

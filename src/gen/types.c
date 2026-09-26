@@ -576,59 +576,59 @@ const JrlColorName jrl_color_names[] = {
 const int32_t jrl_color_name_count = 26;
 
 static const JrlField jrl_fields_Vector2[] = {
-    {"x", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Vector2, x), 0, NULL, NULL, 0},
-    {"y", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Vector2, y), 0, NULL, NULL, 0},
+    {"x", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Vector2, x), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"y", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Vector2, y), 0, NULL, NULL, 0, -1, 1, NULL},
 };
 const JrlType jrl_type_Vector2 = {"Vector2", sizeof(Vector2), JRL_SHAPE_TUPLE, jrl_fields_Vector2, 2, NULL};
 
 static const JrlField jrl_fields_Vector3[] = {
-    {"x", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Vector3, x), 0, NULL, NULL, 0},
-    {"y", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Vector3, y), 0, NULL, NULL, 0},
-    {"z", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Vector3, z), 0, NULL, NULL, 0},
+    {"x", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Vector3, x), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"y", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Vector3, y), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"z", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Vector3, z), 0, NULL, NULL, 0, -1, 1, NULL},
 };
 const JrlType jrl_type_Vector3 = {"Vector3", sizeof(Vector3), JRL_SHAPE_TUPLE, jrl_fields_Vector3, 3, NULL};
 
 static const JrlField jrl_fields_Vector4[] = {
-    {"x", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Vector4, x), 0, NULL, NULL, 0},
-    {"y", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Vector4, y), 0, NULL, NULL, 0},
-    {"z", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Vector4, z), 0, NULL, NULL, 0},
-    {"w", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Vector4, w), 0, NULL, NULL, 0},
+    {"x", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Vector4, x), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"y", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Vector4, y), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"z", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Vector4, z), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"w", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Vector4, w), 0, NULL, NULL, 0, -1, 1, NULL},
 };
 const JrlType jrl_type_Vector4 = {"Vector4", sizeof(Vector4), JRL_SHAPE_TUPLE, jrl_fields_Vector4, 4, NULL};
 
 static const JrlField jrl_fields_Matrix[] = {
-    {"m0", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m0), 0, NULL, NULL, 0},
-    {"m4", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m4), 0, NULL, NULL, 0},
-    {"m8", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m8), 0, NULL, NULL, 0},
-    {"m12", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m12), 0, NULL, NULL, 0},
-    {"m1", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m1), 0, NULL, NULL, 0},
-    {"m5", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m5), 0, NULL, NULL, 0},
-    {"m9", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m9), 0, NULL, NULL, 0},
-    {"m13", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m13), 0, NULL, NULL, 0},
-    {"m2", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m2), 0, NULL, NULL, 0},
-    {"m6", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m6), 0, NULL, NULL, 0},
-    {"m10", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m10), 0, NULL, NULL, 0},
-    {"m14", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m14), 0, NULL, NULL, 0},
-    {"m3", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m3), 0, NULL, NULL, 0},
-    {"m7", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m7), 0, NULL, NULL, 0},
-    {"m11", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m11), 0, NULL, NULL, 0},
-    {"m15", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m15), 0, NULL, NULL, 0},
+    {"m0", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m0), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"m4", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m4), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"m8", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m8), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"m12", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m12), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"m1", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m1), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"m5", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m5), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"m9", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m9), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"m13", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m13), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"m2", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m2), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"m6", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m6), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"m10", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m10), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"m14", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m14), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"m3", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m3), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"m7", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m7), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"m11", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m11), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"m15", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Matrix, m15), 0, NULL, NULL, 0, -1, 1, NULL},
 };
 const JrlType jrl_type_Matrix = {"Matrix", sizeof(Matrix), JRL_SHAPE_TUPLE, jrl_fields_Matrix, 16, NULL};
 
 static const JrlField jrl_fields_Color[] = {
-    {"r", JRL_FIELD_SCALAR, JRL_K_UCHAR, NULL, NULL, offsetof(Color, r), 0, NULL, NULL, 0},
-    {"g", JRL_FIELD_SCALAR, JRL_K_UCHAR, NULL, NULL, offsetof(Color, g), 0, NULL, NULL, 0},
-    {"b", JRL_FIELD_SCALAR, JRL_K_UCHAR, NULL, NULL, offsetof(Color, b), 0, NULL, NULL, 0},
-    {"a", JRL_FIELD_SCALAR, JRL_K_UCHAR, NULL, NULL, offsetof(Color, a), 0, NULL, NULL, 0},
+    {"r", JRL_FIELD_SCALAR, JRL_K_UCHAR, NULL, NULL, offsetof(Color, r), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"g", JRL_FIELD_SCALAR, JRL_K_UCHAR, NULL, NULL, offsetof(Color, g), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"b", JRL_FIELD_SCALAR, JRL_K_UCHAR, NULL, NULL, offsetof(Color, b), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"a", JRL_FIELD_SCALAR, JRL_K_UCHAR, NULL, NULL, offsetof(Color, a), 0, NULL, NULL, 0, -1, 1, NULL},
 };
 const JrlType jrl_type_Color = {"Color", sizeof(Color), JRL_SHAPE_TUPLE, jrl_fields_Color, 4, NULL};
 
 static const JrlField jrl_fields_Rectangle[] = {
-    {"x", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Rectangle, x), 0, NULL, NULL, 0},
-    {"y", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Rectangle, y), 0, NULL, NULL, 0},
-    {"width", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Rectangle, width), 0, NULL, NULL, 0},
-    {"height", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Rectangle, height), 0, NULL, NULL, 0},
+    {"x", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Rectangle, x), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"y", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Rectangle, y), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"width", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Rectangle, width), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"height", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Rectangle, height), 0, NULL, NULL, 0, -1, 1, NULL},
 };
 const JrlType jrl_type_Rectangle = {"Rectangle", sizeof(Rectangle), JRL_SHAPE_TUPLE, jrl_fields_Rectangle, 4, NULL};
 
@@ -638,11 +638,11 @@ static int32_t jrl_count_Image_data(const void *self) {
     return (int32_t) (GetPixelDataSize(s->width, s->height, s->format));
 }
 static const JrlField jrl_fields_Image[] = {
-    {"data", JRL_FIELD_BYTES, JRL_K_UCHAR, NULL, NULL, offsetof(Image, data), 0, jrl_count_Image_data, NULL, 0},
-    {"width", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Image, width), 0, NULL, NULL, 1},
-    {"height", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Image, height), 0, NULL, NULL, 1},
-    {"mipmaps", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Image, mipmaps), 0, NULL, NULL, 1},
-    {"format", JRL_FIELD_SCALAR, JRL_K_INT, NULL, &jrl_enum_PixelFormat, offsetof(Image, format), 0, NULL, NULL, 1},
+    {"data", JRL_FIELD_BYTES, JRL_K_UCHAR, NULL, NULL, offsetof(Image, data), 0, jrl_count_Image_data, NULL, 0, -1, 1, NULL},
+    {"width", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Image, width), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"height", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Image, height), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"mipmaps", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Image, mipmaps), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"format", JRL_FIELD_SCALAR, JRL_K_INT, NULL, &jrl_enum_PixelFormat, offsetof(Image, format), 0, NULL, NULL, 1, -1, 1, NULL},
 };
 static const JanetAbstractType jrl_at_Image = {
     "raylib/Image", NULL, jrl_handle_gcmark, jrl_handle_get, jrl_handle_put,
@@ -651,11 +651,11 @@ static const JanetAbstractType jrl_at_Image = {
 const JrlType jrl_type_Image = {"Image", sizeof(Image), JRL_SHAPE_HANDLE, jrl_fields_Image, 5, &jrl_at_Image};
 
 static const JrlField jrl_fields_Texture[] = {
-    {"id", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(Texture, id), 0, NULL, NULL, 1},
-    {"width", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Texture, width), 0, NULL, NULL, 1},
-    {"height", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Texture, height), 0, NULL, NULL, 1},
-    {"mipmaps", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Texture, mipmaps), 0, NULL, NULL, 1},
-    {"format", JRL_FIELD_SCALAR, JRL_K_INT, NULL, &jrl_enum_PixelFormat, offsetof(Texture, format), 0, NULL, NULL, 1},
+    {"id", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(Texture, id), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"width", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Texture, width), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"height", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Texture, height), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"mipmaps", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Texture, mipmaps), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"format", JRL_FIELD_SCALAR, JRL_K_INT, NULL, &jrl_enum_PixelFormat, offsetof(Texture, format), 0, NULL, NULL, 1, -1, 1, NULL},
 };
 static const JanetAbstractType jrl_at_Texture = {
     "raylib/Texture", NULL, jrl_handle_gcmark, jrl_handle_get, jrl_handle_put,
@@ -664,9 +664,9 @@ static const JanetAbstractType jrl_at_Texture = {
 const JrlType jrl_type_Texture = {"Texture", sizeof(Texture), JRL_SHAPE_HANDLE, jrl_fields_Texture, 5, &jrl_at_Texture};
 
 static const JrlField jrl_fields_RenderTexture[] = {
-    {"id", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(RenderTexture, id), 0, NULL, NULL, 1},
-    {"texture", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Texture, NULL, offsetof(RenderTexture, texture), 0, NULL, NULL, 0},
-    {"depth", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Texture, NULL, offsetof(RenderTexture, depth), 0, NULL, NULL, 0},
+    {"id", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(RenderTexture, id), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"texture", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Texture, NULL, offsetof(RenderTexture, texture), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"depth", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Texture, NULL, offsetof(RenderTexture, depth), 0, NULL, NULL, 0, -1, 1, NULL},
 };
 static const JanetAbstractType jrl_at_RenderTexture = {
     "raylib/RenderTexture", NULL, jrl_handle_gcmark, jrl_handle_get, jrl_handle_put,
@@ -675,21 +675,21 @@ static const JanetAbstractType jrl_at_RenderTexture = {
 const JrlType jrl_type_RenderTexture = {"RenderTexture", sizeof(RenderTexture), JRL_SHAPE_HANDLE, jrl_fields_RenderTexture, 3, &jrl_at_RenderTexture};
 
 static const JrlField jrl_fields_NPatchInfo[] = {
-    {"source", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Rectangle, NULL, offsetof(NPatchInfo, source), 0, NULL, NULL, 0},
-    {"left", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(NPatchInfo, left), 0, NULL, NULL, 0},
-    {"top", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(NPatchInfo, top), 0, NULL, NULL, 0},
-    {"right", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(NPatchInfo, right), 0, NULL, NULL, 0},
-    {"bottom", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(NPatchInfo, bottom), 0, NULL, NULL, 0},
-    {"layout", JRL_FIELD_SCALAR, JRL_K_INT, NULL, &jrl_enum_NPatchLayout, offsetof(NPatchInfo, layout), 0, NULL, NULL, 0},
+    {"source", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Rectangle, NULL, offsetof(NPatchInfo, source), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"left", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(NPatchInfo, left), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"top", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(NPatchInfo, top), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"right", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(NPatchInfo, right), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"bottom", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(NPatchInfo, bottom), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"layout", JRL_FIELD_SCALAR, JRL_K_INT, NULL, &jrl_enum_NPatchLayout, offsetof(NPatchInfo, layout), 0, NULL, NULL, 0, -1, 1, NULL},
 };
 const JrlType jrl_type_NPatchInfo = {"NPatchInfo", sizeof(NPatchInfo), JRL_SHAPE_STRUCT, jrl_fields_NPatchInfo, 6, NULL};
 
 static const JrlField jrl_fields_GlyphInfo[] = {
-    {"value", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(GlyphInfo, value), 0, NULL, NULL, 0},
-    {"offset-x", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(GlyphInfo, offsetX), 0, NULL, NULL, 0},
-    {"offset-y", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(GlyphInfo, offsetY), 0, NULL, NULL, 0},
-    {"advance-x", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(GlyphInfo, advanceX), 0, NULL, NULL, 0},
-    {"image", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Image, NULL, offsetof(GlyphInfo, image), 0, NULL, NULL, 0},
+    {"value", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(GlyphInfo, value), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"offset-x", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(GlyphInfo, offsetX), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"offset-y", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(GlyphInfo, offsetY), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"advance-x", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(GlyphInfo, advanceX), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"image", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Image, NULL, offsetof(GlyphInfo, image), 0, NULL, NULL, 0, -1, 1, NULL},
 };
 static const JanetAbstractType jrl_at_GlyphInfo = {
     "raylib/GlyphInfo", NULL, jrl_handle_gcmark, jrl_handle_get, jrl_handle_put,
@@ -708,12 +708,12 @@ static int32_t jrl_count_Font_glyphs(const void *self) {
     return (int32_t) (s->glyphCount);
 }
 static const JrlField jrl_fields_Font[] = {
-    {"base-size", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Font, baseSize), 0, NULL, NULL, 0},
-    {"glyph-count", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Font, glyphCount), 0, NULL, NULL, 1},
-    {"glyph-padding", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Font, glyphPadding), 0, NULL, NULL, 0},
-    {"texture", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Texture, NULL, offsetof(Font, texture), 0, NULL, NULL, 0},
-    {"recs", JRL_FIELD_POINTER, JRL_K_TYPE, &jrl_type_Rectangle, NULL, offsetof(Font, recs), 0, jrl_count_Font_recs, NULL, 0},
-    {"glyphs", JRL_FIELD_POINTER, JRL_K_TYPE, &jrl_type_GlyphInfo, NULL, offsetof(Font, glyphs), 0, jrl_count_Font_glyphs, NULL, 0},
+    {"base-size", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Font, baseSize), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"glyph-count", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Font, glyphCount), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"glyph-padding", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Font, glyphPadding), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"texture", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Texture, NULL, offsetof(Font, texture), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"recs", JRL_FIELD_POINTER, JRL_K_TYPE, &jrl_type_Rectangle, NULL, offsetof(Font, recs), 0, jrl_count_Font_recs, NULL, 0, 1, 1, NULL},
+    {"glyphs", JRL_FIELD_POINTER, JRL_K_TYPE, &jrl_type_GlyphInfo, NULL, offsetof(Font, glyphs), 0, jrl_count_Font_glyphs, NULL, 0, 1, 1, NULL},
 };
 static const JanetAbstractType jrl_at_Font = {
     "raylib/Font", NULL, jrl_handle_gcmark, jrl_handle_get, jrl_handle_put,
@@ -722,19 +722,19 @@ static const JanetAbstractType jrl_at_Font = {
 const JrlType jrl_type_Font = {"Font", sizeof(Font), JRL_SHAPE_HANDLE, jrl_fields_Font, 6, &jrl_at_Font};
 
 static const JrlField jrl_fields_Camera3D[] = {
-    {"position", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector3, NULL, offsetof(Camera3D, position), 0, NULL, NULL, 0},
-    {"target", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector3, NULL, offsetof(Camera3D, target), 0, NULL, NULL, 0},
-    {"up", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector3, NULL, offsetof(Camera3D, up), 0, NULL, NULL, 0},
-    {"fovy", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Camera3D, fovy), 0, NULL, NULL, 0},
-    {"projection", JRL_FIELD_SCALAR, JRL_K_INT, NULL, &jrl_enum_CameraProjection, offsetof(Camera3D, projection), 0, NULL, NULL, 0},
+    {"position", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector3, NULL, offsetof(Camera3D, position), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"target", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector3, NULL, offsetof(Camera3D, target), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"up", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector3, NULL, offsetof(Camera3D, up), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"fovy", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Camera3D, fovy), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"projection", JRL_FIELD_SCALAR, JRL_K_INT, NULL, &jrl_enum_CameraProjection, offsetof(Camera3D, projection), 0, NULL, NULL, 0, -1, 1, NULL},
 };
 const JrlType jrl_type_Camera3D = {"Camera3D", sizeof(Camera3D), JRL_SHAPE_STRUCT, jrl_fields_Camera3D, 5, NULL};
 
 static const JrlField jrl_fields_Camera2D[] = {
-    {"offset", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector2, NULL, offsetof(Camera2D, offset), 0, NULL, NULL, 0},
-    {"target", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector2, NULL, offsetof(Camera2D, target), 0, NULL, NULL, 0},
-    {"rotation", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Camera2D, rotation), 0, NULL, NULL, 0},
-    {"zoom", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Camera2D, zoom), 0, NULL, NULL, 0},
+    {"offset", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector2, NULL, offsetof(Camera2D, offset), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"target", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector2, NULL, offsetof(Camera2D, target), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"rotation", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Camera2D, rotation), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"zoom", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(Camera2D, zoom), 0, NULL, NULL, 0, -1, 1, NULL},
 };
 const JrlType jrl_type_Camera2D = {"Camera2D", sizeof(Camera2D), JRL_SHAPE_STRUCT, jrl_fields_Camera2D, 4, NULL};
 
@@ -804,23 +804,23 @@ static int32_t jrl_count_Mesh_vboId(const void *self) {
     return (int32_t) (MAX_MESH_VERTEX_BUFFERS);
 }
 static const JrlField jrl_fields_Mesh[] = {
-    {"vertex-count", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Mesh, vertexCount), 0, NULL, NULL, 1},
-    {"triangle-count", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Mesh, triangleCount), 0, NULL, NULL, 1},
-    {"vertices", JRL_FIELD_POINTER, JRL_K_FLOAT, NULL, NULL, offsetof(Mesh, vertices), 0, jrl_count_Mesh_vertices, NULL, 0},
-    {"texcoords", JRL_FIELD_POINTER, JRL_K_FLOAT, NULL, NULL, offsetof(Mesh, texcoords), 0, jrl_count_Mesh_texcoords, NULL, 0},
-    {"texcoords2", JRL_FIELD_POINTER, JRL_K_FLOAT, NULL, NULL, offsetof(Mesh, texcoords2), 0, jrl_count_Mesh_texcoords2, NULL, 0},
-    {"normals", JRL_FIELD_POINTER, JRL_K_FLOAT, NULL, NULL, offsetof(Mesh, normals), 0, jrl_count_Mesh_normals, NULL, 0},
-    {"tangents", JRL_FIELD_POINTER, JRL_K_FLOAT, NULL, NULL, offsetof(Mesh, tangents), 0, jrl_count_Mesh_tangents, NULL, 0},
-    {"colors", JRL_FIELD_POINTER, JRL_K_UCHAR, NULL, NULL, offsetof(Mesh, colors), 0, jrl_count_Mesh_colors, NULL, 0},
-    {"indices", JRL_FIELD_POINTER, JRL_K_USHORT, NULL, NULL, offsetof(Mesh, indices), 0, jrl_count_Mesh_indices, NULL, 0},
-    {"anim-vertices", JRL_FIELD_POINTER, JRL_K_FLOAT, NULL, NULL, offsetof(Mesh, animVertices), 0, jrl_count_Mesh_animVertices, NULL, 0},
-    {"anim-normals", JRL_FIELD_POINTER, JRL_K_FLOAT, NULL, NULL, offsetof(Mesh, animNormals), 0, jrl_count_Mesh_animNormals, NULL, 0},
-    {"bone-ids", JRL_FIELD_POINTER, JRL_K_UCHAR, NULL, NULL, offsetof(Mesh, boneIds), 0, jrl_count_Mesh_boneIds, NULL, 0},
-    {"bone-weights", JRL_FIELD_POINTER, JRL_K_FLOAT, NULL, NULL, offsetof(Mesh, boneWeights), 0, jrl_count_Mesh_boneWeights, NULL, 0},
-    {"bone-matrices", JRL_FIELD_POINTER, JRL_K_TYPE, &jrl_type_Matrix, NULL, offsetof(Mesh, boneMatrices), 0, jrl_count_Mesh_boneMatrices, NULL, 0},
-    {"bone-count", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Mesh, boneCount), 0, NULL, NULL, 1},
-    {"vao-id", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(Mesh, vaoId), 0, NULL, NULL, 1},
-    {"vbo-id", JRL_FIELD_POINTER, JRL_K_UINT, NULL, NULL, offsetof(Mesh, vboId), 0, jrl_count_Mesh_vboId, NULL, 0},
+    {"vertex-count", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Mesh, vertexCount), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"triangle-count", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Mesh, triangleCount), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"vertices", JRL_FIELD_POINTER, JRL_K_FLOAT, NULL, NULL, offsetof(Mesh, vertices), 0, jrl_count_Mesh_vertices, NULL, 0, 0, 3, NULL},
+    {"texcoords", JRL_FIELD_POINTER, JRL_K_FLOAT, NULL, NULL, offsetof(Mesh, texcoords), 0, jrl_count_Mesh_texcoords, NULL, 0, 0, 2, NULL},
+    {"texcoords2", JRL_FIELD_POINTER, JRL_K_FLOAT, NULL, NULL, offsetof(Mesh, texcoords2), 0, jrl_count_Mesh_texcoords2, NULL, 0, 0, 2, NULL},
+    {"normals", JRL_FIELD_POINTER, JRL_K_FLOAT, NULL, NULL, offsetof(Mesh, normals), 0, jrl_count_Mesh_normals, NULL, 0, 0, 3, NULL},
+    {"tangents", JRL_FIELD_POINTER, JRL_K_FLOAT, NULL, NULL, offsetof(Mesh, tangents), 0, jrl_count_Mesh_tangents, NULL, 0, 0, 4, NULL},
+    {"colors", JRL_FIELD_POINTER, JRL_K_UCHAR, NULL, NULL, offsetof(Mesh, colors), 0, jrl_count_Mesh_colors, NULL, 0, 0, 4, NULL},
+    {"indices", JRL_FIELD_POINTER, JRL_K_USHORT, NULL, NULL, offsetof(Mesh, indices), 0, jrl_count_Mesh_indices, NULL, 0, 1, 3, NULL},
+    {"anim-vertices", JRL_FIELD_POINTER, JRL_K_FLOAT, NULL, NULL, offsetof(Mesh, animVertices), 0, jrl_count_Mesh_animVertices, NULL, 0, 0, 3, NULL},
+    {"anim-normals", JRL_FIELD_POINTER, JRL_K_FLOAT, NULL, NULL, offsetof(Mesh, animNormals), 0, jrl_count_Mesh_animNormals, NULL, 0, 0, 3, NULL},
+    {"bone-ids", JRL_FIELD_POINTER, JRL_K_UCHAR, NULL, NULL, offsetof(Mesh, boneIds), 0, jrl_count_Mesh_boneIds, NULL, 0, 0, 4, NULL},
+    {"bone-weights", JRL_FIELD_POINTER, JRL_K_FLOAT, NULL, NULL, offsetof(Mesh, boneWeights), 0, jrl_count_Mesh_boneWeights, NULL, 0, 0, 4, NULL},
+    {"bone-matrices", JRL_FIELD_POINTER, JRL_K_TYPE, &jrl_type_Matrix, NULL, offsetof(Mesh, boneMatrices), 0, jrl_count_Mesh_boneMatrices, NULL, 0, 14, 1, NULL},
+    {"bone-count", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Mesh, boneCount), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"vao-id", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(Mesh, vaoId), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"vbo-id", JRL_FIELD_POINTER, JRL_K_UINT, NULL, NULL, offsetof(Mesh, vboId), 0, jrl_count_Mesh_vboId, NULL, 0, -1, 1, NULL},
 };
 static const JanetAbstractType jrl_at_Mesh = {
     "raylib/Mesh", NULL, jrl_handle_gcmark, jrl_handle_get, jrl_handle_put,
@@ -834,8 +834,8 @@ static int32_t jrl_count_Shader_locs(const void *self) {
     return (int32_t) (RL_MAX_SHADER_LOCATIONS);
 }
 static const JrlField jrl_fields_Shader[] = {
-    {"id", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(Shader, id), 0, NULL, NULL, 1},
-    {"locs", JRL_FIELD_POINTER, JRL_K_INT, NULL, NULL, offsetof(Shader, locs), 0, jrl_count_Shader_locs, NULL, 0},
+    {"id", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(Shader, id), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"locs", JRL_FIELD_POINTER, JRL_K_INT, NULL, NULL, offsetof(Shader, locs), 0, jrl_count_Shader_locs, NULL, 0, -1, 1, NULL},
 };
 static const JanetAbstractType jrl_at_Shader = {
     "raylib/Shader", NULL, jrl_handle_gcmark, jrl_handle_get, jrl_handle_put,
@@ -844,9 +844,9 @@ static const JanetAbstractType jrl_at_Shader = {
 const JrlType jrl_type_Shader = {"Shader", sizeof(Shader), JRL_SHAPE_HANDLE, jrl_fields_Shader, 2, &jrl_at_Shader};
 
 static const JrlField jrl_fields_MaterialMap[] = {
-    {"texture", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Texture, NULL, offsetof(MaterialMap, texture), 0, NULL, NULL, 0},
-    {"color", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Color, NULL, offsetof(MaterialMap, color), 0, NULL, NULL, 0},
-    {"value", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(MaterialMap, value), 0, NULL, NULL, 0},
+    {"texture", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Texture, NULL, offsetof(MaterialMap, texture), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"color", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Color, NULL, offsetof(MaterialMap, color), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"value", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(MaterialMap, value), 0, NULL, NULL, 0, -1, 1, NULL},
 };
 static const JanetAbstractType jrl_at_MaterialMap = {
     "raylib/MaterialMap", NULL, jrl_handle_gcmark, jrl_handle_get, jrl_handle_put,
@@ -860,9 +860,9 @@ static int32_t jrl_count_Material_maps(const void *self) {
     return (int32_t) (MAX_MATERIAL_MAPS);
 }
 static const JrlField jrl_fields_Material[] = {
-    {"shader", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Shader, NULL, offsetof(Material, shader), 0, NULL, NULL, 0},
-    {"maps", JRL_FIELD_POINTER, JRL_K_TYPE, &jrl_type_MaterialMap, NULL, offsetof(Material, maps), 0, jrl_count_Material_maps, NULL, 0},
-    {"params", JRL_FIELD_FIXED, JRL_K_FLOAT, NULL, NULL, offsetof(Material, params), 4, NULL, NULL, 0},
+    {"shader", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Shader, NULL, offsetof(Material, shader), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"maps", JRL_FIELD_POINTER, JRL_K_TYPE, &jrl_type_MaterialMap, NULL, offsetof(Material, maps), 0, jrl_count_Material_maps, NULL, 0, -1, 1, &jrl_enum_MaterialMapIndex},
+    {"params", JRL_FIELD_FIXED, JRL_K_FLOAT, NULL, NULL, offsetof(Material, params), 4, NULL, NULL, 0, -1, 1, NULL},
 };
 static const JanetAbstractType jrl_at_Material = {
     "raylib/Material", NULL, jrl_handle_gcmark, jrl_handle_get, jrl_handle_put,
@@ -871,15 +871,15 @@ static const JanetAbstractType jrl_at_Material = {
 const JrlType jrl_type_Material = {"Material", sizeof(Material), JRL_SHAPE_HANDLE, jrl_fields_Material, 3, &jrl_at_Material};
 
 static const JrlField jrl_fields_Transform[] = {
-    {"translation", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector3, NULL, offsetof(Transform, translation), 0, NULL, NULL, 0},
-    {"rotation", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector4, NULL, offsetof(Transform, rotation), 0, NULL, NULL, 0},
-    {"scale", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector3, NULL, offsetof(Transform, scale), 0, NULL, NULL, 0},
+    {"translation", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector3, NULL, offsetof(Transform, translation), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"rotation", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector4, NULL, offsetof(Transform, rotation), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"scale", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector3, NULL, offsetof(Transform, scale), 0, NULL, NULL, 0, -1, 1, NULL},
 };
 const JrlType jrl_type_Transform = {"Transform", sizeof(Transform), JRL_SHAPE_STRUCT, jrl_fields_Transform, 3, NULL};
 
 static const JrlField jrl_fields_BoneInfo[] = {
-    {"name", JRL_FIELD_CHARS, JRL_K_UCHAR, NULL, NULL, offsetof(BoneInfo, name), 32, NULL, NULL, 0},
-    {"parent", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(BoneInfo, parent), 0, NULL, NULL, 0},
+    {"name", JRL_FIELD_CHARS, JRL_K_UCHAR, NULL, NULL, offsetof(BoneInfo, name), 32, NULL, NULL, 0, -1, 1, NULL},
+    {"parent", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(BoneInfo, parent), 0, NULL, NULL, 0, -1, 1, NULL},
 };
 const JrlType jrl_type_BoneInfo = {"BoneInfo", sizeof(BoneInfo), JRL_SHAPE_STRUCT, jrl_fields_BoneInfo, 2, NULL};
 
@@ -909,15 +909,15 @@ static int32_t jrl_count_Model_bindPose(const void *self) {
     return (int32_t) (s->boneCount);
 }
 static const JrlField jrl_fields_Model[] = {
-    {"transform", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Matrix, NULL, offsetof(Model, transform), 0, NULL, NULL, 0},
-    {"mesh-count", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Model, meshCount), 0, NULL, NULL, 1},
-    {"material-count", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Model, materialCount), 0, NULL, NULL, 1},
-    {"meshes", JRL_FIELD_POINTER, JRL_K_TYPE, &jrl_type_Mesh, NULL, offsetof(Model, meshes), 0, jrl_count_Model_meshes, NULL, 0},
-    {"materials", JRL_FIELD_POINTER, JRL_K_TYPE, &jrl_type_Material, NULL, offsetof(Model, materials), 0, jrl_count_Model_materials, NULL, 0},
-    {"mesh-material", JRL_FIELD_POINTER, JRL_K_INT, NULL, NULL, offsetof(Model, meshMaterial), 0, jrl_count_Model_meshMaterial, NULL, 0},
-    {"bone-count", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Model, boneCount), 0, NULL, NULL, 1},
-    {"bones", JRL_FIELD_POINTER, JRL_K_TYPE, &jrl_type_BoneInfo, NULL, offsetof(Model, bones), 0, jrl_count_Model_bones, NULL, 0},
-    {"bind-pose", JRL_FIELD_POINTER, JRL_K_TYPE, &jrl_type_Transform, NULL, offsetof(Model, bindPose), 0, jrl_count_Model_bindPose, NULL, 0},
+    {"transform", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Matrix, NULL, offsetof(Model, transform), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"mesh-count", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Model, meshCount), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"material-count", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Model, materialCount), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"meshes", JRL_FIELD_POINTER, JRL_K_TYPE, &jrl_type_Mesh, NULL, offsetof(Model, meshes), 0, jrl_count_Model_meshes, NULL, 0, 1, 1, NULL},
+    {"materials", JRL_FIELD_POINTER, JRL_K_TYPE, &jrl_type_Material, NULL, offsetof(Model, materials), 0, jrl_count_Model_materials, NULL, 0, 2, 1, NULL},
+    {"mesh-material", JRL_FIELD_POINTER, JRL_K_INT, NULL, NULL, offsetof(Model, meshMaterial), 0, jrl_count_Model_meshMaterial, NULL, 0, 1, 1, NULL},
+    {"bone-count", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Model, boneCount), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"bones", JRL_FIELD_POINTER, JRL_K_TYPE, &jrl_type_BoneInfo, NULL, offsetof(Model, bones), 0, jrl_count_Model_bones, NULL, 0, 6, 1, NULL},
+    {"bind-pose", JRL_FIELD_POINTER, JRL_K_TYPE, &jrl_type_Transform, NULL, offsetof(Model, bindPose), 0, jrl_count_Model_bindPose, NULL, 0, 6, 1, NULL},
 };
 static const JanetAbstractType jrl_at_Model = {
     "raylib/Model", NULL, jrl_handle_gcmark, jrl_handle_get, jrl_handle_put,
@@ -941,11 +941,11 @@ static int32_t jrl_count_ModelAnimation_framePoses_inner(const void *self) {
     return (int32_t) (s->boneCount);
 }
 static const JrlField jrl_fields_ModelAnimation[] = {
-    {"bone-count", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(ModelAnimation, boneCount), 0, NULL, NULL, 1},
-    {"frame-count", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(ModelAnimation, frameCount), 0, NULL, NULL, 1},
-    {"bones", JRL_FIELD_POINTER, JRL_K_TYPE, &jrl_type_BoneInfo, NULL, offsetof(ModelAnimation, bones), 0, jrl_count_ModelAnimation_bones, NULL, 0},
-    {"frame-poses", JRL_FIELD_POINTER2, JRL_K_TYPE, &jrl_type_Transform, NULL, offsetof(ModelAnimation, framePoses), 0, jrl_count_ModelAnimation_framePoses, jrl_count_ModelAnimation_framePoses_inner, 0},
-    {"name", JRL_FIELD_CHARS, JRL_K_UCHAR, NULL, NULL, offsetof(ModelAnimation, name), 32, NULL, NULL, 0},
+    {"bone-count", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(ModelAnimation, boneCount), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"frame-count", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(ModelAnimation, frameCount), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"bones", JRL_FIELD_POINTER, JRL_K_TYPE, &jrl_type_BoneInfo, NULL, offsetof(ModelAnimation, bones), 0, jrl_count_ModelAnimation_bones, NULL, 0, 0, 1, NULL},
+    {"frame-poses", JRL_FIELD_POINTER2, JRL_K_TYPE, &jrl_type_Transform, NULL, offsetof(ModelAnimation, framePoses), 0, jrl_count_ModelAnimation_framePoses, jrl_count_ModelAnimation_framePoses_inner, 0, -1, 1, NULL},
+    {"name", JRL_FIELD_CHARS, JRL_K_UCHAR, NULL, NULL, offsetof(ModelAnimation, name), 32, NULL, NULL, 0, -1, 1, NULL},
 };
 static const JanetAbstractType jrl_at_ModelAnimation = {
     "raylib/ModelAnimation", NULL, jrl_handle_gcmark, jrl_handle_get, jrl_handle_put,
@@ -954,22 +954,22 @@ static const JanetAbstractType jrl_at_ModelAnimation = {
 const JrlType jrl_type_ModelAnimation = {"ModelAnimation", sizeof(ModelAnimation), JRL_SHAPE_HANDLE, jrl_fields_ModelAnimation, 5, &jrl_at_ModelAnimation};
 
 static const JrlField jrl_fields_Ray[] = {
-    {"position", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector3, NULL, offsetof(Ray, position), 0, NULL, NULL, 0},
-    {"direction", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector3, NULL, offsetof(Ray, direction), 0, NULL, NULL, 0},
+    {"position", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector3, NULL, offsetof(Ray, position), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"direction", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector3, NULL, offsetof(Ray, direction), 0, NULL, NULL, 0, -1, 1, NULL},
 };
 const JrlType jrl_type_Ray = {"Ray", sizeof(Ray), JRL_SHAPE_STRUCT, jrl_fields_Ray, 2, NULL};
 
 static const JrlField jrl_fields_RayCollision[] = {
-    {"hit", JRL_FIELD_SCALAR, JRL_K_BOOL, NULL, NULL, offsetof(RayCollision, hit), 0, NULL, NULL, 0},
-    {"distance", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(RayCollision, distance), 0, NULL, NULL, 0},
-    {"point", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector3, NULL, offsetof(RayCollision, point), 0, NULL, NULL, 0},
-    {"normal", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector3, NULL, offsetof(RayCollision, normal), 0, NULL, NULL, 0},
+    {"hit", JRL_FIELD_SCALAR, JRL_K_BOOL, NULL, NULL, offsetof(RayCollision, hit), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"distance", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(RayCollision, distance), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"point", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector3, NULL, offsetof(RayCollision, point), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"normal", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector3, NULL, offsetof(RayCollision, normal), 0, NULL, NULL, 0, -1, 1, NULL},
 };
 const JrlType jrl_type_RayCollision = {"RayCollision", sizeof(RayCollision), JRL_SHAPE_STRUCT, jrl_fields_RayCollision, 4, NULL};
 
 static const JrlField jrl_fields_BoundingBox[] = {
-    {"min", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector3, NULL, offsetof(BoundingBox, min), 0, NULL, NULL, 0},
-    {"max", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector3, NULL, offsetof(BoundingBox, max), 0, NULL, NULL, 0},
+    {"min", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector3, NULL, offsetof(BoundingBox, min), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"max", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_Vector3, NULL, offsetof(BoundingBox, max), 0, NULL, NULL, 0, -1, 1, NULL},
 };
 const JrlType jrl_type_BoundingBox = {"BoundingBox", sizeof(BoundingBox), JRL_SHAPE_STRUCT, jrl_fields_BoundingBox, 2, NULL};
 
@@ -979,11 +979,11 @@ static int32_t jrl_count_Wave_data(const void *self) {
     return (int32_t) ((int)(s->frameCount * s->channels * (s->sampleSize / 8)));
 }
 static const JrlField jrl_fields_Wave[] = {
-    {"frame-count", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(Wave, frameCount), 0, NULL, NULL, 1},
-    {"sample-rate", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(Wave, sampleRate), 0, NULL, NULL, 1},
-    {"sample-size", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(Wave, sampleSize), 0, NULL, NULL, 1},
-    {"channels", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(Wave, channels), 0, NULL, NULL, 1},
-    {"data", JRL_FIELD_BYTES, JRL_K_UCHAR, NULL, NULL, offsetof(Wave, data), 0, jrl_count_Wave_data, NULL, 0},
+    {"frame-count", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(Wave, frameCount), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"sample-rate", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(Wave, sampleRate), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"sample-size", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(Wave, sampleSize), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"channels", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(Wave, channels), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"data", JRL_FIELD_BYTES, JRL_K_UCHAR, NULL, NULL, offsetof(Wave, data), 0, jrl_count_Wave_data, NULL, 0, -1, 1, NULL},
 };
 static const JanetAbstractType jrl_at_Wave = {
     "raylib/Wave", NULL, jrl_handle_gcmark, jrl_handle_get, jrl_handle_put,
@@ -992,11 +992,11 @@ static const JanetAbstractType jrl_at_Wave = {
 const JrlType jrl_type_Wave = {"Wave", sizeof(Wave), JRL_SHAPE_HANDLE, jrl_fields_Wave, 5, &jrl_at_Wave};
 
 static const JrlField jrl_fields_AudioStream[] = {
-    {"buffer", JRL_FIELD_HIDDEN, JRL_K_INT, NULL, NULL, offsetof(AudioStream, buffer), 0, NULL, NULL, 0},
-    {"processor", JRL_FIELD_HIDDEN, JRL_K_INT, NULL, NULL, offsetof(AudioStream, processor), 0, NULL, NULL, 0},
-    {"sample-rate", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(AudioStream, sampleRate), 0, NULL, NULL, 1},
-    {"sample-size", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(AudioStream, sampleSize), 0, NULL, NULL, 1},
-    {"channels", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(AudioStream, channels), 0, NULL, NULL, 1},
+    {"buffer", JRL_FIELD_HIDDEN, JRL_K_INT, NULL, NULL, offsetof(AudioStream, buffer), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"processor", JRL_FIELD_HIDDEN, JRL_K_INT, NULL, NULL, offsetof(AudioStream, processor), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"sample-rate", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(AudioStream, sampleRate), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"sample-size", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(AudioStream, sampleSize), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"channels", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(AudioStream, channels), 0, NULL, NULL, 1, -1, 1, NULL},
 };
 static const JanetAbstractType jrl_at_AudioStream = {
     "raylib/AudioStream", NULL, jrl_handle_gcmark, jrl_handle_get, jrl_handle_put,
@@ -1005,8 +1005,8 @@ static const JanetAbstractType jrl_at_AudioStream = {
 const JrlType jrl_type_AudioStream = {"AudioStream", sizeof(AudioStream), JRL_SHAPE_HANDLE, jrl_fields_AudioStream, 5, &jrl_at_AudioStream};
 
 static const JrlField jrl_fields_Sound[] = {
-    {"stream", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_AudioStream, NULL, offsetof(Sound, stream), 0, NULL, NULL, 0},
-    {"frame-count", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(Sound, frameCount), 0, NULL, NULL, 1},
+    {"stream", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_AudioStream, NULL, offsetof(Sound, stream), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"frame-count", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(Sound, frameCount), 0, NULL, NULL, 1, -1, 1, NULL},
 };
 static const JanetAbstractType jrl_at_Sound = {
     "raylib/Sound", NULL, jrl_handle_gcmark, jrl_handle_get, jrl_handle_put,
@@ -1015,11 +1015,11 @@ static const JanetAbstractType jrl_at_Sound = {
 const JrlType jrl_type_Sound = {"Sound", sizeof(Sound), JRL_SHAPE_HANDLE, jrl_fields_Sound, 2, &jrl_at_Sound};
 
 static const JrlField jrl_fields_Music[] = {
-    {"stream", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_AudioStream, NULL, offsetof(Music, stream), 0, NULL, NULL, 0},
-    {"frame-count", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(Music, frameCount), 0, NULL, NULL, 1},
-    {"looping", JRL_FIELD_SCALAR, JRL_K_BOOL, NULL, NULL, offsetof(Music, looping), 0, NULL, NULL, 0},
-    {"ctx-type", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Music, ctxType), 0, NULL, NULL, 1},
-    {"ctx-data", JRL_FIELD_HIDDEN, JRL_K_INT, NULL, NULL, offsetof(Music, ctxData), 0, NULL, NULL, 0},
+    {"stream", JRL_FIELD_SCALAR, JRL_K_TYPE, &jrl_type_AudioStream, NULL, offsetof(Music, stream), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"frame-count", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(Music, frameCount), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"looping", JRL_FIELD_SCALAR, JRL_K_BOOL, NULL, NULL, offsetof(Music, looping), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"ctx-type", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(Music, ctxType), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"ctx-data", JRL_FIELD_HIDDEN, JRL_K_INT, NULL, NULL, offsetof(Music, ctxData), 0, NULL, NULL, 0, -1, 1, NULL},
 };
 static const JanetAbstractType jrl_at_Music = {
     "raylib/Music", NULL, jrl_handle_gcmark, jrl_handle_get, jrl_handle_put,
@@ -1028,27 +1028,27 @@ static const JanetAbstractType jrl_at_Music = {
 const JrlType jrl_type_Music = {"Music", sizeof(Music), JRL_SHAPE_HANDLE, jrl_fields_Music, 5, &jrl_at_Music};
 
 static const JrlField jrl_fields_VrDeviceInfo[] = {
-    {"h-resolution", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(VrDeviceInfo, hResolution), 0, NULL, NULL, 0},
-    {"v-resolution", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(VrDeviceInfo, vResolution), 0, NULL, NULL, 0},
-    {"h-screen-size", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(VrDeviceInfo, hScreenSize), 0, NULL, NULL, 0},
-    {"v-screen-size", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(VrDeviceInfo, vScreenSize), 0, NULL, NULL, 0},
-    {"eye-to-screen-distance", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(VrDeviceInfo, eyeToScreenDistance), 0, NULL, NULL, 0},
-    {"lens-separation-distance", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(VrDeviceInfo, lensSeparationDistance), 0, NULL, NULL, 0},
-    {"interpupillary-distance", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(VrDeviceInfo, interpupillaryDistance), 0, NULL, NULL, 0},
-    {"lens-distortion-values", JRL_FIELD_FIXED, JRL_K_FLOAT, NULL, NULL, offsetof(VrDeviceInfo, lensDistortionValues), 4, NULL, NULL, 0},
-    {"chroma-ab-correction", JRL_FIELD_FIXED, JRL_K_FLOAT, NULL, NULL, offsetof(VrDeviceInfo, chromaAbCorrection), 4, NULL, NULL, 0},
+    {"h-resolution", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(VrDeviceInfo, hResolution), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"v-resolution", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(VrDeviceInfo, vResolution), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"h-screen-size", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(VrDeviceInfo, hScreenSize), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"v-screen-size", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(VrDeviceInfo, vScreenSize), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"eye-to-screen-distance", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(VrDeviceInfo, eyeToScreenDistance), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"lens-separation-distance", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(VrDeviceInfo, lensSeparationDistance), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"interpupillary-distance", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(VrDeviceInfo, interpupillaryDistance), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"lens-distortion-values", JRL_FIELD_FIXED, JRL_K_FLOAT, NULL, NULL, offsetof(VrDeviceInfo, lensDistortionValues), 4, NULL, NULL, 0, -1, 1, NULL},
+    {"chroma-ab-correction", JRL_FIELD_FIXED, JRL_K_FLOAT, NULL, NULL, offsetof(VrDeviceInfo, chromaAbCorrection), 4, NULL, NULL, 0, -1, 1, NULL},
 };
 const JrlType jrl_type_VrDeviceInfo = {"VrDeviceInfo", sizeof(VrDeviceInfo), JRL_SHAPE_STRUCT, jrl_fields_VrDeviceInfo, 9, NULL};
 
 static const JrlField jrl_fields_VrStereoConfig[] = {
-    {"projection", JRL_FIELD_FIXED, JRL_K_TYPE, &jrl_type_Matrix, NULL, offsetof(VrStereoConfig, projection), 2, NULL, NULL, 0},
-    {"view-offset", JRL_FIELD_FIXED, JRL_K_TYPE, &jrl_type_Matrix, NULL, offsetof(VrStereoConfig, viewOffset), 2, NULL, NULL, 0},
-    {"left-lens-center", JRL_FIELD_FIXED, JRL_K_FLOAT, NULL, NULL, offsetof(VrStereoConfig, leftLensCenter), 2, NULL, NULL, 0},
-    {"right-lens-center", JRL_FIELD_FIXED, JRL_K_FLOAT, NULL, NULL, offsetof(VrStereoConfig, rightLensCenter), 2, NULL, NULL, 0},
-    {"left-screen-center", JRL_FIELD_FIXED, JRL_K_FLOAT, NULL, NULL, offsetof(VrStereoConfig, leftScreenCenter), 2, NULL, NULL, 0},
-    {"right-screen-center", JRL_FIELD_FIXED, JRL_K_FLOAT, NULL, NULL, offsetof(VrStereoConfig, rightScreenCenter), 2, NULL, NULL, 0},
-    {"scale", JRL_FIELD_FIXED, JRL_K_FLOAT, NULL, NULL, offsetof(VrStereoConfig, scale), 2, NULL, NULL, 0},
-    {"scale-in", JRL_FIELD_FIXED, JRL_K_FLOAT, NULL, NULL, offsetof(VrStereoConfig, scaleIn), 2, NULL, NULL, 0},
+    {"projection", JRL_FIELD_FIXED, JRL_K_TYPE, &jrl_type_Matrix, NULL, offsetof(VrStereoConfig, projection), 2, NULL, NULL, 0, -1, 1, NULL},
+    {"view-offset", JRL_FIELD_FIXED, JRL_K_TYPE, &jrl_type_Matrix, NULL, offsetof(VrStereoConfig, viewOffset), 2, NULL, NULL, 0, -1, 1, NULL},
+    {"left-lens-center", JRL_FIELD_FIXED, JRL_K_FLOAT, NULL, NULL, offsetof(VrStereoConfig, leftLensCenter), 2, NULL, NULL, 0, -1, 1, NULL},
+    {"right-lens-center", JRL_FIELD_FIXED, JRL_K_FLOAT, NULL, NULL, offsetof(VrStereoConfig, rightLensCenter), 2, NULL, NULL, 0, -1, 1, NULL},
+    {"left-screen-center", JRL_FIELD_FIXED, JRL_K_FLOAT, NULL, NULL, offsetof(VrStereoConfig, leftScreenCenter), 2, NULL, NULL, 0, -1, 1, NULL},
+    {"right-screen-center", JRL_FIELD_FIXED, JRL_K_FLOAT, NULL, NULL, offsetof(VrStereoConfig, rightScreenCenter), 2, NULL, NULL, 0, -1, 1, NULL},
+    {"scale", JRL_FIELD_FIXED, JRL_K_FLOAT, NULL, NULL, offsetof(VrStereoConfig, scale), 2, NULL, NULL, 0, -1, 1, NULL},
+    {"scale-in", JRL_FIELD_FIXED, JRL_K_FLOAT, NULL, NULL, offsetof(VrStereoConfig, scaleIn), 2, NULL, NULL, 0, -1, 1, NULL},
 };
 const JrlType jrl_type_VrStereoConfig = {"VrStereoConfig", sizeof(VrStereoConfig), JRL_SHAPE_STRUCT, jrl_fields_VrStereoConfig, 8, NULL};
 
@@ -1058,9 +1058,9 @@ static int32_t jrl_count_FilePathList_paths(const void *self) {
     return (int32_t) (s->count);
 }
 static const JrlField jrl_fields_FilePathList[] = {
-    {"capacity", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(FilePathList, capacity), 0, NULL, NULL, 1},
-    {"count", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(FilePathList, count), 0, NULL, NULL, 1},
-    {"paths", JRL_FIELD_POINTER, JRL_K_CSTRING, NULL, NULL, offsetof(FilePathList, paths), 0, jrl_count_FilePathList_paths, NULL, 0},
+    {"capacity", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(FilePathList, capacity), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"count", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(FilePathList, count), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"paths", JRL_FIELD_POINTER, JRL_K_CSTRING, NULL, NULL, offsetof(FilePathList, paths), 0, jrl_count_FilePathList_paths, NULL, 0, 1, 1, NULL},
 };
 static const JanetAbstractType jrl_at_FilePathList = {
     "raylib/FilePathList", NULL, jrl_handle_gcmark, jrl_handle_get, jrl_handle_put,
@@ -1069,9 +1069,9 @@ static const JanetAbstractType jrl_at_FilePathList = {
 const JrlType jrl_type_FilePathList = {"FilePathList", sizeof(FilePathList), JRL_SHAPE_HANDLE, jrl_fields_FilePathList, 3, &jrl_at_FilePathList};
 
 static const JrlField jrl_fields_AutomationEvent[] = {
-    {"frame", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(AutomationEvent, frame), 0, NULL, NULL, 0},
-    {"type", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(AutomationEvent, type), 0, NULL, NULL, 0},
-    {"params", JRL_FIELD_FIXED, JRL_K_INT, NULL, NULL, offsetof(AutomationEvent, params), 4, NULL, NULL, 0},
+    {"frame", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(AutomationEvent, frame), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"type", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(AutomationEvent, type), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"params", JRL_FIELD_FIXED, JRL_K_INT, NULL, NULL, offsetof(AutomationEvent, params), 4, NULL, NULL, 0, -1, 1, NULL},
 };
 const JrlType jrl_type_AutomationEvent = {"AutomationEvent", sizeof(AutomationEvent), JRL_SHAPE_STRUCT, jrl_fields_AutomationEvent, 3, NULL};
 
@@ -1081,9 +1081,9 @@ static int32_t jrl_count_AutomationEventList_events(const void *self) {
     return (int32_t) (s->count);
 }
 static const JrlField jrl_fields_AutomationEventList[] = {
-    {"capacity", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(AutomationEventList, capacity), 0, NULL, NULL, 1},
-    {"count", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(AutomationEventList, count), 0, NULL, NULL, 1},
-    {"events", JRL_FIELD_POINTER, JRL_K_TYPE, &jrl_type_AutomationEvent, NULL, offsetof(AutomationEventList, events), 0, jrl_count_AutomationEventList_events, NULL, 0},
+    {"capacity", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(AutomationEventList, capacity), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"count", JRL_FIELD_SCALAR, JRL_K_UINT, NULL, NULL, offsetof(AutomationEventList, count), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"events", JRL_FIELD_POINTER, JRL_K_TYPE, &jrl_type_AutomationEvent, NULL, offsetof(AutomationEventList, events), 0, jrl_count_AutomationEventList_events, NULL, 0, 1, 1, NULL},
 };
 static const JanetAbstractType jrl_at_AutomationEventList = {
     "raylib/AutomationEventList", NULL, jrl_handle_gcmark, jrl_handle_get, jrl_handle_put,
@@ -1092,22 +1092,22 @@ static const JanetAbstractType jrl_at_AutomationEventList = {
 const JrlType jrl_type_AutomationEventList = {"AutomationEventList", sizeof(AutomationEventList), JRL_SHAPE_HANDLE, jrl_fields_AutomationEventList, 3, &jrl_at_AutomationEventList};
 
 static const JrlField jrl_fields_float3[] = {
-    {"v", JRL_FIELD_FIXED, JRL_K_FLOAT, NULL, NULL, offsetof(float3, v), 3, NULL, NULL, 0},
+    {"v", JRL_FIELD_FIXED, JRL_K_FLOAT, NULL, NULL, offsetof(float3, v), 3, NULL, NULL, 0, -1, 1, NULL},
 };
 const JrlType jrl_type_float3 = {"float3", sizeof(float3), JRL_SHAPE_TUPLE, jrl_fields_float3, 1, NULL};
 
 static const JrlField jrl_fields_float16[] = {
-    {"v", JRL_FIELD_FIXED, JRL_K_FLOAT, NULL, NULL, offsetof(float16, v), 16, NULL, NULL, 0},
+    {"v", JRL_FIELD_FIXED, JRL_K_FLOAT, NULL, NULL, offsetof(float16, v), 16, NULL, NULL, 0, -1, 1, NULL},
 };
 const JrlType jrl_type_float16 = {"float16", sizeof(float16), JRL_SHAPE_TUPLE, jrl_fields_float16, 1, NULL};
 
 static const JrlField jrl_fields_rlRenderBatch[] = {
-    {"buffer-count", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(rlRenderBatch, bufferCount), 0, NULL, NULL, 1},
-    {"current-buffer", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(rlRenderBatch, currentBuffer), 0, NULL, NULL, 1},
-    {"vertex-buffer", JRL_FIELD_HIDDEN, JRL_K_INT, NULL, NULL, offsetof(rlRenderBatch, vertexBuffer), 0, NULL, NULL, 0},
-    {"draws", JRL_FIELD_HIDDEN, JRL_K_INT, NULL, NULL, offsetof(rlRenderBatch, draws), 0, NULL, NULL, 0},
-    {"draw-counter", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(rlRenderBatch, drawCounter), 0, NULL, NULL, 1},
-    {"current-depth", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(rlRenderBatch, currentDepth), 0, NULL, NULL, 1},
+    {"buffer-count", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(rlRenderBatch, bufferCount), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"current-buffer", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(rlRenderBatch, currentBuffer), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"vertex-buffer", JRL_FIELD_HIDDEN, JRL_K_INT, NULL, NULL, offsetof(rlRenderBatch, vertexBuffer), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"draws", JRL_FIELD_HIDDEN, JRL_K_INT, NULL, NULL, offsetof(rlRenderBatch, draws), 0, NULL, NULL, 0, -1, 1, NULL},
+    {"draw-counter", JRL_FIELD_SCALAR, JRL_K_INT, NULL, NULL, offsetof(rlRenderBatch, drawCounter), 0, NULL, NULL, 1, -1, 1, NULL},
+    {"current-depth", JRL_FIELD_SCALAR, JRL_K_FLOAT, NULL, NULL, offsetof(rlRenderBatch, currentDepth), 0, NULL, NULL, 1, -1, 1, NULL},
 };
 static const JanetAbstractType jrl_at_rlRenderBatch = {
     "raylib/rlRenderBatch", NULL, jrl_handle_gcmark, jrl_handle_get, jrl_handle_put,
@@ -1115,7 +1115,42 @@ static const JanetAbstractType jrl_at_rlRenderBatch = {
 };
 const JrlType jrl_type_rlRenderBatch = {"rlRenderBatch", sizeof(rlRenderBatch), JRL_SHAPE_HANDLE, jrl_fields_rlRenderBatch, 6, &jrl_at_rlRenderBatch};
 
+static Janet jrl_cfun_make_Font(int32_t argc, Janet *argv) {
+    janet_fixarity(argc, 1);
+    return jrl_make(&jrl_type_Font, argv, 0);
+}
+static Janet jrl_cfun_make_Image(int32_t argc, Janet *argv) {
+    janet_fixarity(argc, 1);
+    return jrl_make(&jrl_type_Image, argv, 0);
+}
+static Janet jrl_cfun_make_Mesh(int32_t argc, Janet *argv) {
+    janet_fixarity(argc, 1);
+    return jrl_make(&jrl_type_Mesh, argv, 0);
+}
+static Janet jrl_cfun_make_RenderTexture(int32_t argc, Janet *argv) {
+    janet_fixarity(argc, 1);
+    return jrl_make(&jrl_type_RenderTexture, argv, 0);
+}
+static Janet jrl_cfun_make_Texture(int32_t argc, Janet *argv) {
+    janet_fixarity(argc, 1);
+    return jrl_make(&jrl_type_Texture, argv, 0);
+}
+static Janet jrl_cfun_make_Wave(int32_t argc, Janet *argv) {
+    janet_fixarity(argc, 1);
+    return jrl_make(&jrl_type_Wave, argv, 0);
+}
+static const JanetRegExt jrl_constructor_cfuns[] = {
+    {"make-font", jrl_cfun_make_Font, "(make-font fields)\n\nBuild a font from load-font-data glyphs, gen-image-font-atlas recs, and an atlas texture. unload-font frees them all.\n\nBuilds a Font from a struct or table of fields, like C's (Font){ .field = ... }: omitted fields are zero, unknown fields are errors. Fields: :base-size :glyph-count :glyph-padding :texture :recs :glyphs. Arrays are tuples, arrays, or views, copied into raylib memory; a count left out comes from the array: :recs (fills :glyph-count), :glyphs (an owned GlyphInfo array from a Load* call, adopted). Handles adopted by the result, so only it can be unloaded: :texture. Free the result with the usual unload function.", __FILE__, __LINE__},
+    {"make-image", jrl_cfun_make_Image, "(make-image fields)\n\nBuild an image around pixel data, as C code does with a static array. Set :mipmaps to 1 for ordinary images; only one level of data is copied.\n\nBuilds an Image from a struct or table of fields, like C's (Image){ .field = ... }: omitted fields are zero, unknown fields are errors. Fields: :data :width :height :mipmaps :format. Bytes (string or buffer), copied: :data (exactly the size given by :width :height :format). Free the result with the usual unload function.", __FILE__, __LINE__},
+    {"make-mesh", jrl_cfun_make_Mesh, "(make-mesh fields)\n\nBuild a mesh from vertex data, as GenMeshCustom-style C code does; upload it with upload-mesh.\n\nBuilds a Mesh from a struct or table of fields, like C's (Mesh){ .field = ... }: omitted fields are zero, unknown fields are errors. Fields: :vertex-count :triangle-count :vertices :texcoords :texcoords2 :normals :tangents :colors :indices :anim-vertices :anim-normals :bone-ids :bone-weights :bone-matrices :bone-count :vao-id :vbo-id. Arrays are tuples, arrays, or views, copied into raylib memory; a count left out comes from the array: :vertices (flat, 3 per :vertex-count), :texcoords (flat, 2 per :vertex-count), :texcoords2 (flat, 2 per :vertex-count), :normals (flat, 3 per :vertex-count), :tangents (flat, 4 per :vertex-count), :colors (flat, 4 per :vertex-count), :indices (flat, 3 per :triangle-count), :anim-vertices (flat, 3 per :vertex-count), :anim-normals (flat, 3 per :vertex-count), :bone-ids (flat, 4 per :vertex-count), :bone-weights (flat, 4 per :vertex-count), :bone-matrices (fills :bone-count), :vbo-id (fixed length). Free the result with the usual unload function.", __FILE__, __LINE__},
+    {"make-render-texture", jrl_cfun_make_RenderTexture, "(make-render-texture fields)\n\nWrap a framebuffer made with rlgl (rl-load-framebuffer) and textures from make-texture. unload-render-texture deletes the color texture, the framebuffer, and whatever depth attachment it has.\n\nBuilds a RenderTexture from a struct or table of fields, like C's (RenderTexture){ .field = ... }: omitted fields are zero, unknown fields are errors. Fields: :id :texture :depth. Handles adopted by the result, so only it can be unloaded: :texture, :depth. Free the result with the usual unload function.", __FILE__, __LINE__},
+    {"make-texture", jrl_cfun_make_Texture, "(make-texture fields)\n\nWrap a texture made with rlgl (rl-load-texture, rl-load-texture-depth, rl-load-texture-cubemap). The result owns :id; unload-texture deletes it.\n\nBuilds a Texture from a struct or table of fields, like C's (Texture){ .field = ... }: omitted fields are zero, unknown fields are errors. Fields: :id :width :height :mipmaps :format. Free the result with the usual unload function.", __FILE__, __LINE__},
+    {"make-wave", jrl_cfun_make_Wave, "(make-wave fields)\n\nBuild a wave around sample data, as C code does with a static array.\n\nBuilds a Wave from a struct or table of fields, like C's (Wave){ .field = ... }: omitted fields are zero, unknown fields are errors. Fields: :frame-count :sample-rate :sample-size :channels :data. Bytes (string or buffer), copied: :data (exactly the size given by :frame-count :channels :sample-size). Free the result with the usual unload function.", __FILE__, __LINE__},
+    {NULL, NULL, NULL, NULL, 0}
+};
+
 void jrl_register_types(JanetTable *env) {
+    janet_cfuns_ext(env, NULL, jrl_constructor_cfuns);
     janet_def(env, "flag-vsync-hint", janet_wrap_number((double) FLAG_VSYNC_HINT), "ConfigFlags member FLAG_VSYNC_HINT: Set to try enabling V-Sync on GPU");
     janet_def(env, "flag-fullscreen-mode", janet_wrap_number((double) FLAG_FULLSCREEN_MODE), "ConfigFlags member FLAG_FULLSCREEN_MODE: Set to run program in fullscreen");
     janet_def(env, "flag-window-resizable", janet_wrap_number((double) FLAG_WINDOW_RESIZABLE), "ConfigFlags member FLAG_WINDOW_RESIZABLE: Set to allow resizable window");

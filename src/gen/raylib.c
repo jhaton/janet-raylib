@@ -2794,6 +2794,7 @@ static Janet jrl_cfun_LoadImageAnim(int32_t argc, Janet *argv) {
     int frames = 0;
     Image jrl_ret = LoadImageAnim(fileName, &frames);
     Janet jrl_value = jrl_handle_new(&jrl_type_Image, &jrl_ret, 0);
+    jrl_handle_set_frames(jrl_value, frames);
     Janet jrl_results[2] = {jrl_value, janet_wrap_integer(frames)};
     return janet_wrap_tuple(janet_tuple_n(jrl_results, 2));
 }
@@ -2809,6 +2810,7 @@ static Janet jrl_cfun_LoadImageAnimFromMemory(int32_t argc, Janet *argv) {
     dataSize = jrl_v_fileData.len;
     Image jrl_ret = LoadImageAnimFromMemory(fileType, fileData, dataSize, &frames);
     Janet jrl_value = jrl_handle_new(&jrl_type_Image, &jrl_ret, 0);
+    jrl_handle_set_frames(jrl_value, frames);
     Janet jrl_results[2] = {jrl_value, janet_wrap_integer(frames)};
     return janet_wrap_tuple(janet_tuple_n(jrl_results, 2));
 }
@@ -4175,6 +4177,7 @@ static Janet jrl_cfun_UnloadFontData(int32_t argc, Janet *argv) {
 /* void UnloadFont(Font font) */
 static Janet jrl_cfun_UnloadFont(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
+    if (jrl_handle_raylib_owned(argv[0])) return janet_wrap_nil();
     Font font = *(Font *) jrl_unload_handle(argv, 0, &jrl_type_Font);
     UnloadFont(font);
     jrl_mark_unloaded(argv[0]);
@@ -4392,17 +4395,6 @@ static Janet jrl_cfun_GetCodepointNext(int32_t argc, Janet *argv) {
     const char *text = jrl_get_cstring(argv, 0);
     int codepointSize = 0;
     int jrl_ret = GetCodepointNext(text, &codepointSize);
-    Janet jrl_value = janet_wrap_integer(jrl_ret);
-    Janet jrl_results[2] = {jrl_value, janet_wrap_integer(codepointSize)};
-    return janet_wrap_tuple(janet_tuple_n(jrl_results, 2));
-}
-
-/* int GetCodepointPrevious(const char * text, int * codepointSize) */
-static Janet jrl_cfun_GetCodepointPrevious(int32_t argc, Janet *argv) {
-    janet_fixarity(argc, 1);
-    const char *text = jrl_get_cstring(argv, 0);
-    int codepointSize = 0;
-    int jrl_ret = GetCodepointPrevious(text, &codepointSize);
     Janet jrl_value = janet_wrap_integer(jrl_ret);
     Janet jrl_results[2] = {jrl_value, janet_wrap_integer(codepointSize)};
     return janet_wrap_tuple(janet_tuple_n(jrl_results, 2));
@@ -6327,8 +6319,8 @@ static const JanetRegExt jrl_raylib_cfuns[] = {
     {"get-collision-rec", jrl_cfun_GetCollisionRec, "(get-collision-rec rec1 rec2)\n\nGet collision rectangle for two rectangles collision\n\nC: Rectangle GetCollisionRec(Rectangle rec1, Rectangle rec2)", __FILE__, __LINE__},
     {"load-image", jrl_cfun_LoadImage, "(load-image file-name)\n\nLoad image from file into CPU memory (RAM)\n\nC: Image LoadImage(const char * fileName)", __FILE__, __LINE__},
     {"load-image-raw", jrl_cfun_LoadImageRaw, "(load-image-raw file-name width height format header-size)\n\nLoad image from RAW file data\n\nformat accepts PixelFormat keywords.\n\nC: Image LoadImageRaw(const char * fileName, int width, int height, int format, int headerSize)", __FILE__, __LINE__},
-    {"load-image-anim", jrl_cfun_LoadImageAnim, "(load-image-anim file-name)\n\nLoad image sequence from file (frames appended to image.data)\n\nreturns [result frames].\n\nC: Image LoadImageAnim(const char * fileName, int * frames)", __FILE__, __LINE__},
-    {"load-image-anim-from-memory", jrl_cfun_LoadImageAnimFromMemory, "(load-image-anim-from-memory file-type file-data)\n\nLoad image sequence from memory buffer\n\nreturns [result frames]; file-data is bytes; its length fills data-size.\n\nC: Image LoadImageAnimFromMemory(const char * fileType, const unsigned char * fileData, int dataSize, int * frames)", __FILE__, __LINE__},
+    {"load-image-anim", jrl_cfun_LoadImageAnim, "(load-image-anim file-name)\n\nLoad image sequence from file (frames appended to image.data)\n\nthe image's :data spans all frames; returns [result frames].\n\nC: Image LoadImageAnim(const char * fileName, int * frames)", __FILE__, __LINE__},
+    {"load-image-anim-from-memory", jrl_cfun_LoadImageAnimFromMemory, "(load-image-anim-from-memory file-type file-data)\n\nLoad image sequence from memory buffer\n\nthe image's :data spans all frames; returns [result frames]; file-data is bytes; its length fills data-size.\n\nC: Image LoadImageAnimFromMemory(const char * fileType, const unsigned char * fileData, int dataSize, int * frames)", __FILE__, __LINE__},
     {"load-image-from-memory", jrl_cfun_LoadImageFromMemory, "(load-image-from-memory file-type file-data)\n\nLoad image from memory buffer, fileType refers to extension: i.e. '.png'\n\nfile-data is bytes; its length fills data-size.\n\nC: Image LoadImageFromMemory(const char * fileType, const unsigned char * fileData, int dataSize)", __FILE__, __LINE__},
     {"load-image-from-texture", jrl_cfun_LoadImageFromTexture, "(load-image-from-texture texture)\n\nLoad image from GPU texture data\n\nC: Image LoadImageFromTexture(Texture2D texture)", __FILE__, __LINE__},
     {"load-image-from-screen", jrl_cfun_LoadImageFromScreen, "(load-image-from-screen)\n\nLoad image from screen buffer and (screenshot)\n\nC: Image LoadImageFromScreen()", __FILE__, __LINE__},
@@ -6446,7 +6438,7 @@ static const JanetRegExt jrl_raylib_cfuns[] = {
     {"font-valid?", jrl_cfun_IsFontValid, "(font-valid? font)\n\nCheck if a font is valid (font data loaded, WARNING: GPU texture not checked)\n\nC: bool IsFontValid(Font font)", __FILE__, __LINE__},
     {"load-font-data", jrl_cfun_LoadFontData, "(load-font-data file-data font-size codepoints type)\n\nLoad font data for further use\n\nfile-data is bytes; its length fills data-size; codepoints is a tuple/array; its length fills codepoint-count; type accepts FontType keywords.\n\nC: GlyphInfo * LoadFontData(const unsigned char * fileData, int dataSize, int fontSize, int * codepoints, int codepointCount, int type)", __FILE__, __LINE__},
     {"unload-font-data", jrl_cfun_UnloadFontData, "(unload-font-data glyphs)\n\nUnload font chars info data (RAM)\n\nglyphs (an array from a Load* call) is unloaded.\n\nC: void UnloadFontData(GlyphInfo * glyphs, int glyphCount)", __FILE__, __LINE__},
-    {"unload-font", jrl_cfun_UnloadFont, "(unload-font font)\n\nUnload font from GPU memory (VRAM)\n\nfont is unloaded; later use raises an error.\n\nC: void UnloadFont(Font font)", __FILE__, __LINE__},
+    {"unload-font", jrl_cfun_UnloadFont, "(unload-font font)\n\nUnload font from GPU memory (VRAM)\n\nfont owned by raylib (as from a Get* call) is left alone, as in C; font is unloaded; later use raises an error.\n\nC: void UnloadFont(Font font)", __FILE__, __LINE__},
     {"export-font-as-code", jrl_cfun_ExportFontAsCode, "(export-font-as-code font file-name)\n\nExport font as code file, returns true on success\n\nC: bool ExportFontAsCode(Font font, const char * fileName)", __FILE__, __LINE__},
     {"draw-fps", jrl_cfun_DrawFPS, "(draw-fps pos-x pos-y)\n\nDraw current FPS\n\nC: void DrawFPS(int posX, int posY)", __FILE__, __LINE__},
     {"draw-text", jrl_cfun_DrawText, "(draw-text text pos-x pos-y font-size color)\n\nDraw text (using default font)\n\nC: void DrawText(const char * text, int posX, int posY, int fontSize, Color color)", __FILE__, __LINE__},
@@ -6465,7 +6457,6 @@ static const JanetRegExt jrl_raylib_cfuns[] = {
     {"get-codepoint-count", jrl_cfun_GetCodepointCount, "(get-codepoint-count text)\n\nGet total number of codepoints in a UTF-8 encoded string\n\nC: int GetCodepointCount(const char * text)", __FILE__, __LINE__},
     {"get-codepoint", jrl_cfun_GetCodepoint, "(get-codepoint text)\n\nGet next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure\n\nreturns [result codepoint-size].\n\nC: int GetCodepoint(const char * text, int * codepointSize)", __FILE__, __LINE__},
     {"get-codepoint-next", jrl_cfun_GetCodepointNext, "(get-codepoint-next text)\n\nGet next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure\n\nreturns [result codepoint-size].\n\nC: int GetCodepointNext(const char * text, int * codepointSize)", __FILE__, __LINE__},
-    {"get-codepoint-previous", jrl_cfun_GetCodepointPrevious, "(get-codepoint-previous text)\n\nGet previous codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure\n\nreturns [result codepoint-size].\n\nC: int GetCodepointPrevious(const char * text, int * codepointSize)", __FILE__, __LINE__},
     {"codepoint-to-utf8", jrl_cfun_CodepointToUTF8, "(codepoint-to-utf8 codepoint)\n\nEncode one codepoint into UTF-8 byte array (array length returned as parameter)\n\nreturns [result utf8-size].\n\nC: const char * CodepointToUTF8(int codepoint, int * utf8Size)", __FILE__, __LINE__},
     {"text-is-equal", jrl_cfun_TextIsEqual, "(text-is-equal text1 text2)\n\nCheck if two text string are equal\n\nC: bool TextIsEqual(const char * text1, const char * text2)", __FILE__, __LINE__},
     {"text-length", jrl_cfun_TextLength, "(text-length text)\n\nGet text length, checks for '\\0' ending\n\nC: unsigned int TextLength(const char * text)", __FILE__, __LINE__},

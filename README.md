@@ -45,6 +45,8 @@ Run scripts against the development build with `JANET_PATH=build/lib janet scrip
 
 To install with janet-pm instead, run `janet-pm install`. It compiles the same sources that `project.janet` declares.
 
+raylib is built for OpenGL 3.3, with HDR image loading enabled. Set `JANET_RAYLIB_OPENGL=43` (for `make`, or in the environment of `janet-pm install`) to build for OpenGL 4.3 instead, which makes rlgl's compute shaders and shader storage buffers work. It needs a 4.3 driver, which macOS doesn't have. `make` rebuilds raylib when the setting changes.
+
 ## Using it
 
 ```janet
@@ -104,11 +106,34 @@ Pointer parameters follow the rules in `overrides.jdn`:
 Images, textures, fonts, meshes, shaders, materials, models, animations, waves, sounds, music, and file lists are handles: abstract values that own their C struct.
 
 - **Explicit unload.** The garbage collector never frees GPU or audio memory, since it could run after `close-window`. Call the matching `unload-*` function, or scope the resource with Janet's `with`.
-- **Guarded.** Using a handle after unloading it, or unloading it twice, raises a Janet error instead of crashing. `(handle-live? x)` checks without raising.
+- **Guarded.** Using a handle after unloading it, or unloading it twice, raises a Janet error instead of crashing. `(handle-live? x)` checks without raising. Handles raylib owns (`get-font-default`, `get-shapes-texture`) cannot be unloaded; `unload-font` on the default font does nothing, as in C.
 - **Fields.** Handles expose their fields by keyword: `(texture :width)`, `(keys model)`. Writable fields accept `put`, e.g. `(put model :transform (rl/matrix-rotate-y 0.6))` or `(put music :looping false)`. Fields that size memory (`:width` of an image, `:mesh-count`, …) are read-only.
-- **Views.** Struct-valued and array fields return views into the owner's memory: `(model :materials)`, `(get-in model [:materials 0 :maps 0 :texture])`, `(shader :locs)`, `(font :glyphs)`. Views support `get`, `put`, `length`, and `each`. They die with their owner, and they cannot be unloaded on their own.
+- **Views.** Struct-valued and array fields return views into the owner's memory: `(model :materials)`, `(get-in model [:materials 0 :maps 0 :texture])`, `(shader :locs)`, `(font :glyphs)`. Views support `get`, `put`, `length`, and `each`. They die with their owner, and they cannot be unloaded on their own. Material maps also take `MaterialMapIndex` keywords: `(get-in model [:materials 0 :maps :albedo])`.
 - **Adoption.** `load-model-from-mesh` takes ownership of its mesh, so unloading the mesh afterwards raises an error. `load-sound-alias` keeps its source sound tied to the alias.
 - **Arrays of resources.** `load-model-animations` and `load-font-data` return arrays that are freed by `unload-model-animations` and `unload-font-data`. `load-materials` returns an array freed by `unload-materials`.
+- **Animated images.** `(load-image-anim path)` returns `[image frames]`, and the image's `:data` holds every frame, as C's `image.data` does. Pass one frame to `update-texture` with `(buffer/slice data offset (+ offset frame-size))`.
+
+#### Constructors
+
+C code sometimes fills a struct by hand, e.g. a texture around an id from `rlLoadTextureDepth`, or a mesh from vertex arrays. `make-texture`, `make-render-texture`, `make-mesh`, `make-font`, `make-image`, and `make-wave` do that. Each takes a struct or table of fields, like C's `(Mesh){ .vertexCount = 3, ... }`:
+
+```janet
+(def mesh (rl/make-mesh {:triangle-count 1
+                         :vertices [0 0 0  1 0 2  2 0 0]
+                         :normals [0 1 0  0 1 0  0 1 0]
+                         :texcoords [0 0  0.5 1  1 0]}))   # :vertex-count 3 comes from :vertices
+(rl/upload-mesh mesh false)
+
+(def depth (rl/make-texture {:id (rl/rl-load-texture-depth w h false)
+                             :width w :height h :mipmaps 1 :format 19}))
+(def target (rl/make-render-texture {:id fbo :texture color :depth depth}))  # adopts both textures
+```
+
+- Omitted fields are zero, as in C; unknown fields are errors.
+- Arrays (tuples, arrays, or views into another handle) and bytes are copied into memory from raylib's allocator, so the usual `unload-*` function frees them. A count field you leave out is taken from its array's length; arrays that share a count must agree. Mesh arrays are flat: three numbers per vertex for `:vertices`.
+- Handle fields (`:texture`, `:depth`) and an owned array of handles (`load-font-data`'s glyphs for `make-font`) are adopted: afterwards only the new value can unload them.
+- Everything is checked before anything is allocated or adopted, so a failed call leaves its arguments as they were.
+- `make-image` copies one mip level; set `:mipmaps 1` for ordinary images.
 
 The binding does not model raylib's implicit sharing between materials and the textures and shaders they reference. As in C, `unload-model` frees the meshes and material arrays but not the materials' shaders or textures. `unload-material` does unload its shader and every non-default map texture, including ones you attached with `set-material-texture`.
 

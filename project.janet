@@ -30,10 +30,17 @@
              "-framework" "CoreAudio" "-framework" "CoreVideo"]
     @[]))
 
+# JANET_RAYLIB_OPENGL=43 in the environment at install time builds raylib for
+# OpenGL 4.3 (compute shaders, SSBOs); it needs a 4.3 driver, which macOS lacks.
+(def- opengl (or (os/getenv "JANET_RAYLIB_OPENGL") "33"))
+(unless (index-of opengl ["33" "43"])
+  (error (string "JANET_RAYLIB_OPENGL must be 33 or 43, got " opengl)))
+
 (declare-native
   :name "raylib/native"
   :source [;binding-sources ;raylib-sources]
-  :defines (merge {"PLATFORM_DESKTOP_GLFW" true "GRAPHICS_API_OPENGL_33" true "_GNU_SOURCE" true}
+  :defines (merge {"PLATFORM_DESKTOP_GLFW" true (string "GRAPHICS_API_OPENGL_" opengl) true
+                   "SUPPORT_FILEFORMAT_HDR" true "_GNU_SOURCE" true}
                   os-defines)
   :cflags ["-std=gnu99" "-Isrc" "-Iinclude" "-Ivendor/raylib/src"
            "-Ivendor/raylib/src/external/glfw/include"]
