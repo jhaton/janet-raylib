@@ -2,6 +2,7 @@
 #include "jrl.h"
 
 void janet_raylib_register(JanetTable *env) {
+    jrl_init_keys();
     jrl_register_types(env);
     jrl_register_raylib(env);
     jrl_register_raymath(env);

@@ -80,7 +80,21 @@ typedef struct {
     int32_t count_field;       /* JRL_FIELD_POINTER: index of the field holding the count, or -1 */
     int32_t count_factor;      /* elements per count unit (vertexCount * 3) */
     const JrlEnum *index_enum; /* array views also accept these member keywords as indices */
+    int32_t key_index;         /* this field's keyword in jrl_field_key_names */
 } JrlField;
+
+/* Field keywords, made once per Janet VM by jrl_init_keys (called when the
+ * module registers) instead of on every struct conversion. Keywords belong to
+ * a VM, and each thread runs its own, so the cache is thread-local; a thread
+ * that never registered the module falls back to making them per call. */
+extern const char *const jrl_field_key_names[];
+extern const int32_t jrl_field_key_count;
+extern JANET_THREAD_LOCAL Janet *jrl_field_keys;
+void jrl_init_keys(void);
+
+static inline Janet jrl_field_key(const JrlField *f) {
+    return jrl_field_keys ? jrl_field_keys[f->key_index] : janet_ckeywordv(f->key);
+}
 
 struct JrlType {
     const char *name;

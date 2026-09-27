@@ -2,6 +2,7 @@
 #include "jrl.h"
 #include "gen/types.h"
 
+#include <stdlib.h>
 #include <string.h>
 
 typedef struct {
@@ -311,6 +312,23 @@ static int32_t tuple_width(const JrlType *t) {
     return width;
 }
 
+JANET_THREAD_LOCAL Janet *jrl_field_keys = NULL;
+
+void jrl_init_keys(void) {
+    /* Registering again (another env in the same VM, or a new VM on this
+     * thread after janet_deinit) replaces the previous keys. */
+    if (jrl_field_keys == NULL) {
+        jrl_field_keys = malloc(sizeof(Janet) * (size_t) jrl_field_key_count);
+        if (jrl_field_keys == NULL) janet_panic("out of memory");
+    } else {
+        for (int32_t i = 0; i < jrl_field_key_count; i++) janet_gcunroot(jrl_field_keys[i]);
+    }
+    for (int32_t i = 0; i < jrl_field_key_count; i++) {
+        jrl_field_keys[i] = janet_ckeywordv(jrl_field_key_names[i]);
+        janet_gcroot(jrl_field_keys[i]);
+    }
+}
+
 /* The inline getters in jrl.h fill these structs as float arrays. */
 _Static_assert(sizeof(Vector2) == 2 * sizeof(float), "Vector2 layout");
 _Static_assert(sizeof(Vector3) == 3 * sizeof(float), "Vector3 layout");
@@ -425,7 +443,7 @@ void jrl_from_janet(const JrlType *t, Janet v, void *out, const char *what) {
     for (int32_t i = 0; i < t->field_count; i++) {
         const JrlField *f = &t->fields[i];
         if (f->shape == JRL_FIELD_HIDDEN) continue;
-        Janet fv = janet_get(v, janet_ckeywordv(f->key));
+        Janet fv = janet_get(v, jrl_field_key(f));
         if (janet_checktype(fv, JANET_NIL))
             janet_panicf("%s: %s is missing field :%s", what, t->name, f->key);
         field_from_janet(f, out, fv, what);
@@ -475,7 +493,7 @@ Janet jrl_to_janet(const JrlType *t, const void *p, Janet owner) {
     for (int32_t i = 0; i < t->field_count; i++) {
         const JrlField *f = &t->fields[i];
         if (f->shape == JRL_FIELD_HIDDEN) continue;
-        janet_struct_put(st, janet_ckeywordv(f->key), field_to_janet(f, p, owner));
+        janet_struct_put(st, jrl_field_key(f), field_to_janet(f, p, owner));
     }
     return janet_wrap_struct(janet_struct_end(st));
 }
@@ -616,7 +634,7 @@ Janet jrl_handle_next(void *data, Janet key) {
         start = (int32_t) (f - t->fields) + 1;
     }
     for (int32_t i = start; i < t->field_count; i++) {
-        if (t->fields[i].shape != JRL_FIELD_HIDDEN) return janet_ckeywordv(t->fields[i].key);
+        if (t->fields[i].shape != JRL_FIELD_HIDDEN) return jrl_field_key(&t->fields[i]);
     }
     return janet_wrap_nil();
 }
@@ -910,7 +928,7 @@ Janet jrl_make(const JrlType *t, const Janet *argv, int32_t n) {
     for (int32_t i = 0; i < t->field_count; i++) {
         const JrlField *f = &t->fields[i];
         if (f->shape != JRL_FIELD_SCALAR && f->shape != JRL_FIELD_FIXED && f->shape != JRL_FIELD_CHARS) continue;
-        Janet fv = janet_get(v, janet_ckeywordv(f->key));
+        Janet fv = janet_get(v, jrl_field_key(f));
         if (janet_checktype(fv, JANET_NIL)) continue;
         if (f->shape == JRL_FIELD_SCALAR && f->kind == JRL_K_TYPE && f->type->shape == JRL_SHAPE_HANDLE) {
             JrlHandle *h = adoptable(fv, f->type, what, f->key);
@@ -928,7 +946,7 @@ Janet jrl_make(const JrlType *t, const Janet *argv, int32_t n) {
     for (int32_t i = 0; i < t->field_count; i++) {
         const JrlField *f = &t->fields[i];
         if (f->shape != JRL_FIELD_POINTER || f->count_field < 0) continue;
-        Janet fv = janet_get(v, janet_ckeywordv(f->key));
+        Janet fv = janet_get(v, jrl_field_key(f));
         if (janet_checktype(fv, JANET_NIL)) continue;
         JrlArray *a;
         void *ptr;
@@ -953,7 +971,7 @@ Janet jrl_make(const JrlType *t, const Janet *argv, int32_t n) {
     for (int32_t i = 0; i < t->field_count; i++) {
         const JrlField *f = &t->fields[i];
         if (f->shape != JRL_FIELD_POINTER && f->shape != JRL_FIELD_BYTES) continue;
-        Janet fv = janet_get(v, janet_ckeywordv(f->key));
+        Janet fv = janet_get(v, jrl_field_key(f));
         if (janet_checktype(fv, JANET_NIL)) continue;
         JrlPending *p = &pending[pending_count++];
         p->field = f;

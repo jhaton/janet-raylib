@@ -774,6 +774,12 @@
   (each [key [r g b a]] (sort-by |(string (first $)) colors)
     (bpush c "    {" (c-string (string key)) ", {" r ", " g ", " b ", " a "}},\n"))
   (bpush c "};\nconst int32_t jrl_color_name_count = " (length colors) ";\n\n")
+  # field keywords: each distinct name once, made into a keyword at registration
+  (def key-names (sorted (distinct (seq [name :in struct-order r :in (first (build-fields name))] (r :key)))))
+  (def key-index (tabseq [[i k] :pairs key-names] k i))
+  (bpush c "const char *const jrl_field_key_names[] = {\n")
+  (each k key-names (bpush c "    " (c-string k) ",\n"))
+  (bpush c "};\nconst int32_t jrl_field_key_count = " (length key-names) ";\n\n")
   # structs
   (each name struct-order
     (def shape (shape-of name))
@@ -787,7 +793,8 @@
                    "offsetof(" name ", " (r :c) "), " (or (r :fixed) 0) ", "
                    (or (r :count) "NULL") ", " (or (r :inner) "NULL") ", " (if (r :readonly) 1 0) ", "
                    (r :count-field) ", " (r :count-factor) ", "
-                   (if (r :index-enum) (string "&" (enum-sym (r :index-enum))) "NULL") "},\n"))
+                   (if (r :index-enum) (string "&" (enum-sym (r :index-enum))) "NULL") ", "
+                   (key-index (r :key)) "},\n"))
     (bpush c "};\n")
     (when (= shape :handle)
       (bpush c "static const JanetAbstractType jrl_at_" name " = {\n"
