@@ -429,6 +429,73 @@ static void field_from_janet(const JrlField *f, void *base, Janet v, const char 
     }
 }
 
+/* One field of a plain struct, for the one-pass path below: accepts exactly
+ * what field_from_janet accepts for these kinds, and returns 0 for anything
+ * else so the checked path handles (and reports) it. */
+static int fast_field(const JrlField *f, Janet v, void *base) {
+    void *p = (char *) base + f->offset;
+    if (f->shape != JRL_FIELD_SCALAR) return 0;
+    switch (f->kind) {
+        case JRL_K_FLOAT:
+            if (!janet_checktype(v, JANET_NUMBER)) return 0;
+            *(float *) p = (float) janet_unwrap_number(v);
+            return 1;
+        case JRL_K_INT: {
+            if (f->enumt && janet_checktype(v, JANET_KEYWORD)) {
+                int32_t i = find_key(janet_unwrap_keyword(v), f->enumt->members, f->enumt->count,
+                                     sizeof(JrlEnumMember));
+                if (i < 0) return 0;
+                *(int *) p = (int) f->enumt->members[i].value;
+                return 1;
+            }
+            if (!janet_checktype(v, JANET_NUMBER)) return 0;
+            double d = janet_unwrap_number(v);
+            double hi = f->enumt ? (double) UINT32_MAX : (double) INT32_MAX;
+            if (!(d >= (double) INT32_MIN && d <= hi) || d != (double) (int64_t) d) return 0;
+            *(int *) p = (int) (int64_t) d;
+            return 1;
+        }
+        case JRL_K_BOOL:
+            if (!janet_checktype(v, JANET_BOOLEAN)) return 0;
+            *(bool *) p = janet_unwrap_boolean(v);
+            return 1;
+        case JRL_K_TYPE:
+            if (f->type == &jrl_type_Color) return jrl_fast_color(v, p);
+            if (f->type == &jrl_type_Vector2 || f->type == &jrl_type_Vector3 ||
+                f->type == &jrl_type_Vector4 || f->type == &jrl_type_Rectangle)
+                return jrl_fast_floats(v, p, (int32_t) (f->type->size / sizeof(float)));
+            return 0;
+        default:
+            return 0;
+    }
+}
+
+/* Plain structs (Camera3D, Ray, BoundingBox, ...): one pass over the table's
+ * or struct's slots, matching keys by identity against the cached field
+ * keywords, instead of a hash lookup per field. Every field must be present
+ * and take the fast shape; otherwise the checked path below runs from scratch. */
+static int fast_struct(const JrlType *t, Janet v, void *out) {
+    const JanetKV *kvs;
+    int32_t len, cap;
+    if (jrl_field_keys == NULL || t->field_count > 64) return 0;
+    if (!janet_dictionary_view(v, &kvs, &len, &cap)) return 0;
+    uint64_t need = 0, found = 0;
+    for (int32_t i = 0; i < t->field_count; i++)
+        if (t->fields[i].shape != JRL_FIELD_HIDDEN) need |= (uint64_t) 1 << i;
+    for (int32_t s = 0; s < cap; s++) {
+        if (!janet_checktype(kvs[s].key, JANET_KEYWORD)) continue;
+        const uint8_t *kw = janet_unwrap_keyword(kvs[s].key);
+        for (int32_t i = 0; i < t->field_count; i++) {
+            const JrlField *f = &t->fields[i];
+            if (!((need >> i) & 1) || kw != janet_unwrap_keyword(jrl_field_keys[f->key_index])) continue;
+            if (!fast_field(f, kvs[s].value, out)) return 0;
+            found |= (uint64_t) 1 << i;
+            break;
+        }
+    }
+    return found == need;
+}
+
 void jrl_from_janet(const JrlType *t, Janet v, void *out, const char *what) {
     if (t->shape == JRL_SHAPE_TUPLE) {
         tuple_from_janet(t, v, out, what);
@@ -438,6 +505,7 @@ void jrl_from_janet(const JrlType *t, Janet v, void *out, const char *what) {
         memcpy(out, jrl_handle_ptr(v, t, what), t->size);
         return;
     }
+    if (fast_struct(t, v, out)) return;
     if (!janet_checktypes(v, JANET_TFLAG_DICTIONARY))
         janet_panicf("%s: expected %s as a struct or table, got %q", what, t->name, v);
     for (int32_t i = 0; i < t->field_count; i++) {
